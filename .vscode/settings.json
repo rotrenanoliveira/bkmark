@@ -1,9 +1,11 @@
 {
   "editor.fontSize": 12,
   "cSpell.words": [
+    "bkmark",
     "bmrks",
     "geist",
     "readmarks",
     "runnote"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
