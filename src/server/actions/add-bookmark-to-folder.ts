@@ -24,8 +24,8 @@ export async function actionAddBookmarkToFolder({ bookmarkId, folderId }: Action
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag(`bookmarks-${currentBookmark.folderId}`)
-  revalidateTag(`bookmarks-${folderId}`)
+  revalidateTag(`bookmarks-${currentBookmark.folderId}`, 'max')
+  revalidateTag(`bookmarks-${folderId}`, 'max')
 
   return { success: true, message: 'Bookmark added to folder.' }
 }

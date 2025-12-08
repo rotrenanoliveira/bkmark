@@ -11,8 +11,8 @@ export async function actionRemoveFolder(folderId: string) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks')
-  revalidateTag(`bookmarks-${folderId}`)
+  revalidateTag('bookmarks', 'max')
+  revalidateTag(`bookmarks-${folderId}`, 'max')
 
   return { success: true, message: 'Folder removed successfully.' }
 }

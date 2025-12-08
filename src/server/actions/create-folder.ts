@@ -38,7 +38,7 @@ export async function actionCreateFolder(data: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('folders')
+  revalidateTag('folders', 'max')
 
   return { success: true, message: 'Folder created successfully.' }
 }
