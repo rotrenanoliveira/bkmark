@@ -7,6 +7,7 @@ import { BookmarkDeleteButton } from './bookmark-delete'
 import { BookmarkMoveSubMenu } from './bookmark-move-submenu'
 import { BookmarkRename } from './bookmark-rename'
 import type { Bookmark } from '@/utils/types'
+import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
 
 interface BookmarkOptionsProps {
   bookmark: Bookmark
@@ -28,6 +29,8 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
         <BookmarkCopy bookmarkUrl={bookmark.bookmarkUrl} />
         {/* bookmark rename */}
         <BookmarkRename bookmarkId={bookmark.id} />
+        {/* bookmark remove from folder */}
+        {bookmark.folderId !== null && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.id} />}
         {/* bookmark delete */}
         <BookmarkDeleteButton bookmarkId={bookmark.id} />
         {/* bookmark move */}

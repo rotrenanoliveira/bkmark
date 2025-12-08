@@ -7,17 +7,16 @@ import { updateBookmark } from '../data/update-bookmark'
 
 interface ActionProps {
   bookmarkId: string
-  folderId: string
 }
 
-export async function actionAddBookmarkToFolder({ bookmarkId, folderId }: ActionProps) {
+export async function actionRemoveBookmarkFromFolder({ bookmarkId }: ActionProps) {
   const [currentBookmark, bookmarkError] = await getBookmark(bookmarkId)
 
   if (bookmarkError) {
     return bookmarkError
   }
 
-  const [_, updateError] = await updateBookmark({ bookmarkId, folderId })
+  const [_, updateError] = await updateBookmark({ bookmarkId, folderId: null })
 
   if (updateError) {
     return updateError
@@ -25,7 +24,6 @@ export async function actionAddBookmarkToFolder({ bookmarkId, folderId }: Action
 
   revalidatePath('/', 'layout')
   revalidateTag(`bookmarks-${currentBookmark.folderId}`, 'max')
-  revalidateTag(`bookmarks-${folderId}`, 'max')
 
   return { success: true, message: 'Bookmark added to folder.' }
 }

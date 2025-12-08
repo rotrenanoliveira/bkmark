@@ -32,7 +32,7 @@ export async function actionRenameBookmark(data: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks')
+  revalidateTag('bookmarks', 'max')
 
   return { success: true, message: 'Bookmark rename successfully.' }
 }

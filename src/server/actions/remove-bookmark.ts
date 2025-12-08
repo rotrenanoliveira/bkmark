@@ -11,7 +11,7 @@ export async function actionRemoveBookmark(bookmarkId: string) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks')
+  revalidateTag('bookmarks', 'max')
 
   return { success: true, message: 'Bookmark removed successfully.' }
 }

@@ -46,7 +46,7 @@ export async function actionAddBookmark(data: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks')
+  revalidateTag('bookmarks', 'max')
 
   if (getUrlDataError) {
     return getUrlDataError

@@ -7,7 +7,15 @@ export async function GET() {
   const userId = generateNanoId()
 
   const cookieStore = await cookies()
-  cookieStore.set('runnote:userId', userId)
+  cookieStore.set({
+    name: 'runnote:userId',
+    value: userId,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30, // 30 days
+  })
 
   redirect(new URL(env.APP_URL ?? '/').toString())
 }
