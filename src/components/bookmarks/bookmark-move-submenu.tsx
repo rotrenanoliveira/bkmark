@@ -31,7 +31,7 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId }: BookmarkMoveSubMenuP
         <span>Move to...</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent className="w-full">
+        <DropdownMenuContent className="w-full">
           {data?.folders.length === 0 && (
             <DropdownMenuItem className="text-muted-foreground/50 hover:bg-inherit">
               No folders registered.
@@ -52,7 +52,7 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId }: BookmarkMoveSubMenuP
               ))}
             </div>
           </ScrollArea>
-        </DropdownMenuSubContent>
+        </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenuSub>
   )
