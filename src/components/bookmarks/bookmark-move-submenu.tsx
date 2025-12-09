@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { FastForwardIcon } from 'lucide-react'
+import { FastForwardIcon, Loader2 } from 'lucide-react'
 
 import {
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import { getFolders } from '@/server/data/get-folders'
 import { BookmarkMove } from './bookmark-move'
 import { ScrollArea } from '../ui/scroll-area'
 import { Separator } from '../ui/separator'
+import React from 'react'
 
 interface BookmarkMoveSubMenuProps {
   userId: string
@@ -19,9 +20,12 @@ interface BookmarkMoveSubMenuProps {
 }
 
 export function BookmarkMoveSubMenu({ userId, bookmarkId }: BookmarkMoveSubMenuProps) {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['folders'],
-    queryFn: () => getFolders(userId),
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2500))
+      return getFolders(userId)
+    },
   })
 
   return (
@@ -31,24 +35,24 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId }: BookmarkMoveSubMenuP
         <span>Move to...</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuContent className="w-full">
+        <DropdownMenuContent className="w-full p-0">
           {data?.folders.length === 0 && (
             <DropdownMenuItem className="text-muted-foreground/50 hover:bg-inherit">
               No folders registered.
             </DropdownMenuItem>
           )}
 
-          <ScrollArea className="h-96 w-48 rounded-md">
+          <ScrollArea className="max-h-96 w-48 rounded-md">
             <div className="p-4">
-              <h4 className="mb-4 text-sm leading-none font-medium">Folders</h4>
+              <div className="inline-flex items-center justify-between w-full">
+                <h4 className="text-sm leading-none font-medium">Folders</h4>
+                {isLoading && <Loader2 className="animate-spin size-4" />}
+              </div>
               <Separator className="my-2" />
               {data?.folders.map((folder) => (
-                <BookmarkMove
-                  key={folder.folderId}
-                  bookmarkId={bookmarkId}
-                  folderId={folder.folderId}
-                  folderName={folder.name}
-                />
+                <React.Suspense key={folder.folderId}>
+                  <BookmarkMove bookmarkId={bookmarkId} folderId={folder.folderId} folderName={folder.name} />
+                </React.Suspense>
               ))}
             </div>
           </ScrollArea>
