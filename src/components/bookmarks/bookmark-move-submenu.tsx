@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { FastForwardIcon } from 'lucide-react'
+import { FastForwardIcon, Loader2 } from 'lucide-react'
 
 import {
   DropdownMenuContent,
@@ -20,9 +20,12 @@ interface BookmarkMoveSubMenuProps {
 }
 
 export function BookmarkMoveSubMenu({ userId, bookmarkId }: BookmarkMoveSubMenuProps) {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['folders'],
-    queryFn: () => getFolders(userId),
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2500))
+      return getFolders(userId)
+    },
   })
 
   return (
@@ -41,7 +44,10 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId }: BookmarkMoveSubMenuP
 
           <ScrollArea className="max-h-96 w-48 rounded-md">
             <div className="p-4">
-              <h4 className="mb-4 text-sm leading-none font-medium">Folders</h4>
+              <div className="inline-flex items-center justify-between w-full">
+                <h4 className="text-sm leading-none font-medium">Folders</h4>
+                {isLoading && <Loader2 className="animate-spin size-4" />}
+              </div>
               <Separator className="my-2" />
               {data?.folders.map((folder) => (
                 <React.Suspense key={folder.folderId}>
