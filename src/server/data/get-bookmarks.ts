@@ -1,13 +1,12 @@
 'use server'
 
+import { and, desc, eq, isNull, type SQL } from 'drizzle-orm'
 import { unstable_cache } from 'next/cache'
-
-import { prisma } from '@/lib/prisma'
+import { db } from '@/infra/db/drizzle'
+import { bookmarks as bookmarksRepository } from '@/infra/db/schemas'
 import { handle } from '@/utils/functions'
 import type { Bookmark } from '@/utils/types'
 
-/** Query Parameters */
-type BookmarkQuery = { userId: string; folderId?: null | string }
 /** Get all bookmarks for a user */
 export async function getBookmarks(userId: string | undefined): Promise<Bookmark[]>
 /** Get all unfolded bookmarks for a user */
@@ -15,26 +14,28 @@ export async function getBookmarks(userId: string | undefined, folderId: null): 
 /** Get all bookmarks for a user in a folder */
 export async function getBookmarks(userId: string | undefined, folderId: string): Promise<Bookmark[]>
 
-export async function getBookmarks(userId: string | undefined, folderId?: string | null) {
+export async function getBookmarks(userId: string | undefined, folderId: string | null = null) {
   if (userId === undefined) {
     return []
   }
 
-  const query: BookmarkQuery = { userId }
+  const conditions: SQL[] = []
+  conditions.push(eq(bookmarksRepository.userId, userId))
 
   if (folderId) {
-    query.folderId = folderId
+    conditions.push(eq(bookmarksRepository.folderId, folderId))
   }
 
   if (folderId === null) {
-    query.folderId = null
+    conditions.push(isNull(bookmarksRepository.folderId))
   }
 
   const [bookmarks, queryError] = await handle(
-    prisma.bookmark.findMany({
-      where: query,
-      orderBy: { createdAt: 'desc' },
-    }),
+    db
+      .select()
+      .from(bookmarksRepository)
+      .where(and(...conditions))
+      .orderBy(desc(bookmarksRepository.createdAt)),
   )
 
   if (queryError) {
