@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "prisma generate && prisma migrate deploy",
+    "prebuild": "drizzle-kit generate && drizzle-kit push",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -15,7 +15,6 @@
   "dependencies": {
     "@microlink/mql": "0.13.12",
     "@neondatabase/serverless": "^1.0.2",
-    "@prisma/client": "6.2.1",
     "@radix-ui/react-collapsible": "1.1.2",
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dropdown-menu": "2.1.4",
@@ -51,7 +50,6 @@
     "@types/react-dom": "19.0.3",
     "drizzle-kit": "^0.31.8",
     "postcss": "8.5.1",
-    "prisma": "6.2.1",
     "tailwindcss": "3.4.17",
     "typescript": "5.7.3"
   },

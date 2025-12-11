@@ -11,7 +11,7 @@ export async function wait(ms = 1000) {
  *
  * @example
  * ```typescript
- * const result = await handle(prisma.user.findMany())
+ * const result = await handle(db.select().from(bookmarks))
  * ```
  */
 export async function handle<T>(query: Promise<T>): Promise<[T, null] | [null, ResponseError]> {

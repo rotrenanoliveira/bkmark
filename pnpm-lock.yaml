@@ -14,9 +14,6 @@ importers:
       '@neondatabase/serverless':
         specifier: ^1.0.2
         version: 1.0.2
-      '@prisma/client':
-        specifier: 6.2.1
-        version: 6.2.1(prisma@6.2.1)
       '@radix-ui/react-collapsible':
         specifier: 1.1.2
         version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -117,9 +114,6 @@ importers:
       postcss:
         specifier: 8.5.1
         version: 8.5.1
-      prisma:
-        specifier: 6.2.1
-        version: 6.2.1
       tailwindcss:
         specifier: 3.4.17
         version: 3.4.17
@@ -2775,10 +2769,13 @@ snapshots:
   '@prisma/client@6.2.1(prisma@6.2.1)':
     optionalDependencies:
       prisma: 6.2.1
+    optional: true
 
-  '@prisma/debug@6.2.1': {}
+  '@prisma/debug@6.2.1':
+    optional: true
 
-  '@prisma/engines-version@6.2.0-14.4123509d24aa4dede1e864b46351bf2790323b69': {}
+  '@prisma/engines-version@6.2.0-14.4123509d24aa4dede1e864b46351bf2790323b69':
+    optional: true
 
   '@prisma/engines@6.2.1':
     dependencies:
@@ -2786,16 +2783,19 @@ snapshots:
       '@prisma/engines-version': 6.2.0-14.4123509d24aa4dede1e864b46351bf2790323b69
       '@prisma/fetch-engine': 6.2.1
       '@prisma/get-platform': 6.2.1
+    optional: true
 
   '@prisma/fetch-engine@6.2.1':
     dependencies:
       '@prisma/debug': 6.2.1
       '@prisma/engines-version': 6.2.0-14.4123509d24aa4dede1e864b46351bf2790323b69
       '@prisma/get-platform': 6.2.1
+    optional: true
 
   '@prisma/get-platform@6.2.1':
     dependencies:
       '@prisma/debug': 6.2.1
+    optional: true
 
   '@radix-ui/number@1.1.1': {}
 
@@ -3873,6 +3873,7 @@ snapshots:
       '@prisma/engines': 6.2.1
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   proxy-from-env@1.1.0: {}
 
