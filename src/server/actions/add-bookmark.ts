@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { formatZodError } from '@/utils/functions'
@@ -46,7 +46,6 @@ export async function actionAddBookmark(data: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks', 'max')
 
   if (getUrlDataError) {
     return getUrlDataError

@@ -4,23 +4,24 @@ import { toast } from 'sonner'
 
 import { useFormState } from '@/hooks/use-form-state'
 import { actionRenameBookmark } from '@/server/actions/rename-bookmark'
-import { useBookmarks } from './bookmarks-context'
+import type { Bookmark } from '@/utils/types'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
+import { useBookmarks } from './bookmarks-context'
 
 interface BookmarkRenameFormProps {
   bookmarkId: string
-  closeDialog: () => void
+  onCloseDialog: () => void
 }
 
-export function BookmarkRenameForm({ bookmarkId, closeDialog }: BookmarkRenameFormProps) {
+export function BookmarkRenameForm({ bookmarkId, onCloseDialog }: BookmarkRenameFormProps) {
   const { rename } = useBookmarks()
   const router = useRouter()
 
   const { data, refetch } = useQuery({
     queryKey: [`bookmark-${bookmarkId}`],
-    queryFn: () => fetch(`/api/bookmarks/${bookmarkId}`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/bookmarks/${bookmarkId}`).then((res) => res.json() as Promise<{ bookmark: Bookmark }>),
   })
 
   function optimisticFn(formData: FormData) {
@@ -32,7 +33,7 @@ export function BookmarkRenameForm({ bookmarkId, closeDialog }: BookmarkRenameFo
       return
     }
 
-    closeDialog()
+    onCloseDialog()
     rename({ title, bookmarkId })
   }
 
@@ -55,7 +56,7 @@ export function BookmarkRenameForm({ bookmarkId, closeDialog }: BookmarkRenameFo
     <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       {formState.success === false && <p className="text-red-500">{formState.message}</p>}
 
-      <input type="text" name="bookmarkId" className="hidden" defaultValue={data?.bookmark.id} />
+      <input type="text" name="bookmarkId" className="hidden" defaultValue={data?.bookmark.bookmarkId} />
       <div className="space-y-2">
         <Label htmlFor="title">Bookmark Title</Label>
         <Input type="text" name="title" placeholder="Bookmark Title" defaultValue={data?.bookmark.title} />

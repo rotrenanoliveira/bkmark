@@ -24,7 +24,7 @@ function bookmarkReducer(state: Bookmark[], action: BookmarkAction): Bookmark[] 
     case 'ADD':
       return [
         {
-          id: generateNanoId(),
+          bookmarkId: generateNanoId(),
           userId: generateNanoId(),
           title: action.payload.title,
           bookmarkUrl: action.payload.bookmarkUrl,
@@ -33,10 +33,10 @@ function bookmarkReducer(state: Bookmark[], action: BookmarkAction): Bookmark[] 
         ...state,
       ]
     case 'REMOVE':
-      return state.filter((bookmark) => bookmark.id !== action.payload.id)
+      return state.filter((bookmark) => bookmark.bookmarkId !== action.payload.id)
     case 'RENAME':
       return state.map((bookmark) =>
-        bookmark.id === action.payload.bookmarkId ? { ...bookmark, title: action.payload.title } : bookmark,
+        bookmark.bookmarkId === action.payload.bookmarkId ? { ...bookmark, title: action.payload.title } : bookmark,
       )
     default:
       return state
@@ -46,7 +46,10 @@ function bookmarkReducer(state: Bookmark[], action: BookmarkAction): Bookmark[] 
 export function BookmarkProvider({
   children,
   bookmarksPromise,
-}: { children: React.ReactNode; bookmarksPromise: Promise<Bookmark[]> }) {
+}: {
+  children: React.ReactNode
+  bookmarksPromise: Promise<Bookmark[]>
+}) {
   const initialBookmarks = use(bookmarksPromise)
   const [optimisticBookmarks, setOptimisticBookmarks] = useOptimistic(initialBookmarks, bookmarkReducer)
 
@@ -62,7 +65,6 @@ export function BookmarkProvider({
     setOptimisticBookmarks({ type: 'REMOVE', payload: { id } })
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const value = useMemo(() => ({ bookmarks: optimisticBookmarks, create, rename, remove }), [optimisticBookmarks])
 
   return <BookmarkContext.Provider value={value}>{children}</BookmarkContext.Provider>

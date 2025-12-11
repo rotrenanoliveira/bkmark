@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
-
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { BookmarkRenameForm } from './bookmark-rename-form'
 import { PencilIcon } from 'lucide-react'
+import React, { useState } from 'react'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
+import { BookmarkRenameForm } from './bookmark-rename-form'
 
 interface BookmarkRenameProps {
   bookmarkId: string
@@ -32,7 +31,7 @@ export function BookmarkRename({ bookmarkId }: BookmarkRenameProps) {
           <DialogTitle className="sr-only">rename bookmark form</DialogTitle>
           {/* rename bookmark form */}
           <React.Suspense>
-            <BookmarkRenameForm bookmarkId={bookmarkId} closeDialog={handleClose} />
+            <BookmarkRenameForm bookmarkId={bookmarkId} onCloseDialog={handleClose} />
           </React.Suspense>
         </DialogContent>
       </Dialog>

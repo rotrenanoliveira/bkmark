@@ -9,7 +9,7 @@ export function UnfoldedBookmarks() {
   return (
     <div className="space-y-2">
       {bookmarks.map((bookmark) => (
-        <Bookmark key={bookmark.id} bookmark={bookmark} />
+        <Bookmark key={bookmark.bookmarkId} bookmark={bookmark} />
       ))}
     </div>
   )
