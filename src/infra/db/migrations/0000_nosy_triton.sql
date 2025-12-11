@@ -1,0 +1,22 @@
+-- CREATE TABLE "bookmarks" (
+-- 	"bookmark_id" text PRIMARY KEY NOT NULL,
+-- 	"user_id" text NOT NULL,
+-- 	"bookmark_url" text NOT NULL,
+-- 	"title" text,
+-- 	"favicon" text,
+-- 	"description" text,
+-- 	"og_image" text,
+-- 	"created_at" timestamp DEFAULT now() NOT NULL,
+-- 	"folder_id" text
+-- );
+-- --> statement-breakpoint
+-- CREATE TABLE "folders" (
+-- 	"folder_id" text PRIMARY KEY NOT NULL,
+-- 	"user_id" text NOT NULL,
+-- 	"name" text NOT NULL,
+-- 	"created_at" timestamp DEFAULT now() NOT NULL
+-- );
+-- --> statement-breakpoint
+-- ALTER TABLE "bookmarks" ADD CONSTRAINT "bookmarks_folder_id_fkey" FOREIGN KEY ("folder_id") REFERENCES "public"."folders"("folder_id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+-- CREATE INDEX "bookmarks_userId_idx" ON "bookmarks" USING btree ("user_id");--> statement-breakpoint
+-- CREATE INDEX "folders_user_id_idx" ON "folders" USING btree ("user_id");
