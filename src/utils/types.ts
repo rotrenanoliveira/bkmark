@@ -39,16 +39,21 @@ export const urlDataSchema = urlDataFetcherSchema.extend({
 })
 
 /** bookmark */
-export const bookmarkSchema = urlDataSchema.extend({
-  id: z.string(),
+export const bookmarkSchema = z.object({
+  bookmarkId: z.string(),
   userId: z.string(),
-  folderId: z.string().nullish(),
+  bookmarkUrl: z.string(),
+  title: z.string(),
+  favicon: z.string().nullish(),
+  description: z.string().nullish(),
+  ogImage: z.string().nullish(),
   createdAt: z.coerce.date(),
+  folderId: z.string().nullish(),
 })
 
 /** bookmark create input */
 export const bookmarkCreateInputSchema = bookmarkSchema.omit({
-  id: true,
+  bookmarkId: true,
   createdAt: true,
   folderId: true,
 })
