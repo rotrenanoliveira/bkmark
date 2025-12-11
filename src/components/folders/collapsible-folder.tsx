@@ -1,13 +1,12 @@
 'use client'
 
-import React from 'react'
 import { FolderClosedIcon, FolderOpenIcon } from 'lucide-react'
-
-import { cn } from '@/lib/utils'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import React from 'react'
 import { Bookmark } from '@/components/bookmarks/bookmark'
-import { FolderDeleteButton } from './folder-delete'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { cn } from '@/lib/utils'
 import type { Bookmark as BookmarksType, Folder as FolderType } from '@/utils/types'
+import { FolderDeleteButton } from './folder-delete'
 
 interface FolderProps {
   folder: FolderType
@@ -31,7 +30,7 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
 
       <CollapsibleContent className="mt-2 pl-8 space-y-2">
         {bookmarks.map((bookmark) => (
-          <Bookmark key={bookmark.id} bookmark={bookmark} />
+          <Bookmark key={bookmark.bookmarkId} bookmark={bookmark} />
         ))}
       </CollapsibleContent>
     </Collapsible>
