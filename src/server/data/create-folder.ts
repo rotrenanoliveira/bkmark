@@ -1,19 +1,20 @@
-import { generateNanoId } from '@/lib/nanoid'
-import { prisma } from '@/lib/prisma'
+import { db } from '@/infra/db/drizzle'
+import { foldersRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
-import type { Folder, FolderCreateInput, ResponseError } from '@/utils/types'
+import type { FolderCreateInput, ResponseError } from '@/utils/types'
 
 /** save folder to database */
-export async function createFolder(data: FolderCreateInput): Promise<[Folder, null] | [null, ResponseError]> {
-  const result = await handle(
-    prisma.folder.create({
-      data: {
-        folderId: generateNanoId(),
-        userId: data.userId,
-        name: data.name,
-      },
+export async function createFolder(data: FolderCreateInput): Promise<[null, null] | [null, ResponseError]> {
+  const [_, queryError] = await handle(
+    db.insert(foldersRepository).values({
+      userId: data.userId,
+      name: data.name,
     }),
   )
 
-  return result
+  if (queryError) {
+    return [null, queryError]
+  }
+
+  return [null, null]
 }

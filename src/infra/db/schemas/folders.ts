@@ -1,9 +1,13 @@
 import { index, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import { generateNanoId } from '@/lib/nanoid'
 
 export const folders = pgTable(
   'folders',
   {
-    folderId: text().primaryKey().notNull(),
+    folderId: text()
+      .primaryKey()
+      .notNull()
+      .$default(() => generateNanoId()),
     userId: text().notNull(),
     name: text().notNull(),
     createdAt: timestamp().notNull().defaultNow(),
