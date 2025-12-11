@@ -1,12 +1,16 @@
-import { prisma } from '@/lib/prisma'
+import { eq } from 'drizzle-orm'
+import { db } from '@/infra/db/drizzle'
+import { bookmarksRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
 import type { Bookmark, ResponseError } from '@/utils/types'
 
 export async function getBookmark(bookmarkId: string): Promise<[Bookmark, null] | [null, ResponseError]> {
   const [bookmark, queryError] = await handle(
-    prisma.bookmark.findUnique({
-      where: { id: bookmarkId },
-    }),
+    db
+      .select()
+      .from(bookmarksRepository)
+      .where(eq(bookmarksRepository.bookmarkId, bookmarkId))
+      .then((result) => (result.length > 0 ? result[0] : null)),
   )
 
   if (queryError) {
