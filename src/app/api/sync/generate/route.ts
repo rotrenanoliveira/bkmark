@@ -1,14 +1,14 @@
 import { env } from 'node:process'
-import { generateNanoId } from '@/lib/nanoid'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { generateNanoId } from '@/lib/nanoid'
 
 export async function GET() {
   const userId = generateNanoId()
 
   const cookieStore = await cookies()
   cookieStore.set({
-    name: 'runnote:userId',
+    name: 'bkmark:userId',
     value: userId,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

@@ -22,7 +22,7 @@ export async function actionSyncUser(data: FormData) {
   }
 
   const cookieStore = await cookies()
-  cookieStore.set('runnote:userId', formResult.data.code)
+  cookieStore.set('bkmark:userId', formResult.data.code)
 
   revalidatePath('/', 'layout')
 
