@@ -1,12 +1,11 @@
 'use client'
 
 import { Copy } from 'lucide-react'
-import { useState } from 'react'
 import { useQRCode } from 'next-qrcode'
-
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
-import { Button } from '@/components/ui/button'
 import { SyncForm } from './sync-form'
 
 interface SyncDialogProps {
@@ -32,10 +31,8 @@ export function SyncDialog({ userId, appUrl }: SyncDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="font-[family-name:var(--font-geist-mono)]">
-          sync
-        </Button>
+      <DialogTrigger className="w-full text-left p-2 py-1.5 rounded-sm text-sm hover:bg-muted">
+        <span>Synchronize</span>
       </DialogTrigger>
       <DialogContent className="max-w-72 font-[family-name:var(--font-geist-sans)]">
         {/* dialog header */}
