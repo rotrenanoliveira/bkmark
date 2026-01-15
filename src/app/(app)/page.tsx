@@ -1,25 +1,17 @@
-import { redirect } from 'next/navigation'
-
-import { getUserId } from '@/server/data/get-user-id'
-import { BookmarkForm } from '@/components/bookmarks/bookmark-form'
-import { UnfoldedBookmarks } from '@/components/bookmarks/unfolded-bookmarks'
-import { Folders } from '@/components/folders/folders'
-import { FolderDialog } from '@/components/folders/folder-dialog'
-import { SyncDialog } from '@/components/sync/sync-dialog'
 import { Header } from '@/components/header'
 
 export default async function HomePage() {
-  const userId = await getUserId()
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
+  // const userId = await getUserId()
+  // // const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
 
-  if (!userId) {
-    redirect('/api/sync/generate')
-  }
+  // if (!userId) {
+  //   redirect('/api/sync/generate')
+  // }
 
   return (
-    <div className="flex flex-col min-h-screen w-screen p-6">
-      {/* <Header /> */}
-      <main className="w-full flex flex-col items-center py-6 space-y-4">
+    <div className="flex flex-col min-h-screen w-screen">
+      <Header />
+      {/* <main className="w-full flex flex-col items-center py-6 space-y-4">
         <div className="w-full max-w-4xl flex flex-col md:flex-row justify-between gap-2">
           <BookmarkForm />
 
@@ -35,7 +27,7 @@ export default async function HomePage() {
         </section>
       </main>
 
-      <Header />
+      <Header /> */}
     </div>
   )
 }
