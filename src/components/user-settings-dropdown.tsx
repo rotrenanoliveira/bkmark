@@ -1,9 +1,9 @@
 import Avatar from 'boring-avatars'
 import { JetBrains_Mono } from 'next/font/google'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { getUserId } from '@/server/data/get-user-id'
-import { SyncDialog } from './sync/sync-dialog'
 import { ThemeSwitcher } from './theme-switcher'
 import {
   DropdownMenu,
@@ -18,7 +18,6 @@ const jetBrainsMono = JetBrains_Mono({ subsets: ['latin'] })
 
 export async function UserSettingsDropdown() {
   const userId = await getUserId()
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
 
   if (!userId) {
     redirect('/api/sync/generate')
@@ -26,7 +25,7 @@ export async function UserSettingsDropdown() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="cursor-pointer">
         <Avatar variant="beam" size={32} name={userId} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" sideOffset={8} alignOffset={8}>
@@ -37,7 +36,9 @@ export async function UserSettingsDropdown() {
 
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <SyncDialog userId={userId} appUrl={appUrl} />
+          <Link href="/sync" className="cursor-pointer">
+            Synchronize
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <ThemeSwitcher />

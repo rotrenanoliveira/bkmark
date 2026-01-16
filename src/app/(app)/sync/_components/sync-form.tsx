@@ -1,18 +1,14 @@
 'use client'
 
-import { useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useFormState } from '@/hooks/use-form-state'
 import { actionSyncUser } from '@/server/actions/sync-user'
 
-interface SyncFormProps {
-  closeDialog: () => void
-}
-
-export function SyncForm({ closeDialog }: SyncFormProps) {
+export function SyncForm() {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -21,8 +17,7 @@ export function SyncForm({ closeDialog }: SyncFormProps) {
   })
 
   function onSuccess() {
-    closeDialog()
-    router.refresh()
+    router.push('/')
   }
 
   return (
@@ -31,7 +26,7 @@ export function SyncForm({ closeDialog }: SyncFormProps) {
         {formState.success === false && <p className="text-red-500">{formState.message}</p>}
         <div className="flex flex-col gap-2">
           <Input type="text" name="code" placeholder="Enter code" />
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" className="cursor-pointer" disabled={isPending}>
             Sync
           </Button>
         </div>
