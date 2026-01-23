@@ -1,6 +1,6 @@
 'use server'
 
-import { and, desc, ilike, type SQL } from 'drizzle-orm'
+import { and, desc, eq, ilike, type SQL } from 'drizzle-orm'
 import { db } from '@/infra/db/drizzle'
 import { bookmarksRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
@@ -35,7 +35,7 @@ export async function searchBookmarks(search: string | null) {
         favicon: bookmarksRepository.favicon,
       })
       .from(bookmarksRepository)
-      .where(and(...conditions))
+      .where(and(...conditions, eq(bookmarksRepository.userId, userId)))
       .orderBy(desc(bookmarksRepository.createdAt)),
   )
 
