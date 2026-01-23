@@ -1,9 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SynchronizePageContent } from '@/app/(app)/sync/_components/synchronize-page-content'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface SyncDialogContentProps {
   userId: string
@@ -19,6 +19,27 @@ export function SyncDialogContent({ userId, syncUrl }: SyncDialogContentProps) {
     setOpen(false)
   }
 
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        e.target instanceof HTMLInputElement
+      ) {
+        return
+      }
+
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        router.back()
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', down)
+    return () => document.removeEventListener('keydown', down)
+  }, [router])
+
   return (
     <Dialog defaultOpen open={open} onOpenChange={setOpen}>
       <DialogContent
@@ -27,6 +48,7 @@ export function SyncDialogContent({ userId, syncUrl }: SyncDialogContentProps) {
       >
         <DialogHeader className="sr-only">
           <DialogTitle className="text-center">Synchronize</DialogTitle>
+          <DialogDescription>Synchronize your bookmarks across devices with your access code.</DialogDescription>
         </DialogHeader>
 
         <SynchronizePageContent userId={userId} syncUrl={syncUrl.toString()} onClose={handleClose} />
