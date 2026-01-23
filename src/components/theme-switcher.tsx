@@ -10,7 +10,7 @@ export function ThemeSwitcher() {
     <>
       <button
         type="button"
-        className="w-full px-2 py-1.5 inline-flex justify-between rounded-sm dark:hidden hover:bg-muted"
+        className="w-full px-2 py-1.5 inline-flex justify-between rounded-sm cursor-pointer dark:hidden hover:bg-muted"
         onClick={() => setTheme('dark')}
       >
         <span className="text-sm">Theme</span>
@@ -19,7 +19,7 @@ export function ThemeSwitcher() {
 
       <button
         type="button"
-        className="w-full px-2 py-1.5 justify-between hidden rounded-sm dark:inline-flex hover:bg-muted"
+        className="w-full px-2 py-1.5 justify-between hidden rounded-sm cursor-pointer dark:inline-flex hover:bg-muted"
         onClick={() => setTheme('light')}
       >
         <span className="text-sm">Theme</span>
