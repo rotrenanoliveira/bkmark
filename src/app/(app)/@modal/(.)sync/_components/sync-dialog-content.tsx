@@ -21,7 +21,10 @@ export function SyncDialogContent({ userId, syncUrl }: SyncDialogContentProps) {
 
   return (
     <Dialog defaultOpen open={open} onOpenChange={setOpen}>
-      <DialogContent className="w-fit font-(family-name:--font-geist-sans) p-0 rounded-xl" showCloseButton={false}>
+      <DialogContent
+        className="w-full md:w-fit font-(family-name:--font-geist-sans) p-0 rounded-xl"
+        showCloseButton={false}
+      >
         <DialogHeader className="sr-only">
           <DialogTitle className="text-center">Synchronize</DialogTitle>
         </DialogHeader>
