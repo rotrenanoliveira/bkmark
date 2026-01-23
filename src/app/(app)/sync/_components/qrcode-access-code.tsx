@@ -10,8 +10,8 @@ export function AccessCodeQrCode({ syncUrl }: AccessCodeQrCodeProps) {
   const { SVG } = useQRCode()
 
   return (
-    <div className="w-full flex items-center justify-center">
-      <SVG text={syncUrl} options={{ margin: 1, width: 200, color: { dark: '#000000', light: '#ffffff' } }} />
+    <div className="flex items-center justify-center">
+      <SVG text={syncUrl} options={{ margin: 1, width: 128, color: { dark: '#000000', light: '#ffffff' } }} />
     </div>
   )
 }
