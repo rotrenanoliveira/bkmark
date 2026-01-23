@@ -1,20 +1,30 @@
 'use client'
 
-import { useTheme } from 'next-themes'
 import { MoonIcon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
 export function ThemeSwitcher() {
   const { setTheme } = useTheme()
 
   return (
-    <div className="flex items-center justify-center">
-      <button type="button" className="dark:hidden" onClick={() => setTheme('dark')}>
-        <MoonIcon className="size-6" strokeWidth={1.25} />
+    <>
+      <button
+        type="button"
+        className="w-full px-2 py-1.5 inline-flex justify-between rounded-sm cursor-pointer dark:hidden hover:bg-muted"
+        onClick={() => setTheme('dark')}
+      >
+        <span className="text-sm">Theme</span>
+        <MoonIcon className="size-5" strokeWidth={1.25} />
       </button>
 
-      <button type="button" className="hidden dark:block w-fit" onClick={() => setTheme('light')}>
-        <Sun className="size-6" strokeWidth={1.25} />
+      <button
+        type="button"
+        className="w-full px-2 py-1.5 justify-between hidden rounded-sm cursor-pointer dark:inline-flex hover:bg-muted"
+        onClick={() => setTheme('light')}
+      >
+        <span className="text-sm">Theme</span>
+        <Sun className="size-5" strokeWidth={1.25} />
       </button>
-    </div>
+    </>
   )
 }
