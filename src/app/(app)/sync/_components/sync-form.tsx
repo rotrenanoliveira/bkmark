@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useRef } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -8,8 +7,11 @@ import { Input } from '@/components/ui/input'
 import { useFormState } from '@/hooks/use-form-state'
 import { actionSyncUser } from '@/server/actions/sync-user'
 
-export function SyncForm() {
-  const router = useRouter()
+interface SyncFormProps {
+  onSuccess?: () => void
+}
+
+export function SyncForm(props: SyncFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
 
   const [formState, handleSubmit, isPending] = useFormState(actionSyncUser, {
@@ -17,7 +19,7 @@ export function SyncForm() {
   })
 
   function onSuccess() {
-    router.push('/')
+    props.onSuccess?.()
   }
 
   return (
