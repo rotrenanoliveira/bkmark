@@ -1,10 +1,10 @@
 import { Ellipsis } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { Bookmark } from '@/utils/types'
 import { BookmarkCopyUrl } from './bookmark-copy-url'
 import { BookmarkDeleteButton } from './bookmark-delete'
+import { BookmarkMoveSubMenu } from './bookmark-move-submenu'
 import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
 import { BookmarkRename } from './bookmark-rename'
 
@@ -33,6 +33,12 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
         <BookmarkDeleteButton bookmarkId={bookmark.bookmarkId} />
 
         {hasParentFolder && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />}
+
+        <BookmarkMoveSubMenu
+          userId={bookmark.userId}
+          bookmarkId={bookmark.bookmarkId}
+          currentFolder={bookmark.folderId}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   )
