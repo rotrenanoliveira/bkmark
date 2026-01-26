@@ -1,7 +1,6 @@
 'use server'
 
 import { and, desc, eq, isNull, type SQL } from 'drizzle-orm'
-import { unstable_cache } from 'next/cache'
 import { db } from '@/infra/db/drizzle'
 import { bookmarks as bookmarksRepository } from '@/infra/db/schemas'
 import { handle } from '@/utils/functions'
@@ -45,11 +44,4 @@ export async function getBookmarks(userId: string | undefined, folderId: string 
   return bookmarks
 }
 
-/** Get all bookmarks for a user and cache them */
-export const getUserBookmarks = unstable_cache(
-  async (userId) => {
-    return await getBookmarks(userId, null)
-  },
-  ['bookmarks'],
-  { revalidate: 3600, tags: ['bookmarks', 'folders'] },
-)
+export const getUserBookmarks = async (userId: string | undefined) => getBookmarks(userId)

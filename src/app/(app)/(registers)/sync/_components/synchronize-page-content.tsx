@@ -76,7 +76,7 @@ export function SynchronizePageContent({ userId, syncUrl, onClose }: Synchronize
           </div>
           <span className="text-muted-foreground text-sm">Enter the access code to synchronize your bookmarks.</span>
         </div>
-        <SyncForm />
+        <SyncForm onSuccess={onClose} />
       </div>
     </div>
   )

@@ -1,13 +1,13 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { formatZodError } from '@/utils/functions'
 import { updateBookmark } from '../data/update-bookmark'
 
 const renameBookmarkSchema = z.object({
-  bookmarkId: z.string(),
+  'bookmark-id': z.string(),
   title: z.string(),
 })
 
@@ -23,7 +23,7 @@ export async function actionRenameBookmark(data: FormData) {
   }
 
   const [_, updateError] = await updateBookmark({
-    bookmarkId: formResult.data.bookmarkId,
+    bookmarkId: formResult.data['bookmark-id'],
     title: formResult.data.title,
   })
 
@@ -32,7 +32,6 @@ export async function actionRenameBookmark(data: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks', 'max')
 
   return { success: true, message: 'Bookmark rename successfully.' }
 }

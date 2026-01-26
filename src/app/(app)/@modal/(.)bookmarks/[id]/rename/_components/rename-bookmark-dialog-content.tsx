@@ -2,21 +2,20 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { SynchronizePageContent } from '@/app/(app)/(registers)/sync/_components/synchronize-page-content'
+import { RenameBookmarkContent } from '@/app/(app)/(registers)/bookmarks/[id]/rename/_components/rename-bookmark-content'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
-interface SyncDialogContentProps {
-  userId: string
-  syncUrl: string
+interface RenameBookmarkDialogContentProps {
+  bookmarkId: string
 }
 
-export function SyncDialogContent({ userId, syncUrl }: SyncDialogContentProps) {
+export function RenameBookmarkDialogContent({ bookmarkId }: RenameBookmarkDialogContentProps) {
   const [open, setOpen] = useState(true)
   const router = useRouter()
 
   function handleClose() {
-    router.back()
     setOpen(false)
+    router.back()
   }
 
   useEffect(() => {
@@ -32,7 +31,6 @@ export function SyncDialogContent({ userId, syncUrl }: SyncDialogContentProps) {
       if (e.key === 'Escape') {
         e.preventDefault()
         router.back()
-        setOpen(false)
       }
     }
 
@@ -43,15 +41,15 @@ export function SyncDialogContent({ userId, syncUrl }: SyncDialogContentProps) {
   return (
     <Dialog defaultOpen open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="w-full md:w-fit font-(family-name:--font-geist-sans) p-0 rounded-xl"
+        className="w-full md:w-96 font-(family-name:--font-geist-sans) p-0 rounded-xl"
         showCloseButton={false}
       >
         <DialogHeader className="sr-only">
-          <DialogTitle className="text-center">Synchronize</DialogTitle>
-          <DialogDescription>Synchronize your bookmarks across devices with your access code.</DialogDescription>
+          <DialogTitle className="text-center">Rename a new bookmark</DialogTitle>
+          <DialogDescription>Update the title of the bookmark you want to rename.</DialogDescription>
         </DialogHeader>
 
-        <SynchronizePageContent userId={userId} syncUrl={syncUrl.toString()} onClose={handleClose} />
+        <RenameBookmarkContent bookmarkId={bookmarkId} onClose={handleClose} />
       </DialogContent>
     </Dialog>
   )

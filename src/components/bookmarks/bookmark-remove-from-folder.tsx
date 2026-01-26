@@ -1,40 +1,38 @@
-import { toast } from 'sonner'
-import { FolderMinus } from 'lucide-react'
+import { CornerDownLeftIcon } from 'lucide-react'
 import { useTransition } from 'react'
-
+import { toast } from 'sonner'
 import { useBookmarks } from '@/components/bookmarks/bookmarks-context'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { actionRemoveBookmarkFromFolder } from '@/server/actions/remove-bookmark-from-folder'
 
-interface RemoveBookmarkProps {
+interface BookmarkRemoveFromFolderButtonProps {
   bookmarkId: string
 }
 
-export function BookmarkRemoveFromFolderButton({ bookmarkId }: RemoveBookmarkProps) {
-  const [isPending, startTransition] = useTransition()
+export function BookmarkRemoveFromFolderButton({ bookmarkId }: BookmarkRemoveFromFolderButtonProps) {
+  const [_, startTransition] = useTransition()
+
   const { remove } = useBookmarks()
 
-  async function handleRemoveBookmark() {
-    const result = await actionRemoveBookmarkFromFolder({ bookmarkId })
-    remove(bookmarkId)
+  async function handleRemoveFromFolder() {
+    startTransition(async () => {
+      remove(bookmarkId)
 
-    if (result.success === false) {
-      toast.error(result.message)
-      return
-    }
+      const result = await actionRemoveBookmarkFromFolder({ bookmarkId })
+
+      if (result.success === false) {
+        toast.error(result.message)
+        return
+      }
+    })
   }
 
   return (
-    <DropdownMenuItem>
-      <Button
-        variant="ghost"
-        className="w-full h-fit m-0 p-0 justify-start border-none hover:bg-none font-medium"
-        onClick={() => startTransition(handleRemoveBookmark)}
-        disabled={isPending}
-      >
-        <FolderMinus strokeWidth={1.25} className="size-4" />
-        Remove from folder
+    <DropdownMenuItem asChild>
+      <Button variant="ghost" className="w-full relative justify-start cursor-pointer" onClick={handleRemoveFromFolder}>
+        <CornerDownLeftIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
+        <span className="relative left-6">Remove from folder</span>
       </Button>
     </DropdownMenuItem>
   )

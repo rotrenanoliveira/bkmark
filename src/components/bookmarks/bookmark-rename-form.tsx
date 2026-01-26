@@ -1,46 +1,47 @@
+'use client'
+
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
 import { useFormState } from '@/hooks/use-form-state'
 import { actionRenameBookmark } from '@/server/actions/rename-bookmark'
-import type { Bookmark } from '@/utils/types'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { Label } from '../ui/label'
 import { useBookmarks } from './bookmarks-context'
 
 interface BookmarkRenameFormProps {
   bookmarkId: string
-  onCloseDialog: () => void
+  beforeSubmit?: () => void
 }
 
-export function BookmarkRenameForm({ bookmarkId, onCloseDialog }: BookmarkRenameFormProps) {
-  const { rename } = useBookmarks()
+export function BookmarkRenameForm(props: BookmarkRenameFormProps) {
   const router = useRouter()
 
+  const { rename } = useBookmarks()
+
   const { data, refetch } = useQuery({
-    queryKey: [`bookmark-${bookmarkId}`],
-    queryFn: () => fetch(`/api/bookmarks/${bookmarkId}`).then((res) => res.json() as Promise<{ bookmark: Bookmark }>),
+    queryKey: [`bookmark-${props.bookmarkId}`],
+    queryFn: () => fetch(`/api/bookmarks/${props.bookmarkId}`).then((res) => res.json()),
   })
 
   function optimisticFn(formData: FormData) {
     const title = formData.get('title')?.toString()
-    const bookmarkId = formData.get('bookmarkId')?.toString()
+    const bookmarkId = formData.get('bookmark-id')?.toString()
 
     if (!title || !bookmarkId) {
       toast.error('Invalid data!')
       return
     }
 
-    onCloseDialog()
+    props.beforeSubmit?.()
+
     rename({ title, bookmarkId })
   }
 
   const [formState, handleSubmit, isPending] = useFormState(actionRenameBookmark, {
+    optimisticFn,
     onSuccess,
     onError,
-    optimisticFn,
   })
 
   function onError(message: string) {
@@ -49,22 +50,21 @@ export function BookmarkRenameForm({ bookmarkId, onCloseDialog }: BookmarkRename
 
   function onSuccess() {
     refetch()
-    router.refresh()
+    router.push('/')
   }
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+    <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
       {formState.success === false && <p className="text-red-500">{formState.message}</p>}
 
-      <input type="text" name="bookmarkId" className="hidden" defaultValue={data?.bookmark.bookmarkId} />
-      <div className="space-y-2">
-        <Label htmlFor="title">Bookmark Title</Label>
+      <div className="flex gap-2">
+        <input type="text" name="bookmark-id" className="hidden" defaultValue={props.bookmarkId} />
         <Input type="text" name="title" placeholder="Bookmark Title" defaultValue={data?.bookmark.title} />
-      </div>
 
-      <Button type="submit" disabled={isPending}>
-        Rename
-      </Button>
+        <Button type="submit" disabled={isPending}>
+          Rename
+        </Button>
+      </div>
     </form>
   )
 }

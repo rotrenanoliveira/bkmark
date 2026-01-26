@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const userId = (await cookies()).get('runnote:userId')?.value
+  const userId = (await cookies()).get('bkmark:userId')?.value
   const bookmarks = getUserBookmarks(userId)
 
   return (
