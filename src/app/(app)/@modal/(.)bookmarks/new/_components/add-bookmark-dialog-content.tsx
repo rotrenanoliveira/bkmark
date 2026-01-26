@@ -42,8 +42,8 @@ export function AddBookmarkDialogContent() {
         showCloseButton={false}
       >
         <DialogHeader className="sr-only">
-          <DialogTitle className="text-center">Synchronize</DialogTitle>
-          <DialogDescription>Synchronize your bookmarks across devices with your access code.</DialogDescription>
+          <DialogTitle className="text-center">Register a new bookmark</DialogTitle>
+          <DialogDescription>Enter the URL of the bookmark you want to add.</DialogDescription>
         </DialogHeader>
 
         <AddBookmarkContent onClose={handleClose} />
