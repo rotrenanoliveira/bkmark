@@ -69,11 +69,10 @@ export function BookmarkForm(props: BookmarkFormProps) {
         {formState.success === false && <p className="text-red-500">{formState.message}</p>}
         <div className="flex gap-2">
           <Input type="text" name="url" placeholder="Enter URL" />
-          {/* <Button type="submit" disabled={isPending}> */}
-          <Button type="submit">
+
+          <Button type="submit" disabled={isPending}>
             <Plus strokeWidth={1.25} className={cn('size-5', isPending && 'hidden')} />
             {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
-            {/* <Plus strokeWidth={1.25} className="size-5" /> */}
           </Button>
         </div>
       </form>
