@@ -3,10 +3,8 @@ import { Ellipsis } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { Bookmark } from '@/utils/types'
-import { BookmarkCopy } from './bookmark-copy-url'
+import { BookmarkCopyUrl } from './bookmark-copy-url'
 import { BookmarkDeleteButton } from './bookmark-delete'
-import { BookmarkMoveSubMenu } from './bookmark-move-submenu'
-import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
 import { BookmarkRename } from './bookmark-rename'
 
 interface BookmarkOptionsProps {
@@ -25,16 +23,19 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 space-y-1" align="end">
-        {/* bookmark copy */}
-        <BookmarkCopy bookmarkUrl={bookmark.bookmarkUrl} />
-        {/* bookmark rename */}
+        <BookmarkCopyUrl bookmarkUrl={bookmark.bookmarkUrl} />
+
         <BookmarkRename bookmarkId={bookmark.bookmarkId} />
-        {/* bookmark remove from folder */}
-        {bookmark.folderId !== null && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />}
-        {/* bookmark delete */}
+
         <BookmarkDeleteButton bookmarkId={bookmark.bookmarkId} />
-        {/* bookmark move */}
-        <BookmarkMoveSubMenu userId={bookmark.userId} bookmarkId={bookmark.bookmarkId} />
+
+        {/* {bookmark.folderId !== null && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />} */}
+
+        {/* <BookmarkMoveSubMenu
+          userId={bookmark.userId}
+          bookmarkId={bookmark.bookmarkId}
+          currentFolder={bookmark.folderId}a
+        /> */}
       </DropdownMenuContent>
     </DropdownMenu>
   )
