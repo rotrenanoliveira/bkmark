@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
 import { useFormState } from '@/hooks/use-form-state'
 import { actionRenameBookmark } from '@/server/actions/rename-bookmark'
 import { Button } from '../ui/button'
@@ -20,7 +19,7 @@ export function BookmarkRenameForm(props: BookmarkRenameFormProps) {
 
   const { rename } = useBookmarks()
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [`bookmark-${props.bookmarkId}`],
     queryFn: () => fetch(`/api/bookmarks/${props.bookmarkId}`).then((res) => res.json()),
   })
@@ -50,6 +49,7 @@ export function BookmarkRenameForm(props: BookmarkRenameFormProps) {
   }
 
   function onSuccess() {
+    refetch()
     router.push('/')
   }
 
