@@ -1,5 +1,5 @@
 import { CheckIcon, CopyIcon } from 'lucide-react'
-import React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { DropdownMenuItem, DropdownMenuShortcut } from '../ui/dropdown-menu'
@@ -8,21 +8,18 @@ interface BookmarkCopyProps {
   bookmarkUrl: string
 }
 
-export function BookmarkCopy({ bookmarkUrl }: BookmarkCopyProps) {
-  const [hasCopied, setHasCopied] = React.useState(false)
+export function BookmarkCopyUrl({ bookmarkUrl }: BookmarkCopyProps) {
+  const [hasCopied, setHasCopied] = useState(false)
 
-  const commandTimeoutRef = React.useRef<NodeJS.Timeout | undefined>(undefined)
+  const commandTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: cause re-render
-  React.useEffect(() => {
+  const handleCopyBookmark = useCallback(() => navigator.clipboard.writeText(bookmarkUrl), [bookmarkUrl])
+
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      // TODO: pensar melhor se "gostei"
-      if (e.key === 'Enter') {
-        setHasCopied(true)
-      }
-
       if (e.metaKey && e.shiftKey && e.key.toLowerCase() === 'c') {
         e.preventDefault()
+
         setHasCopied(true)
         handleCopyBookmark()
 
@@ -39,11 +36,7 @@ export function BookmarkCopy({ bookmarkUrl }: BookmarkCopyProps) {
         clearTimeout(commandTimeoutRef.current)
       }
     }
-  }, [])
-
-  function handleCopyBookmark() {
-    navigator.clipboard.writeText(bookmarkUrl)
-  }
+  }, [handleCopyBookmark])
 
   return (
     <DropdownMenuItem asChild>
@@ -54,13 +47,13 @@ export function BookmarkCopy({ bookmarkUrl }: BookmarkCopyProps) {
       >
         <CopyIcon
           className={cn(
-            'absolute inset-2 size-4 transition-all duration-200 ease-out',
+            'absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out',
             hasCopied ? 'scale-75 opacity-0' : 'scale-100 opacity-100',
           )}
         />
         <CheckIcon
           className={cn(
-            'absolute inset-2 size-4 transition-all duration-200 ease-out',
+            'absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out',
             hasCopied ? 'scale-100 opacity-100' : 'scale-75 opacity-0',
           )}
         />
