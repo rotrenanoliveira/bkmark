@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/compon
 import type { Bookmark } from '@/utils/types'
 import { BookmarkCopyUrl } from './bookmark-copy-url'
 import { BookmarkDeleteButton } from './bookmark-delete'
+import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
 import { BookmarkRename } from './bookmark-rename'
 
 interface BookmarkOptionsProps {
@@ -12,6 +13,8 @@ interface BookmarkOptionsProps {
 }
 
 export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
+  const hasParentFolder = bookmark.folderId !== null
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,13 +32,7 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
 
         <BookmarkDeleteButton bookmarkId={bookmark.bookmarkId} />
 
-        {/* {bookmark.folderId !== null && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />} */}
-
-        {/* <BookmarkMoveSubMenu
-          userId={bookmark.userId}
-          bookmarkId={bookmark.bookmarkId}
-          currentFolder={bookmark.folderId}a
-        /> */}
+        {hasParentFolder && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />}
       </DropdownMenuContent>
     </DropdownMenu>
   )
