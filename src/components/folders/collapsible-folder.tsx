@@ -18,11 +18,11 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <div className="w-full p-1 pl-3 flex border rounded-xl bg-foreground/5 hover:border-foreground/15 font-[family-name:var(--font-geist-mono)]">
-        <CollapsibleTrigger className="flex-1 text-start flex items-center justify-start gap-2">
+      <div className="w-full p-1 pl-3 flex border rounded-xl bg-foreground/5 hover:border-foreground/15 font-(family-name:--font-geist-mono)">
+        <CollapsibleTrigger className="flex-1 text-start flex items-center justify-start gap-2 truncate">
           <FolderClosedIcon className={cn('size-6 text-muted-foreground/75', isOpen && 'hidden')} />
           <FolderOpenIcon className={cn('size-6 text-muted-foreground/75', !isOpen && 'hidden')} />
-          <span className="truncate lowercase">{folder.name}</span>
+          <span className="w-56 sm:w-[calc(100%-80px)] truncate">{folder.name}</span>
         </CollapsibleTrigger>
 
         <FolderDeleteButton folderId={folder.folderId} />

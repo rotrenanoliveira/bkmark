@@ -39,7 +39,7 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId, currentFolder }: Bookm
             </DropdownMenuItem>
           )}
 
-          <ScrollArea className="h-fit max-h-72 w-48 rounded-md">
+          <ScrollArea className="h-fit max-h-72 rounded-md">
             <div className="w-full p-1 space-y-0.5">
               {isLoading && (
                 <DropdownMenuItem
