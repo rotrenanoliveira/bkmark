@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { formatZodError } from '@/utils/functions'
+import { kyFetcher } from '@/utils/url-data-fetcher'
 import { createBookmark } from '../data/create-bookmark'
 import { getUrlData } from '../data/get-url-data'
 import { getUserId } from '../data/get-user-id'
@@ -34,13 +35,25 @@ export async function actionAddBookmark(data: FormData) {
     fetcher: isYouTubeVideo ? 'youtube-api' : 'axios',
   })
 
+  let faviconUrl = bookmarkData?.favicon
+
+  if (faviconUrl) {
+    const [_, faviconResponseError] = await kyFetcher(faviconUrl)
+
+    if (faviconResponseError) {
+      faviconUrl = null
+    }
+  }
+
   const userId = await getUserId()
 
   if (!userId) {
     return { success: false, message: 'User not found.' }
   }
 
-  const bookmark = bookmarkData ? { ...bookmarkData, userId } : { title: 'No title', bookmarkUrl: formResult.data.url }
+  const bookmark = bookmarkData
+    ? { ...bookmarkData, userId, favicon: faviconUrl }
+    : { title: 'No title', bookmarkUrl: formResult.data.url }
 
   const [_, createBookmarkError] = await createBookmark({
     ...bookmark,
