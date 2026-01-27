@@ -145,3 +145,33 @@ export async function mqlFetcher(url: string): Promise<[UrlDataFetcher, null] | 
     null,
   ]
 }
+
+export async function mqlYouTubeFetcher(url: string): Promise<[UrlDataFetcher, null] | [null, ResponseError]> {
+  const [mqlResponse, mqlError] = await fetcher(mql(url, { meta: true, prerender: true, video: true, audio: true }))
+
+  if (mqlError) {
+    return [null, mqlError]
+  }
+
+  if (!mqlResponse) {
+    return [null, { success: false, message: 'Failed to fetch url.' }]
+  }
+
+  const { status, data } = mqlResponse
+  // TODO: Adicionar os erros a um redis para verificar
+
+  if (status !== 'success') {
+    return [null, { success: false, message: `Failed to fetch url. ${status}` }]
+  }
+
+  return [
+    {
+      title: data.title,
+      description: data.description,
+      favicon: data.logo?.url,
+      ogImage: data.image?.url,
+      bookmarkUrl: url,
+    },
+    null,
+  ]
+}

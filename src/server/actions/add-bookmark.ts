@@ -26,7 +26,13 @@ export async function actionAddBookmark(data: FormData) {
     return { success: false, message }
   }
 
-  const [bookmarkData, getUrlDataError] = await getUrlData({ url: formResult.data.url })
+  const isYouTubeVideo =
+    formResult.data.url.includes('youtube.com/watch?v=') || formResult.data.url.includes('youtu.be/')
+
+  const [bookmarkData, getUrlDataError] = await getUrlData({
+    url: formResult.data.url,
+    fetcher: isYouTubeVideo ? 'youtube-api' : 'axios',
+  })
 
   const userId = await getUserId()
 
