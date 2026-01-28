@@ -1,7 +1,6 @@
 import { CircleMinusIcon, CircleXIcon } from 'lucide-react'
-import React, { useState, useTransition } from 'react'
+import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
-
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu'
 import { useBookmarks } from '@/hooks/use-bookmarks'
@@ -12,20 +11,33 @@ interface RemoveBookmarkProps {
   bookmarkId: string
 }
 
-export function BookmarkDeleteButton({ bookmarkId }: RemoveBookmarkProps) {
+export function DeleteBookmark({ bookmarkId }: RemoveBookmarkProps) {
   const [shortcutPressed, setShortcutPressed] = useState(false)
   const [isPending, startTransition] = useTransition()
 
-  const commandTimeoutRef = React.useRef<NodeJS.Timeout | undefined>(undefined)
+  const commandTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const { remove } = useBookmarks()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-render
-  React.useEffect(() => {
+  const handleDeleteBookmark = useCallback(async () => {
+    startTransition(async () => {
+      remove(bookmarkId)
+
+      const result = await actionRemoveBookmark(bookmarkId)
+
+      if (result.success === false) {
+        toast.error(result.message)
+        return
+      }
+    })
+  }, [remove, bookmarkId])
+
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.metaKey && e.shiftKey && e.key.toLowerCase() === 'd') {
+      // TODO: incluir validação para o windows
+      if (e.metaKey && e.key === 'Backspace') {
         e.preventDefault()
         setShortcutPressed(true)
-        handleRemoveBookmark()
+        handleDeleteBookmark()
 
         commandTimeoutRef.current = setTimeout(() => setShortcutPressed(false), 1000)
       }
@@ -40,27 +52,14 @@ export function BookmarkDeleteButton({ bookmarkId }: RemoveBookmarkProps) {
         clearTimeout(commandTimeoutRef.current)
       }
     }
-  }, [])
-
-  async function handleRemoveBookmark() {
-    startTransition(async () => {
-      remove(bookmarkId)
-
-      const result = await actionRemoveBookmark(bookmarkId)
-
-      if (result.success === false) {
-        toast.error(result.message)
-        return
-      }
-    })
-  }
+  }, [handleDeleteBookmark])
 
   return (
     <DropdownMenuItem asChild>
       <Button
         variant="ghost"
         className={cn('w-full relative cursor-pointer', shortcutPressed && 'bg-accent')}
-        onClick={handleRemoveBookmark}
+        onClick={handleDeleteBookmark}
         disabled={isPending}
       >
         <CircleXIcon
@@ -76,7 +75,9 @@ export function BookmarkDeleteButton({ bookmarkId }: RemoveBookmarkProps) {
           )}
         />
         <span className="relative left-6">Delete</span>
-        <DropdownMenuShortcut>⌘+⇧+D</DropdownMenuShortcut>
+        <DropdownMenuShortcut>
+          {'\u2318'}+{'\u232B'} {/* Command + Backspace */}
+        </DropdownMenuShortcut>
       </Button>
     </DropdownMenuItem>
   )
