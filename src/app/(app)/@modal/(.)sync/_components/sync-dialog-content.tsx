@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { SynchronizePageContent } from '@/app/(app)/(registers)/sync/_components/synchronize-page-content'
+import { SynchronizePageContent } from '@/app/(app)/(forms)/sync/_components/synchronize-page-content'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface SyncDialogContentProps {

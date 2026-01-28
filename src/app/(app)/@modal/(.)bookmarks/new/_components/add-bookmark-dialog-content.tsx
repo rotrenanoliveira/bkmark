@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { AddBookmarkContent } from '@/app/(app)/(registers)/bookmarks/new/_components/add-bookmark-content'
+import { AddBookmarkContent } from '@/app/(app)/(forms)/bookmarks/new/_components/add-bookmark-content'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 export function AddBookmarkDialogContent() {

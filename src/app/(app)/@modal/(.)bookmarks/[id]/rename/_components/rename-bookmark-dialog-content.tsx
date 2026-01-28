@@ -1,8 +1,8 @@
 'use client'
 
+import { RenameBookmarkContent } from '@forms/bookmarks/[id]/rename/_components/rename-bookmark-content'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { RenameBookmarkContent } from '@/app/(app)/(registers)/bookmarks/[id]/rename/_components/rename-bookmark-content'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface RenameBookmarkDialogContentProps {
