@@ -3,7 +3,7 @@
 import { createContext, use, useCallback, useMemo, useOptimistic } from 'react'
 
 import { generateNanoId } from '@/lib/nanoid'
-import type { Bookmark } from '@/utils/types'
+import type { Bookmark, BookmarkPresenter } from '@/utils/types'
 
 type BookmarkAction =
   | { type: 'ADD'; payload: { bookmarkUrl: string; title: string } }
@@ -48,7 +48,7 @@ export function BookmarkProvider({
   bookmarksPromise,
 }: {
   children: React.ReactNode
-  bookmarksPromise: Promise<Bookmark[]>
+  bookmarksPromise: Promise<BookmarkPresenter[]>
 }) {
   const initialBookmarks = use(bookmarksPromise)
   const [optimisticBookmarks, setOptimisticBookmarks] = useOptimistic(initialBookmarks, bookmarkReducer)
