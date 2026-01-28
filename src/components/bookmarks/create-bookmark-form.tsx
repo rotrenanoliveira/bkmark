@@ -12,12 +12,12 @@ import { useFormState } from '@/hooks/use-form-state'
 import { cn } from '@/lib/utils'
 import { actionCreateBookmark } from '@/server/actions/create-bookmark'
 
-interface BookmarkFormProps {
+interface CreateBookmarkFormProps {
   beforeSubmit?: () => void
   onSuccess?: () => void
 }
 
-export function BookmarkForm(props: BookmarkFormProps) {
+export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
 
