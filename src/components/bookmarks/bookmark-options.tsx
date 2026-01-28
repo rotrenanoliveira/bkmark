@@ -5,8 +5,8 @@ import type { Bookmark } from '@/utils/types'
 import { BookmarkCopyUrl } from './bookmark-copy-url'
 import { BookmarkMoveSubMenu } from './bookmark-move-submenu'
 import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
-import { RenameBookmark } from './bookmark-rename'
 import { DeleteBookmark } from './delete-bookmark'
+import { RenameBookmark } from './rename-bookmark'
 
 interface BookmarkOptionsProps {
   bookmark: Bookmark
