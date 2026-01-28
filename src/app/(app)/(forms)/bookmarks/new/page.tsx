@@ -1,5 +1,5 @@
-import { AddBookmarkContent } from './_components/add-bookmark-content'
+import { CreateBookmarkContent } from '@/components/bookmarks/create-bookmark-content'
 
-export default async function BookmarksNewPage() {
-  return <AddBookmarkContent />
+export default function BookmarksNewPage() {
+  return <CreateBookmarkContent />
 }
