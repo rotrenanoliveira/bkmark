@@ -1,9 +1,10 @@
 import { CircleMinusIcon, CircleXIcon } from 'lucide-react'
 import React, { useState, useTransition } from 'react'
 import { toast } from 'sonner'
-import { useBookmarks } from '@/components/bookmarks/bookmarks-context'
+
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu'
+import { useBookmarks } from '@/hooks/use-bookmarks'
 import { cn } from '@/lib/utils'
 import { actionRemoveBookmark } from '@/server/actions/remove-bookmark'
 

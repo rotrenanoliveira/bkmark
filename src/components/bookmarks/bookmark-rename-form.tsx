@@ -3,11 +3,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { useBookmarks } from '@/hooks/use-bookmarks'
 import { useFormState } from '@/hooks/use-form-state'
 import { actionRenameBookmark } from '@/server/actions/rename-bookmark'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { useBookmarks } from './bookmarks-context'
 
 interface BookmarkRenameFormProps {
   bookmarkId: string

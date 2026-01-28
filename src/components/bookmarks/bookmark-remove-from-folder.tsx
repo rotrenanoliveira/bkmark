@@ -1,9 +1,10 @@
 import { CornerDownLeftIcon } from 'lucide-react'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
-import { useBookmarks } from '@/components/bookmarks/bookmarks-context'
+
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { useBookmarks } from '@/hooks/use-bookmarks'
 import { actionRemoveBookmarkFromFolder } from '@/server/actions/remove-bookmark-from-folder'
 
 interface BookmarkRemoveFromFolderButtonProps {

@@ -1,7 +1,7 @@
 'use client'
 
 import { Bookmark } from '@/components/bookmarks/bookmark'
-import { useBookmarks } from '@/components/bookmarks/bookmarks-context'
+import { useBookmarks } from '@/hooks/use-bookmarks'
 
 export function UnfoldedBookmarks() {
   const { bookmarks } = useBookmarks()

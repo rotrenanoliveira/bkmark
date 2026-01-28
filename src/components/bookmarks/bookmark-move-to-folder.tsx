@@ -3,9 +3,9 @@ import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { useBookmarks } from '@/hooks/use-bookmarks'
 import { actionAddBookmarkToFolder } from '@/server/actions/add-bookmark-to-folder'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
-import { useBookmarks } from './bookmarks-context'
 
 interface BookmarkMoveProps {
   bookmarkId: string
