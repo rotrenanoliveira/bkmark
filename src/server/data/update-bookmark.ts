@@ -6,10 +6,13 @@ import type { BookmarkUpdateInput, ResponseError } from '@/utils/types'
 
 export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, null] | [null, ResponseError]> {
   if (data.folderId === undefined && !data.title) {
-    return [null, { success: false, message: 'folderId or title is required' }]
+    return [null, { success: false, message: 'Invalid parameters. Please provide a title or a folderId.' }]
   }
 
-  const query = data.folderId !== undefined ? { folderId: data.folderId } : data.title ? { title: data.title } : {}
+  const query = {
+    ...(data.folderId !== undefined && { folderId: data.folderId }),
+    ...(data.title && { title: data.title }),
+  }
 
   const [_, queryError] = await handle(
     db.update(bookmarksRepository).set(query).where(eq(bookmarksRepository.bookmarkId, data.bookmarkId)),

@@ -1,5 +1,5 @@
 import { XIcon } from 'lucide-react'
-import { BookmarkRenameForm } from '@/components/bookmarks/bookmark-rename-form'
+import { RenameBookmarkForm } from '@/components/bookmarks/rename-bookmark-form'
 
 interface RenameBookmarkContentProps {
   bookmarkId: string
@@ -7,6 +7,7 @@ interface RenameBookmarkContentProps {
 }
 
 export function RenameBookmarkContent({ bookmarkId, onClose }: RenameBookmarkContentProps) {
+  // TODO: transformar "isso" em um componente ui/card
   return (
     <div className="w-full max-w-sm flex flex-col gap-4 relative ring-foreground/10 bg-card text-card-foreground overflow-hidden rounded-xl py-4 text-sm ring-1 group/card">
       <div className="grid auto-rows-min items-start gap-1 border-b rounded-t-xl px-4 [.border-b]:pb-4">
@@ -21,7 +22,7 @@ export function RenameBookmarkContent({ bookmarkId, onClose }: RenameBookmarkCon
       </div>
 
       <div className="flex flex-row px-4 ">
-        <BookmarkRenameForm bookmarkId={bookmarkId} beforeSubmit={onClose} />
+        <RenameBookmarkForm bookmarkId={bookmarkId} beforeSubmit={onClose} />
       </div>
     </div>
   )

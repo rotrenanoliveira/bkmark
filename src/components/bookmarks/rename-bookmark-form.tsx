@@ -5,27 +5,28 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useBookmarks } from '@/hooks/use-bookmarks'
 import { useFormState } from '@/hooks/use-form-state'
+import { cn } from '@/lib/utils'
 import { actionRenameBookmark } from '@/server/actions/rename-bookmark'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 
-interface BookmarkRenameFormProps {
+interface RenameBookmarkFormProps {
   bookmarkId: string
   beforeSubmit?: () => void
 }
 
-export function BookmarkRenameForm(props: BookmarkRenameFormProps) {
+export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
   const router = useRouter()
 
   const { rename } = useBookmarks()
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: [`bookmark-${props.bookmarkId}`],
     queryFn: () => fetch(`/api/bookmarks/${props.bookmarkId}`).then((res) => res.json()),
   })
 
   function optimisticFn(formData: FormData) {
-    const title = formData.get('title')?.toString()
+    const title = formData.get('bookmark-title')?.toString()
     const bookmarkId = formData.get('bookmark-id')?.toString()
 
     if (!title || !bookmarkId) {
@@ -33,12 +34,12 @@ export function BookmarkRenameForm(props: BookmarkRenameFormProps) {
       return
     }
 
-    props.beforeSubmit?.()
-
     rename({ title, bookmarkId })
+
+    props.beforeSubmit?.()
   }
 
-  const [formState, handleSubmit, isPending] = useFormState(actionRenameBookmark, {
+  const [_, handleSubmit, isPending] = useFormState(actionRenameBookmark, {
     optimisticFn,
     onSuccess,
     onError,
@@ -55,11 +56,16 @@ export function BookmarkRenameForm(props: BookmarkRenameFormProps) {
 
   return (
     <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
-      {formState.success === false && <p className="text-red-500">{formState.message}</p>}
-
       <div className="flex gap-2">
         <input type="text" name="bookmark-id" className="hidden" defaultValue={props.bookmarkId} />
-        <Input type="text" name="title" placeholder="Bookmark Title" defaultValue={data?.bookmark.title} />
+        <Input
+          type="text"
+          name="bookmark-title"
+          placeholder="Bookmark Title"
+          className={cn(isLoading && 'animate-pulse')}
+          defaultValue={data?.bookmark.title}
+          disabled={isLoading}
+        />
 
         <Button type="submit" disabled={isPending}>
           Rename
