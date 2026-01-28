@@ -17,6 +17,8 @@ export function BookmarkCopyUrl({ bookmarkUrl }: BookmarkCopyProps) {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      // TODO: incluir validação para o windows
+      // TODO: mudar comando para command + c / ctrl + c
       if (e.metaKey && e.shiftKey && e.key.toLowerCase() === 'c') {
         e.preventDefault()
 
