@@ -7,19 +7,18 @@ import { useBookmarks } from '@/hooks/use-bookmarks'
 import { actionAddBookmarkToFolder } from '@/server/actions/add-bookmark-to-folder'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 
-interface BookmarkMoveProps {
+interface MoveBookmarkButtonProps {
   bookmarkId: string
   currentFolder?: string | null
   folderId: string
   folderName: string
 }
 
-export function BookmarkMoveToFolder({ bookmarkId, folderId, folderName, currentFolder }: BookmarkMoveProps) {
+export function MoveBookmarkButton({ bookmarkId, folderId, folderName, currentFolder }: MoveBookmarkButtonProps) {
   const [_, startTransition] = useTransition()
+  const { remove } = useBookmarks()
 
   const router = useRouter()
-
-  const { remove } = useBookmarks()
 
   async function handleUpdateBookmark(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
@@ -42,7 +41,7 @@ export function BookmarkMoveToFolder({ bookmarkId, folderId, folderName, current
     <DropdownMenuItem asChild>
       <Button
         variant="ghost"
-        className="w-full max-w-32 relative justify-start cursor-pointer truncate"
+        className="w-full max-w-32 md:max-w-full relative justify-start cursor-pointer truncate"
         onClick={handleUpdateBookmark}
         disabled={currentFolder === folderId}
       >
