@@ -43,6 +43,8 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
     optimisticFn,
     onSuccess,
     onError,
+    formRef,
+    reset: true,
   })
 
   function onError(message: string) {
