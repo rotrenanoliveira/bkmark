@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import { cookies } from 'next/headers'
 
 import { getUserBookmarks } from '@/server/data/get-bookmarks'
 import { Providers } from './providers'
 import './globals.css'
+import { getUserId } from '@/server/data/get-user-id'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const userId = (await cookies()).get('bkmark:userId')?.value
+  const userId = await getUserId()
   const bookmarks = getUserBookmarks(userId)
 
   return (
