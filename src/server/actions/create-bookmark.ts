@@ -2,9 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-
 import { formatZodError } from '@/utils/functions'
-import { kyFetcher } from '@/utils/url-data-fetcher'
 import { createBookmark } from '../data/create-bookmark'
 import { getUrlData } from '../data/get-url-data'
 import { getUserId } from '../data/get-user-id'
@@ -16,7 +14,7 @@ const addBookmarkSchema = z.object({
     .refine((value) => value.match(/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/)),
 })
 
-export async function actionAddBookmark(data: FormData) {
+export async function actionCreateBookmark(data: FormData) {
   const formResult = addBookmarkSchema.safeParse(Object.fromEntries(data))
 
   if (formResult.success === false) {
@@ -32,18 +30,8 @@ export async function actionAddBookmark(data: FormData) {
 
   const [bookmarkData, getUrlDataError] = await getUrlData({
     url: formResult.data.url,
-    fetcher: isYouTubeVideo ? 'youtube-api' : 'axios',
+    ...(isYouTubeVideo && { fetcher: 'youtube-api' }),
   })
-
-  let faviconUrl = bookmarkData?.favicon
-
-  if (faviconUrl) {
-    const [_, faviconResponseError] = await kyFetcher(faviconUrl)
-
-    if (faviconResponseError) {
-      faviconUrl = null
-    }
-  }
 
   const userId = await getUserId()
 
@@ -51,9 +39,7 @@ export async function actionAddBookmark(data: FormData) {
     return { success: false, message: 'User not found.' }
   }
 
-  const bookmark = bookmarkData
-    ? { ...bookmarkData, userId, favicon: faviconUrl }
-    : { title: 'No title', bookmarkUrl: formResult.data.url }
+  const bookmark = bookmarkData ? { ...bookmarkData, userId } : { title: 'No title', bookmarkUrl: formResult.data.url }
 
   const [_, createBookmarkError] = await createBookmark({
     ...bookmark,
@@ -64,11 +50,11 @@ export async function actionAddBookmark(data: FormData) {
     return createBookmarkError
   }
 
-  revalidatePath('/', 'layout')
-
   if (getUrlDataError) {
     return getUrlDataError
   }
+
+  revalidatePath('/', 'layout')
 
   return { success: true, message: 'Bookmark added successfully.' }
 }

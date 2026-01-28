@@ -74,9 +74,19 @@ export async function getUrlData({
     response.bookmarkUrl = url
   }
 
+  let faviconUrl = response.favicon
+
+  if (faviconUrl) {
+    const [_, faviconResponseError] = await axiosFetcher(faviconUrl)
+
+    if (faviconResponseError) {
+      faviconUrl = null
+    }
+  }
+
   const urlData = urlDataSchema.safeParse({
     title: response.title,
-    favicon: response.favicon,
+    favicon: faviconUrl,
     ogImage: response.ogImage,
     description: response.description,
     bookmarkUrl: response.bookmarkUrl,

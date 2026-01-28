@@ -29,7 +29,7 @@ export async function axiosFetcher(url: string): Promise<[UrlDataFetcher, null] 
   }
 
   if (response.status !== 200) {
-    return [null, { success: false, message: 'Failed to fetch url.' }]
+    return [null, { success: false, message: `Failed to fetch url. ${response.status}` }]
   }
 
   if (!response.data) {
@@ -158,7 +158,6 @@ export async function mqlYouTubeFetcher(url: string): Promise<[UrlDataFetcher, n
   }
 
   const { status, data } = mqlResponse
-  // TODO: Adicionar os erros a um redis para verificar
 
   if (status !== 'success') {
     return [null, { success: false, message: `Failed to fetch url. ${status}` }]
