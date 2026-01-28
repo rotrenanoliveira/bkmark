@@ -1,5 +1,5 @@
+import { BookmarksList } from '@/components/bookmarks/bookmarks-list'
 import { CreateBookmarkForm } from '@/components/bookmarks/create-bookmark-form'
-import { UnfoldedBookmarks } from '@/components/bookmarks/unfolded-bookmarks'
 import { FolderForm } from '@/components/folders/folder-form'
 import { Folders } from '@/components/folders/folders'
 import { Header } from '@/components/header'
@@ -13,7 +13,7 @@ export default async function HomePage() {
           <CreateBookmarkForm />
           <FolderForm />
 
-          <UnfoldedBookmarks />
+          <BookmarksList />
           <Folders />
         </section>
       </main>

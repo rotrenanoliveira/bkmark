@@ -3,7 +3,7 @@
 import { Bookmark } from '@/components/bookmarks/bookmark'
 import { useBookmarks } from '@/hooks/use-bookmarks'
 
-export function UnfoldedBookmarks() {
+export function BookmarksList() {
   const { bookmarks } = useBookmarks()
 
   return (
