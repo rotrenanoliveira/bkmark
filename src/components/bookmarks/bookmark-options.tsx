@@ -30,7 +30,7 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
 
         <RenameBookmark bookmarkId={bookmark.bookmarkId} />
 
-        <DeleteBookmark bookmarkId={bookmark.bookmarkId} />
+        <DeleteBookmark bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />
 
         {hasParentFolder && (
           <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />

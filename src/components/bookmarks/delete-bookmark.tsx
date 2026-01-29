@@ -4,14 +4,16 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu'
 import { useBookmarks } from '@/hooks/use-bookmarks'
+import { queryClient } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
 import { actionRemoveBookmark } from '@/server/actions/remove-bookmark'
 
 interface RemoveBookmarkProps {
   bookmarkId: string
+  currentFolder?: string | null
 }
 
-export function DeleteBookmark({ bookmarkId }: RemoveBookmarkProps) {
+export function DeleteBookmark({ bookmarkId, currentFolder }: RemoveBookmarkProps) {
   const [shortcutPressed, setShortcutPressed] = useState(false)
   const [isPending, startTransition] = useTransition()
 
@@ -28,8 +30,10 @@ export function DeleteBookmark({ bookmarkId }: RemoveBookmarkProps) {
         toast.error(result.message)
         return
       }
+
+      await queryClient.invalidateQueries({ queryKey: [`folder:${currentFolder}`] })
     })
-  }, [remove, bookmarkId])
+  }, [remove, bookmarkId, currentFolder])
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
