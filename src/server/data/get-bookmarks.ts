@@ -1,47 +1,22 @@
 'use server'
 
-import { and, desc, eq, isNull, type SQL } from 'drizzle-orm'
-import { db } from '@/infra/db/drizzle'
-import { bookmarks as bookmarksRepository } from '@/infra/db/schemas'
-import { handle } from '@/utils/functions'
-import type { Bookmark } from '@/utils/types'
+import type { Bookmark, BookmarkPresenter } from '@/utils/types'
+import { getUncategorisedBookmarks } from './get-bookmarks-uncategorised'
+import { getFolderBookmarks } from './get-folder-bookmarks'
 
 /** Get all bookmarks for a user */
-export async function getBookmarks(userId: string | undefined): Promise<Bookmark[]>
+export async function getBookmarks(userId: string): Promise<BookmarkPresenter[]>
 /** Get all unfolded bookmarks for a user */
-export async function getBookmarks(userId: string | undefined, folderId: null): Promise<Bookmark[]>
+export async function getBookmarks(userId: string, folderId: null): Promise<Bookmark[]>
 /** Get all bookmarks for a user in a folder */
-export async function getBookmarks(userId: string | undefined, folderId: string): Promise<Bookmark[]>
+export async function getBookmarks(userId: string, folderId: string): Promise<Bookmark[]>
 
-export async function getBookmarks(userId: string | undefined, folderId: string | null = null) {
-  if (userId === undefined) {
-    return []
-  }
-
-  const conditions: SQL[] = []
-  conditions.push(eq(bookmarksRepository.userId, userId))
-
-  if (folderId) {
-    conditions.push(eq(bookmarksRepository.folderId, folderId))
-  }
-
+export async function getBookmarks(userId: string, folderId: string | null = null) {
   if (folderId === null) {
-    conditions.push(isNull(bookmarksRepository.folderId))
+    return getUncategorisedBookmarks(userId)
   }
 
-  const [bookmarks, queryError] = await handle(
-    db
-      .select()
-      .from(bookmarksRepository)
-      .where(and(...conditions))
-      .orderBy(desc(bookmarksRepository.createdAt)),
-  )
-
-  if (queryError) {
-    throw queryError.message
-  }
-
-  return bookmarks
+  return getFolderBookmarks(userId, folderId)
 }
 
-export const getUserBookmarks = async (userId: string | undefined) => getBookmarks(userId)
+export const getUserBookmarks = async (userId: string) => getBookmarks(userId)
