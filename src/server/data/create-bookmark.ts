@@ -29,9 +29,11 @@ export async function createBookmark(
         favicon: data.favicon,
         description: data.description,
         ogImage: data.ogImage,
+        folderId: data.folderId,
       }),
     ),
     cacheRepository.delete(`${data.userId}:bookmarks`),
+    cacheRepository.delete(`${data.userId}:folder:${data.folderId}`),
   ])
 
   return result

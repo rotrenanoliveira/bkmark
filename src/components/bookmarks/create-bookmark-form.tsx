@@ -15,6 +15,7 @@ import { actionCreateBookmark } from '@/server/actions/create-bookmark'
 interface CreateBookmarkFormProps {
   beforeSubmit?: () => void
   onSuccess?: () => void
+  folderId?: string | null
 }
 
 export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
@@ -64,6 +65,7 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
       {formState.success === false && <p className="text-red-500">{formState.message}</p>}
       <div className="flex gap-2">
         <Input type="text" name="url" placeholder="Insert a link" />
+        {props.folderId && <Input type="text" name="folder" className="hidden" defaultValue={props.folderId} />}
 
         <Button type="submit" disabled={isPending}>
           <PlusIcon strokeWidth={1.25} className={cn('size-5', isPending && 'hidden')} />

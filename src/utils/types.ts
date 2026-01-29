@@ -61,7 +61,6 @@ export const bookmarkPresenterSchema = bookmarkSchema.omit({
 export const bookmarkCreateInputSchema = bookmarkSchema.omit({
   bookmarkId: true,
   createdAt: true,
-  folderId: true,
 })
 
 /** bookmark update input */
