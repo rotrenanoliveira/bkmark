@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { formatZodError } from '@/utils/functions'
@@ -24,21 +24,16 @@ export async function actionCreateFolder(data: FormData) {
 
   const userId = await getUserId()
 
-  if (!userId) {
-    return { success: false, message: 'User not found.' }
-  }
-
-  const [_, createFolderError] = await createFolder({
+  const [_, error] = await createFolder({
     name: formResult.data.folder,
     userId,
   })
 
-  if (createFolderError) {
-    return createFolderError
+  if (error) {
+    return error
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('folders', 'max')
 
   return { success: true, message: 'Folder created successfully.' }
 }
