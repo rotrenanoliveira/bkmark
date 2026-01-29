@@ -1,11 +1,12 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { GlobeIcon, PlusIcon, RefreshCwIcon, SearchIcon } from 'lucide-react'
+import { ArrowRightIcon, GlobeIcon, PlusIcon, RefreshCwIcon, SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import * as React from 'react'
+import React from 'react'
 import { searchBookmarks } from '@/server/data/search-bookmarks'
+import { searchFolders } from '@/server/data/search-folders'
 import { Button } from './ui/button'
 import {
   Command,
@@ -30,9 +31,14 @@ export function CommandMenu() {
 
   const [searchValue, setSearchValue] = React.useState<string | null>(null)
 
-  const query = useQuery({
-    queryKey: ['bookmarks-search', searchValue],
+  const queryBookmarks = useQuery({
+    queryKey: ['search-bookmarks', searchValue],
     queryFn: () => searchBookmarks(searchValue),
+  })
+
+  const queryFolders = useQuery({
+    queryKey: ['search-folders', searchValue],
+    queryFn: () => searchFolders(searchValue),
   })
 
   const searchTimeoutRef = React.useRef<NodeJS.Timeout | undefined>(undefined)
@@ -66,6 +72,10 @@ export function CommandMenu() {
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
   }, [])
+
+  const isLoading = queryBookmarks.isLoading || queryFolders.isLoading
+  const isError = queryBookmarks.isError || queryFolders.isError
+  const isEmpty = queryBookmarks.data?.length === 0 && queryFolders.data?.length === 0
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -103,22 +113,18 @@ export function CommandMenu() {
           <CommandInput placeholder="Find..." value={searchValue ?? ''} onValueChange={setSearchValue} />
 
           <CommandList>
-            {query.isLoading && <CommandEmpty>Searching...</CommandEmpty>}
-            {query.isError && <CommandEmpty>Error fetching results.</CommandEmpty>}
-            {!query.isLoading && !query.isError && query.data?.length === 0 && (
-              <CommandEmpty>No results found.</CommandEmpty>
-            )}
+            {isLoading && <CommandEmpty>Searching...</CommandEmpty>}
+            {isError && <CommandEmpty>Error fetching results.</CommandEmpty>}
+            {!isLoading && !isError && isEmpty && <CommandEmpty>No results found.</CommandEmpty>}
 
             <CommandGroup heading="Bookmarks">
-              {query.data &&
-                query.data.length > 0 &&
-                query.data.map((bookmark) => (
+              {queryBookmarks.data &&
+                queryBookmarks.data.length > 0 &&
+                queryBookmarks.data.map((bookmark) => (
                   <CommandItem
-                    key={bookmark.bookmarkId}
-                    value={bookmark.title}
-                    onSelect={() =>
-                      runCommand(() => window.open(bookmark.bookmarkUrl, '_blank', 'noopener, noreferrer'))
-                    }
+                    key={bookmark.id}
+                    value={`${bookmark.title} ${bookmark.url}`}
+                    onSelect={() => runCommand(() => window.open(bookmark.url, '_blank', 'noopener, noreferrer'))}
                   >
                     {bookmark.favicon ? (
                       <Image src={bookmark.favicon} alt={bookmark.title} width={24} height={24} />
@@ -127,7 +133,7 @@ export function CommandMenu() {
                     )}
                     <p className="font-semibold truncate flex-1">{bookmark.title}</p>
                     <span className="hidden md:inline w-1/3 truncate font-light text-muted-foreground/75">
-                      {bookmark.bookmarkUrl}
+                      {bookmark.url}
                     </span>
                   </CommandItem>
                 ))}
@@ -139,6 +145,20 @@ export function CommandMenu() {
             </CommandGroup>
 
             <CommandGroup heading="Folders">
+              {queryFolders.data &&
+                queryFolders.data.length > 0 &&
+                queryFolders.data.map((folder) => (
+                  <CommandItem
+                    key={folder.id}
+                    value={folder.name}
+                    onSelect={() => runCommand(() => router.push(`/folders/${folder.id}`))}
+                  >
+                    <ArrowRightIcon className="size-6 text-foreground" />
+                    <span>Go to</span>
+                    <p className="font-semibold truncate flex-1">{folder.name}</p>
+                  </CommandItem>
+                ))}
+
               <CommandItem onSelect={() => runCommand(() => router.push('/folders/new'))}>
                 <PlusIcon className="size-4" />
                 <span>Create new folder...</span>
