@@ -4,14 +4,15 @@ import { useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useBookmarks } from '@/hooks/use-bookmarks'
+import { queryClient } from '@/lib/react-query'
 import { actionAddBookmarkToFolder } from '@/server/actions/add-bookmark-to-folder'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 
 interface MoveBookmarkButtonProps {
   bookmarkId: string
   currentFolder?: string | null
-  folderId: string
   folderName: string
+  folderId: string
 }
 
 export function MoveBookmarkButton({ bookmarkId, folderId, folderName, currentFolder }: MoveBookmarkButtonProps) {
@@ -32,6 +33,11 @@ export function MoveBookmarkButton({ bookmarkId, folderId, folderName, currentFo
         toast.error(result.message)
         return
       }
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [`folder:${currentFolder}`] }),
+        queryClient.invalidateQueries({ queryKey: [`folder:${folderId}`] }),
+      ])
 
       router.refresh()
     })
