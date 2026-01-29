@@ -29,7 +29,7 @@ export async function axiosFetcher(url: string): Promise<[UrlDataFetcher, null] 
   }
 
   if (response.status !== 200) {
-    return [null, { success: false, message: 'Failed to fetch url.' }]
+    return [null, { success: false, message: `Failed to fetch url. ${response.status}` }]
   }
 
   if (!response.data) {
@@ -141,6 +141,35 @@ export async function mqlFetcher(url: string): Promise<[UrlDataFetcher, null] | 
       favicon: data.logo?.url,
       ogImage: data.image?.url,
       bookmarkUrl: data.url,
+    },
+    null,
+  ]
+}
+
+export async function mqlYouTubeFetcher(url: string): Promise<[UrlDataFetcher, null] | [null, ResponseError]> {
+  const [mqlResponse, mqlError] = await fetcher(mql(url, { meta: true, prerender: true, video: true, audio: true }))
+
+  if (mqlError) {
+    return [null, mqlError]
+  }
+
+  if (!mqlResponse) {
+    return [null, { success: false, message: 'Failed to fetch url.' }]
+  }
+
+  const { status, data } = mqlResponse
+
+  if (status !== 'success') {
+    return [null, { success: false, message: `Failed to fetch url. ${status}` }]
+  }
+
+  return [
+    {
+      title: data.title,
+      description: data.description,
+      favicon: data.logo?.url,
+      ogImage: data.image?.url,
+      bookmarkUrl: url,
     },
     null,
   ]

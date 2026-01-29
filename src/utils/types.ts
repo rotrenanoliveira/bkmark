@@ -51,6 +51,12 @@ export const bookmarkSchema = z.object({
   folderId: z.string().nullish(),
 })
 
+/** bookmark presenter */
+export const bookmarkPresenterSchema = bookmarkSchema.omit({
+  description: true,
+  ogImage: true,
+})
+
 /** bookmark create input */
 export const bookmarkCreateInputSchema = bookmarkSchema.omit({
   bookmarkId: true,
@@ -78,6 +84,8 @@ export const folderSchema = folderCreateInputSchema.extend({
 
 /** bookmark */
 export type Bookmark = z.infer<typeof bookmarkSchema>
+/** bookmark presenter */
+export type BookmarkPresenter = z.infer<typeof bookmarkPresenterSchema>
 /** bookmark create input */
 export type BookmarkCreateInput = z.infer<typeof bookmarkCreateInputSchema>
 /** bookmark update input */

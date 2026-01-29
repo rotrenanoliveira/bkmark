@@ -3,10 +3,10 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { Bookmark } from '@/utils/types'
 import { BookmarkCopyUrl } from './bookmark-copy-url'
-import { BookmarkDeleteButton } from './bookmark-delete'
-import { BookmarkMoveSubMenu } from './bookmark-move-submenu'
 import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
-import { BookmarkRename } from './bookmark-rename'
+import { DeleteBookmark } from './delete-bookmark'
+import { MoveBookmarks } from './move-bookmarks'
+import { RenameBookmark } from './rename-bookmark'
 
 interface BookmarkOptionsProps {
   bookmark: Bookmark
@@ -28,17 +28,13 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
       <DropdownMenuContent className="w-56 space-y-1" align="end">
         <BookmarkCopyUrl bookmarkUrl={bookmark.bookmarkUrl} />
 
-        <BookmarkRename bookmarkId={bookmark.bookmarkId} />
+        <RenameBookmark bookmarkId={bookmark.bookmarkId} />
 
-        <BookmarkDeleteButton bookmarkId={bookmark.bookmarkId} />
+        <DeleteBookmark bookmarkId={bookmark.bookmarkId} />
 
         {hasParentFolder && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />}
 
-        <BookmarkMoveSubMenu
-          userId={bookmark.userId}
-          bookmarkId={bookmark.bookmarkId}
-          currentFolder={bookmark.folderId}
-        />
+        <MoveBookmarks userId={bookmark.userId} bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />
       </DropdownMenuContent>
     </DropdownMenu>
   )

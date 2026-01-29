@@ -1,9 +1,9 @@
 'use client'
 
-import { createContext, use, useContext, useMemo, useOptimistic } from 'react'
+import { createContext, use, useCallback, useMemo, useOptimistic } from 'react'
 
 import { generateNanoId } from '@/lib/nanoid'
-import type { Bookmark } from '@/utils/types'
+import type { Bookmark, BookmarkPresenter } from '@/utils/types'
 
 type BookmarkAction =
   | { type: 'ADD'; payload: { bookmarkUrl: string; title: string } }
@@ -17,7 +17,7 @@ type BookmarkContextType = {
   remove: (id: string) => void
 }
 
-const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined)
+export const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined)
 
 function bookmarkReducer(state: Bookmark[], action: BookmarkAction): Bookmark[] {
   switch (action.type) {
@@ -48,34 +48,36 @@ export function BookmarkProvider({
   bookmarksPromise,
 }: {
   children: React.ReactNode
-  bookmarksPromise: Promise<Bookmark[]>
+  bookmarksPromise: Promise<BookmarkPresenter[]>
 }) {
   const initialBookmarks = use(bookmarksPromise)
   const [optimisticBookmarks, setOptimisticBookmarks] = useOptimistic(initialBookmarks, bookmarkReducer)
 
-  const create = ({ title, bookmarkUrl }: { title: string; bookmarkUrl: string }) => {
-    setOptimisticBookmarks({ type: 'ADD', payload: { title, bookmarkUrl } })
-  }
+  const create = useCallback(
+    ({ title, bookmarkUrl }: { title: string; bookmarkUrl: string }) => {
+      setOptimisticBookmarks({ type: 'ADD', payload: { title, bookmarkUrl } })
+    },
+    [setOptimisticBookmarks],
+  )
 
-  const rename = ({ title, bookmarkId }: { title: string; bookmarkId: string }) => {
-    setOptimisticBookmarks({ type: 'RENAME', payload: { title, bookmarkId } })
-  }
+  const rename = useCallback(
+    ({ title, bookmarkId }: { title: string; bookmarkId: string }) => {
+      setOptimisticBookmarks({ type: 'RENAME', payload: { title, bookmarkId } })
+    },
+    [setOptimisticBookmarks],
+  )
 
-  const remove = (id: string) => {
-    setOptimisticBookmarks({ type: 'REMOVE', payload: { id } })
-  }
+  const remove = useCallback(
+    (id: string) => {
+      setOptimisticBookmarks({ type: 'REMOVE', payload: { id } })
+    },
+    [setOptimisticBookmarks],
+  )
 
-  const value = useMemo(() => ({ bookmarks: optimisticBookmarks, create, rename, remove }), [optimisticBookmarks])
+  const value = useMemo(
+    () => ({ bookmarks: optimisticBookmarks, create, rename, remove }),
+    [optimisticBookmarks, create, rename, remove],
+  )
 
   return <BookmarkContext.Provider value={value}>{children}</BookmarkContext.Provider>
-}
-
-export function useBookmarks() {
-  const context = useContext(BookmarkContext)
-
-  if (!context) {
-    throw new Error('useBookmarks must be used within a BookmarkProvider')
-  }
-
-  return context
 }

@@ -8,7 +8,7 @@ import { updateBookmark } from '../data/update-bookmark'
 
 const renameBookmarkSchema = z.object({
   'bookmark-id': z.string(),
-  title: z.string(),
+  'bookmark-title': z.string(),
 })
 
 export async function actionRenameBookmark(data: FormData) {
@@ -24,7 +24,7 @@ export async function actionRenameBookmark(data: FormData) {
 
   const [_, updateError] = await updateBookmark({
     bookmarkId: formResult.data['bookmark-id'],
-    title: formResult.data.title,
+    title: formResult.data['bookmark-title'],
   })
 
   if (updateError) {

@@ -2,7 +2,6 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-
 import { formatZodError } from '@/utils/functions'
 import { createBookmark } from '../data/create-bookmark'
 import { getUrlData } from '../data/get-url-data'
@@ -15,7 +14,7 @@ const addBookmarkSchema = z.object({
     .refine((value) => value.match(/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/)),
 })
 
-export async function actionAddBookmark(data: FormData) {
+export async function actionCreateBookmark(data: FormData) {
   const formResult = addBookmarkSchema.safeParse(Object.fromEntries(data))
 
   if (formResult.success === false) {
@@ -26,7 +25,13 @@ export async function actionAddBookmark(data: FormData) {
     return { success: false, message }
   }
 
-  const [bookmarkData, getUrlDataError] = await getUrlData({ url: formResult.data.url })
+  const isYouTubeVideo =
+    formResult.data.url.includes('youtube.com/watch?v=') || formResult.data.url.includes('youtu.be/')
+
+  const [bookmarkData, getUrlDataError] = await getUrlData({
+    url: formResult.data.url,
+    ...(isYouTubeVideo && { fetcher: 'youtube-api' }),
+  })
 
   const userId = await getUserId()
 
@@ -45,11 +50,11 @@ export async function actionAddBookmark(data: FormData) {
     return createBookmarkError
   }
 
-  revalidatePath('/', 'layout')
-
   if (getUrlDataError) {
     return getUrlDataError
   }
+
+  revalidatePath('/', 'layout')
 
   return { success: true, message: 'Bookmark added successfully.' }
 }

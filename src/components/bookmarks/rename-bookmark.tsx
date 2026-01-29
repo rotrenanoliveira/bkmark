@@ -4,11 +4,11 @@ import { useCallback, useEffect } from 'react'
 import { Button } from '../ui/button'
 import { DropdownMenuItem, DropdownMenuShortcut } from '../ui/dropdown-menu'
 
-interface BookmarkRenameProps {
+interface RenameBookmarkProps {
   bookmarkId: string
 }
 
-export function BookmarkRename({ bookmarkId }: BookmarkRenameProps) {
+export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
   const router = useRouter()
 
   const handleRename = useCallback(() => router.push(`/bookmarks/${bookmarkId}/rename`), [bookmarkId, router.push])

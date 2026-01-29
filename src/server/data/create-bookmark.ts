@@ -1,10 +1,11 @@
-import type { NeonHttpQueryResult } from 'drizzle-orm/neon-http'
+import type { QueryResult } from '@neondatabase/serverless'
+import { cacheRepository } from '@/infra/cache/cache-repository'
 import { db } from '@/infra/db/drizzle'
 import { bookmarksRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
 import type { BookmarkCreateInput, ResponseError } from '@/utils/types'
 
-type BookmarkInsertResponse = NeonHttpQueryResult<never>
+type BookmarkInsertResponse = QueryResult<never>
 
 /**
  * Insert a new bookmark into the database
@@ -19,16 +20,19 @@ type BookmarkInsertResponse = NeonHttpQueryResult<never>
 export async function createBookmark(
   data: BookmarkCreateInput,
 ): Promise<[BookmarkInsertResponse, null] | [null, ResponseError]> {
-  const result = await handle(
-    db.insert(bookmarksRepository).values({
-      userId: data.userId,
-      bookmarkUrl: data.bookmarkUrl,
-      title: data.title,
-      favicon: data.favicon,
-      description: data.description,
-      ogImage: data.ogImage,
-    }),
-  )
+  const [result] = await Promise.all([
+    handle(
+      db.insert(bookmarksRepository).values({
+        userId: data.userId,
+        bookmarkUrl: data.bookmarkUrl,
+        title: data.title,
+        favicon: data.favicon,
+        description: data.description,
+        ogImage: data.ogImage,
+      }),
+    ),
+    cacheRepository.delete(`${data.userId}:bookmarks`),
+  ])
 
   return result
 }

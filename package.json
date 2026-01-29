@@ -1,6 +1,6 @@
 {
-  "name": "runnote-bmk",
-  "version": "0.1.0",
+  "name": "bkmark",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -16,6 +16,7 @@
     "@base-ui/react": "1.1.0",
     "@microlink/mql": "0.13.12",
     "@neondatabase/serverless": "1.0.2",
+    "@radix-ui/react-alert-dialog": "1.1.15",
     "@radix-ui/react-collapsible": "1.1.12",
     "@radix-ui/react-dialog": "1.1.15",
     "@radix-ui/react-dropdown-menu": "2.1.16",
@@ -26,6 +27,7 @@
     "@radix-ui/react-slot": "1.2.4",
     "@tailwindcss/postcss": "4.1.18",
     "@tanstack/react-query": "5.64.1",
+    "@upstash/redis": "1.36.1",
     "axios": "1.7.9",
     "boring-avatars": "2.0.4",
     "class-variance-authority": "0.7.1",

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { AddFolderContent } from '@/app/(app)/(registers)/folders/new/_components/add-folder-content'
+import { AddFolderContent } from '@/app/(app)/(forms)/folders/new/_components/add-folder-content'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 export function AddFolderDialogContent() {

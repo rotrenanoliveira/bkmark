@@ -8,17 +8,18 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 import { getFolders } from '@/server/data/get-folders'
 import { ScrollArea } from '../ui/scroll-area'
-import { BookmarkMoveToFolder } from './bookmark-move-to-folder'
+import { MoveBookmarkButton } from './move-bookmark-button'
 
-interface BookmarkMoveSubMenuProps {
+interface MoveBookmarksProps {
   userId: string
   bookmarkId: string
   currentFolder?: string | null
 }
 
-export function BookmarkMoveSubMenu({ userId, bookmarkId, currentFolder }: BookmarkMoveSubMenuProps) {
+export function MoveBookmarks({ userId, bookmarkId, currentFolder }: MoveBookmarksProps) {
   const { data, isLoading } = useQuery({
     queryKey: ['folders'],
     queryFn: async () => getFolders(userId),
@@ -26,21 +27,21 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId, currentFolder }: Bookm
 
   return (
     <DropdownMenuSub>
-      <DropdownMenuSubTrigger className="h-9 px-4 py-2 has-[>svg]:px-3 text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50">
+      <DropdownMenuSubTrigger className="h-9 px-4 py-2 cursor-pointer has-[>svg]:px-3 text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50">
         <CornerDownRightIcon className="inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
         <span className="left-6">Move to...</span>
       </DropdownMenuSubTrigger>
 
       <DropdownMenuPortal>
-        <DropdownMenuSubContent className="w-full p-0" alignOffset={8}>
+        <DropdownMenuSubContent className="md:w-[calc(100%+1rem)] p-0" alignOffset={8}>
           {data?.folders.length === 0 && (
-            <DropdownMenuItem className="text-muted-foreground/50 hover:bg-inherit">
+            <DropdownMenuItem className="h-9 px-4 py-2 text-muted-foreground/50 hover:bg-inherit">
               No folders registered.
             </DropdownMenuItem>
           )}
 
-          <ScrollArea className="h-fit max-h-72 rounded-md">
-            <div className="w-full p-1 space-y-0.5">
+          <ScrollArea className="w-full h-fit max-h-72 rounded-md">
+            <div className={cn('space-y-0.5', data?.folders && data?.folders.length > 0 && 'p-1')}>
               {isLoading && (
                 <DropdownMenuItem
                   className="relative h-9 px-4 py-2 has-[>svg]:px-3 text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 disabled:pointer-events-none disabled:opacity-50"
@@ -55,7 +56,7 @@ export function BookmarkMoveSubMenu({ userId, bookmarkId, currentFolder }: Bookm
                 data.folders.length > 0 &&
                 data?.folders.map((folder) => (
                   <React.Suspense key={folder.folderId}>
-                    <BookmarkMoveToFolder
+                    <MoveBookmarkButton
                       bookmarkId={bookmarkId}
                       currentFolder={currentFolder}
                       folderId={folder.folderId}
