@@ -1,5 +1,5 @@
-import { AddFolderContent } from './_components/add-folder-content'
+import { CreateFolderContent } from '@/components/folders/create-folder-content'
 
-export default async function NewFoldersPage() {
-  return <AddFolderContent />
+export default function CreateFoldersPage() {
+  return <CreateFolderContent />
 }

@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { CornerDownRightIcon, Loader2Icon } from 'lucide-react'
 import React from 'react'
 import {
@@ -8,22 +7,18 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useFolders } from '@/hooks/use-folders'
 import { cn } from '@/lib/utils'
-import { getFolders } from '@/server/data/get-folders'
 import { ScrollArea } from '../ui/scroll-area'
 import { MoveBookmarkButton } from './move-bookmark-button'
 
 interface MoveBookmarksProps {
-  userId: string
   bookmarkId: string
   currentFolder?: string | null
 }
 
-export function MoveBookmarks({ userId, bookmarkId, currentFolder }: MoveBookmarksProps) {
-  const { data, isLoading } = useQuery({
-    queryKey: ['folders'],
-    queryFn: async () => getFolders(userId),
-  })
+export function MoveBookmarks({ bookmarkId, currentFolder }: MoveBookmarksProps) {
+  const { folders } = useFolders()
 
   return (
     <DropdownMenuSub>
@@ -34,15 +29,15 @@ export function MoveBookmarks({ userId, bookmarkId, currentFolder }: MoveBookmar
 
       <DropdownMenuPortal>
         <DropdownMenuSubContent className="md:w-[calc(100%+1rem)] p-0" alignOffset={8}>
-          {data?.folders.length === 0 && (
+          {folders?.length === 0 && (
             <DropdownMenuItem className="h-9 px-4 py-2 text-muted-foreground/50 hover:bg-inherit">
               No folders registered.
             </DropdownMenuItem>
           )}
 
           <ScrollArea className="w-full h-fit max-h-72 rounded-md">
-            <div className={cn('space-y-0.5', data?.folders && data?.folders.length > 0 && 'p-1')}>
-              {isLoading && (
+            <div className={cn('space-y-0.5', folders && folders.length > 0 && 'p-1')}>
+              {folders.length === 0 && (
                 <DropdownMenuItem
                   className="relative h-9 px-4 py-2 has-[>svg]:px-3 text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 disabled:pointer-events-none disabled:opacity-50"
                   disabled
@@ -52,9 +47,9 @@ export function MoveBookmarks({ userId, bookmarkId, currentFolder }: MoveBookmar
                 </DropdownMenuItem>
               )}
 
-              {data?.folders &&
-                data.folders.length > 0 &&
-                data?.folders.map((folder) => (
+              {folders &&
+                folders.length > 0 &&
+                folders.map((folder) => (
                   <React.Suspense key={folder.folderId}>
                     <MoveBookmarkButton
                       bookmarkId={bookmarkId}

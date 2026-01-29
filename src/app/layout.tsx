@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { getUserBookmarks } from '@/server/data/get-bookmarks'
 import { Providers } from './providers'
 import './globals.css'
+import { getUserFolders } from '@/server/data/get-folders'
 import { getUserId } from '@/server/data/get-user-id'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -28,6 +29,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const userId = await getUserId()
   const bookmarks = getUserBookmarks(userId)
+  const folders = getUserFolders(userId)
 
   return (
     <html lang="en" suppressHydrationWarning className="light">
@@ -36,7 +38,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <link rel="apple-touch-icon" href="/apple-icon?<generated>" type="image/<generated>" sizes="<generated>" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers bookmarksPromise={bookmarks}>{children}</Providers>
+        <Providers bookmarksPromise={bookmarks} foldersPromise={folders}>
+          {children}
+        </Providers>
       </body>
     </html>
   )

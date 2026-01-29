@@ -1,7 +1,7 @@
 import { BookmarksList } from '@/components/bookmarks/bookmarks-list'
 import { CreateBookmarkForm } from '@/components/bookmarks/create-bookmark-form'
-import { FolderForm } from '@/components/folders/folder-form'
-import { Folders } from '@/components/folders/folders'
+import { CreateFolderForm } from '@/components/folders/create-folder-form'
+import { FoldersList } from '@/components/folders/folders-list'
 import { Header } from '@/components/header'
 
 export default async function HomePage() {
@@ -11,10 +11,10 @@ export default async function HomePage() {
       <main className="w-full flex flex-col items-center p-6 space-y-4">
         <section className="w-full max-w-4xl grid grid-cols-1 gap-4">
           <CreateBookmarkForm />
-          <FolderForm />
+          <CreateFolderForm />
 
           <BookmarksList />
-          <Folders />
+          <FoldersList />
         </section>
       </main>
     </div>

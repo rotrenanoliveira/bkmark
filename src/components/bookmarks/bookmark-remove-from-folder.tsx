@@ -5,13 +5,15 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useBookmarks } from '@/hooks/use-bookmarks'
+import { queryClient } from '@/lib/react-query'
 import { actionRemoveBookmarkFromFolder } from '@/server/actions/remove-bookmark-from-folder'
 
 interface BookmarkRemoveFromFolderButtonProps {
   bookmarkId: string
+  currentFolder?: string | null
 }
 
-export function BookmarkRemoveFromFolderButton({ bookmarkId }: BookmarkRemoveFromFolderButtonProps) {
+export function BookmarkRemoveFromFolderButton({ bookmarkId, currentFolder }: BookmarkRemoveFromFolderButtonProps) {
   const [_, startTransition] = useTransition()
 
   const { remove } = useBookmarks()
@@ -26,6 +28,8 @@ export function BookmarkRemoveFromFolderButton({ bookmarkId }: BookmarkRemoveFro
         toast.error(result.message)
         return
       }
+
+      await queryClient.invalidateQueries({ queryKey: [`folder:${currentFolder}`] })
     })
   }
 

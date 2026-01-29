@@ -30,11 +30,13 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
 
         <RenameBookmark bookmarkId={bookmark.bookmarkId} />
 
-        <DeleteBookmark bookmarkId={bookmark.bookmarkId} />
+        <DeleteBookmark bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />
 
-        {hasParentFolder && <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} />}
+        {hasParentFolder && (
+          <BookmarkRemoveFromFolderButton bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />
+        )}
 
-        <MoveBookmarks userId={bookmark.userId} bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />
+        <MoveBookmarks bookmarkId={bookmark.bookmarkId} currentFolder={bookmark.folderId} />
       </DropdownMenuContent>
     </DropdownMenu>
   )

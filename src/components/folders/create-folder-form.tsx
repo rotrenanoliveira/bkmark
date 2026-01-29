@@ -6,34 +6,42 @@ import { useRef } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useFolders } from '@/hooks/use-folders'
 import { useFormState } from '@/hooks/use-form-state'
 import { cn } from '@/lib/utils'
 import { actionCreateFolder } from '@/server/actions/create-folder'
 
-interface FolderFormProps {
-  isOnPage?: boolean
+interface CreateFolderFormProps {
   beforeSubmit?: () => void
   onSuccess?: () => void
 }
 
-export function FolderForm(props: FolderFormProps) {
+export function CreateFolderForm(props: CreateFolderFormProps) {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
 
-  const [formState, formStateSubmit, isPending] = useFormState(actionCreateFolder, {
+  const { create } = useFolders()
+
+  function optimisticFn(formData: FormData) {
+    props.beforeSubmit?.()
+
+    const name = formData.get('folder')?.toString()
+
+    if (!name) {
+      toast.error('Invalid folder name!')
+      return
+    }
+
+    create(name)
+  }
+
+  const [formState, handleSubmit, isPending] = useFormState(actionCreateFolder, {
+    optimisticFn,
     onSuccess,
     onError,
     formRef,
-    reset: props.isOnPage !== true,
+    reset: true,
   })
-
-  // TODO: Remover quando adicionar o context / useOptimistic
-  function handleSubmit(form: React.FormEvent<HTMLFormElement>) {
-    form.preventDefault()
-
-    props.beforeSubmit?.()
-    formStateSubmit(form)
-  }
 
   function onError(message: string) {
     toast.error(message)
@@ -42,11 +50,6 @@ export function FolderForm(props: FolderFormProps) {
   function onSuccess() {
     if (props.onSuccess) {
       return props.onSuccess()
-    }
-
-    // TODO: Remover quando adicionar o context / useOptimistic
-    if (props.isOnPage) {
-      return router.push('/')
     }
 
     router.refresh()
