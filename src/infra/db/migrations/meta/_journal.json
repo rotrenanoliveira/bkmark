@@ -22,6 +22,13 @@
       "when": 1769715012266,
       "tag": "0002_skinny_smasher",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769773197069,
+      "tag": "0003_sturdy_goliath",
+      "breakpoints": true
     }
   ]
 }
