@@ -6,14 +6,14 @@ import { handle } from '@/utils/functions'
 import type { BookmarkUpdateInput, ResponseError } from '@/utils/types'
 
 export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, null] | [null, ResponseError]> {
-  if (!data.title && !data.folderId && !data.workspaceId) {
+  if (!data.title && data.folderId === undefined && data.workspaceId === undefined) {
     return [null, { success: false, message: 'Invalid parameters. Please provide a title, folderId or workspaceId.' }]
   }
 
   const query = {
     ...(data.title && { title: data.title }),
-    ...(data.folderId && { folderId: data.folderId }),
-    ...(data.workspaceId && { workspaceId: data.workspaceId }),
+    ...(data.folderId !== undefined && { folderId: data.folderId }),
+    ...(data.workspaceId !== undefined && { workspaceId: data.workspaceId }),
   }
 
   const [bookmarkResult, mutationResult] = await db.transaction(async (tx) => {
@@ -39,7 +39,7 @@ export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, 
   const [_, mutationError] = mutationResult
 
   if (mutationError || queryError) {
-    return [null, mutationError]
+    return [null, mutationError || queryError]
   }
 
   await cacheRepository.mdel([

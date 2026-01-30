@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useBookmarks } from '@/hooks/use-bookmarks'
 import { useFormState } from '@/hooks/use-form-state'
+import { queryClient } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
 import { actionRenameBookmark } from '@/server/actions/rename-bookmark'
 import { Button } from '../ui/button'
@@ -51,7 +52,14 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
 
   function onSuccess() {
     refetch()
-    router.push('/')
+
+    console.log(data)
+
+    queryClient.invalidateQueries({ queryKey: [`bookmark-${props.bookmarkId}`] })
+    queryClient.invalidateQueries({ queryKey: [`folder:${data?.bookmark.folderId}`] })
+    queryClient.invalidateQueries({ queryKey: [`workspace:${data?.bookmark.workspaceId}`] })
+
+    router.refresh()
   }
 
   return (
