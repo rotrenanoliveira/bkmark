@@ -6,17 +6,22 @@ import { updateBookmark } from '../data/update-bookmark'
 
 interface ActionProps {
   bookmarkId: string
-  folderId: string
+  folderId: string | null
+  workspaceId: string | null
 }
 
-export async function actionAddBookmarkToFolder({ bookmarkId, folderId }: ActionProps) {
+export async function actionMoveBookmarkToGroup({ bookmarkId, folderId, workspaceId }: ActionProps) {
   const [_currentBookmark, bookmarkError] = await getBookmark(bookmarkId)
 
   if (bookmarkError) {
     return bookmarkError
   }
 
-  const [_updateResponse, updateError] = await updateBookmark({ bookmarkId, folderId })
+  const [_updateResponse, updateError] = await updateBookmark({
+    bookmarkId,
+    ...(folderId && { folderId }),
+    ...(workspaceId && { workspaceId }),
+  })
 
   if (updateError) {
     return updateError

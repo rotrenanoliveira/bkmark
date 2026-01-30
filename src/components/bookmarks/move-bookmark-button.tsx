@@ -5,17 +5,18 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useBookmarks } from '@/hooks/use-bookmarks'
 import { queryClient } from '@/lib/react-query'
-import { actionAddBookmarkToFolder } from '@/server/actions/add-bookmark-to-folder'
+import { actionMoveBookmarkToGroup } from '@/server/actions/move-bookmark-to-group'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 
 interface MoveBookmarkButtonProps {
   bookmarkId: string
-  currentFolder?: string | null
-  folderName: string
-  folderId: string
+  currentGroup?: string | null
+  groupName: string
+  groupId: string
+  type: 'folder' | 'workspace'
 }
 
-export function MoveBookmarkButton({ bookmarkId, folderId, folderName, currentFolder }: MoveBookmarkButtonProps) {
+export function MoveBookmarkButton({ bookmarkId, groupId, groupName, currentGroup, type }: MoveBookmarkButtonProps) {
   const [_, startTransition] = useTransition()
   const { remove } = useBookmarks()
 
@@ -27,17 +28,30 @@ export function MoveBookmarkButton({ bookmarkId, folderId, folderName, currentFo
     startTransition(async () => {
       remove(bookmarkId)
 
-      const result = await actionAddBookmarkToFolder({ bookmarkId, folderId })
+      const result = await actionMoveBookmarkToGroup({
+        bookmarkId,
+        folderId: type === 'folder' ? groupId : null,
+        workspaceId: type === 'workspace' ? groupId : null,
+      })
 
       if (result.success === false) {
         toast.error(result.message)
         return
       }
 
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: [`folder:${currentFolder}`] }),
-        queryClient.invalidateQueries({ queryKey: [`folder:${folderId}`] }),
-      ])
+      if (type === 'folder') {
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: [`folder:${currentGroup}`] }),
+          queryClient.invalidateQueries({ queryKey: [`folder:${groupId}`] }),
+        ])
+      }
+
+      if (type === 'workspace') {
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: [`workspace:${currentGroup}`] }),
+          queryClient.invalidateQueries({ queryKey: [`workspace:${groupId}`] }),
+        ])
+      }
 
       router.refresh()
     })
@@ -49,10 +63,10 @@ export function MoveBookmarkButton({ bookmarkId, folderId, folderName, currentFo
         variant="ghost"
         className="w-full max-w-32 md:max-w-full relative justify-start cursor-pointer truncate"
         onClick={handleUpdateBookmark}
-        disabled={currentFolder === folderId}
+        disabled={currentGroup === groupId}
       >
         <ArrowBigRightDashIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
-        <p className="relative left-4">{folderName}</p>
+        <p className="relative left-4">{groupName}</p>
       </Button>
     </DropdownMenuItem>
   )

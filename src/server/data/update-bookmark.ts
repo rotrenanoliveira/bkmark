@@ -6,13 +6,14 @@ import { handle } from '@/utils/functions'
 import type { BookmarkUpdateInput, ResponseError } from '@/utils/types'
 
 export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, null] | [null, ResponseError]> {
-  if (data.folderId === undefined && !data.title) {
-    return [null, { success: false, message: 'Invalid parameters. Please provide a title or a folderId.' }]
+  if (!data.title && !data.folderId && !data.workspaceId) {
+    return [null, { success: false, message: 'Invalid parameters. Please provide a title, folderId or workspaceId.' }]
   }
 
   const query = {
-    ...(data.folderId !== undefined && { folderId: data.folderId }),
     ...(data.title && { title: data.title }),
+    ...(data.folderId && { folderId: data.folderId }),
+    ...(data.workspaceId && { workspaceId: data.workspaceId }),
   }
 
   const [bookmarkResult, mutationResult] = await db.transaction(async (tx) => {
@@ -21,6 +22,7 @@ export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, 
         .select({
           user: bookmarksRepository.userId,
           folder: bookmarksRepository.folderId,
+          workspace: bookmarksRepository.workspaceId,
         })
         .from(bookmarksRepository)
         .where(eq(bookmarksRepository.bookmarkId, data.bookmarkId)),
@@ -44,6 +46,8 @@ export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, 
     `${bookmark[0].user}:bookmarks`, // remove bookmarks from cache
     `${bookmark[0].user}:folder:${bookmark[0].folder}`, // remove previous folder from cache
     `${bookmark[0].user}:folder:${query.folderId}`, // remove "new" folder from cache
+    `${bookmark[0].user}:workspace:${bookmark[0].workspace}`, // remove previous workspace from cache
+    `${bookmark[0].user}:workspace:${query.workspaceId}`, // remove "new" workspace from cache
   ])
 
   return [null, null]
