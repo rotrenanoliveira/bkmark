@@ -1,6 +1,7 @@
 'use client'
 
 import { useWorkspaces } from '@/hooks/use-workspaces'
+import { RemoveWorkspace } from './remove-workspace'
 
 export function WorkspaceList() {
   const { workspaces } = useWorkspaces()
@@ -10,6 +11,8 @@ export function WorkspaceList() {
       {workspaces.map((workspace) => (
         <div key={workspace.workspaceId} className="flex items-center gap-2">
           {workspace.name}
+
+          <RemoveWorkspace workspaceId={workspace.workspaceId} />
         </div>
       ))}
     </div>
