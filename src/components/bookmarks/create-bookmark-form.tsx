@@ -16,6 +16,7 @@ interface CreateBookmarkFormProps {
   beforeSubmit?: () => void
   onSuccess?: () => void
   folderId?: string | null
+  workspaceId?: string | null
 }
 
 export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
@@ -66,6 +67,9 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
       <div className="flex gap-2">
         <Input type="text" name="url" placeholder="Insert a link" />
         {props.folderId && <Input type="text" name="folder" className="hidden" defaultValue={props.folderId} />}
+        {props.workspaceId && (
+          <Input type="text" name="workspace" className="hidden" defaultValue={props.workspaceId} />
+        )}
 
         <Button type="submit" disabled={isPending}>
           <PlusIcon strokeWidth={1.25} className={cn('size-5', isPending && 'hidden')} />
