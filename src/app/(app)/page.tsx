@@ -4,6 +4,7 @@ import { CreateFolderForm } from '@/components/folders/create-folder-form'
 import { FoldersList } from '@/components/folders/folders-list'
 import { Header } from '@/components/header'
 import { CreateWorkspaceForm } from '@/components/workspaces/create-workspace-form'
+import { WorkspaceList } from '@/components/workspaces/workspace-list'
 
 export default async function HomePage() {
   return (
@@ -15,6 +16,7 @@ export default async function HomePage() {
           <CreateFolderForm />
           <CreateWorkspaceForm />
 
+          <WorkspaceList />
           <BookmarksList />
           <FoldersList />
         </section>
