@@ -23,6 +23,7 @@ export async function getFolderBookmarks(userId: string, folderId: string) {
         favicon: bookmarksRepository.favicon,
         title: bookmarksRepository.title,
         folderId: bookmarksRepository.folderId,
+        workspaceId: bookmarksRepository.workspaceId,
         createdAt: bookmarksRepository.createdAt,
       })
       .from(bookmarksRepository)

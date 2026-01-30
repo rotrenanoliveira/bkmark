@@ -13,7 +13,7 @@ export default async function FolderPage({ params }: { params: Promise<{ id: str
   if (!folder) notFound()
 
   const userId = await getUserId()
-  const bookmarks = await getBookmarks(userId, folderId)
+  const bookmarks = await getBookmarks({ userId, folderId })
 
   return (
     <div className="flex flex-col min-h-screen w-screen">

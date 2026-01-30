@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const userId = await getUserId()
-  const bookmarks = getUserBookmarks(userId)
+  const bookmarks = getUserBookmarks({ userId })
   const folders = getUserFolders(userId)
   const workspaces = getUserWorkspaces(userId)
 

@@ -23,10 +23,17 @@ export async function getUncategorisedBookmarks(userId: string) {
         favicon: bookmarksRepository.favicon,
         title: bookmarksRepository.title,
         folderId: bookmarksRepository.folderId,
+        workspaceId: bookmarksRepository.workspaceId,
         createdAt: bookmarksRepository.createdAt,
       })
       .from(bookmarksRepository)
-      .where(and(eq(bookmarksRepository.userId, userId), isNull(bookmarksRepository.folderId)))
+      .where(
+        and(
+          eq(bookmarksRepository.userId, userId),
+          isNull(bookmarksRepository.folderId),
+          isNull(bookmarksRepository.workspaceId),
+        ),
+      )
       .orderBy(desc(bookmarksRepository.createdAt)),
   )
 
