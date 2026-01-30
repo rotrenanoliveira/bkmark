@@ -4,7 +4,7 @@ import { Header } from '@/components/header'
 import { getBookmarks } from '@/server/data/get-bookmarks'
 import { getFolder } from '@/server/data/get-folder'
 import { getUserId } from '@/server/data/get-user-id'
-import { CreateBookmark } from './_component/create-folder'
+import { CreateBookmark } from './_components/create-bookmark'
 
 export default async function FolderPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: folderId } = await params
