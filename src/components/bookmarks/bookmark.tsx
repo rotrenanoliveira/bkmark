@@ -5,11 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import type { Bookmark as BookmarkType } from '@/utils/types'
+import type { BookmarkPresenter } from '@/utils/types'
 import { BookmarkOptions } from './bookmark-options'
 
 interface BookmarkProps {
-  bookmark: BookmarkType
+  bookmark: BookmarkPresenter
 }
 
 export function Bookmark({ bookmark }: BookmarkProps) {
