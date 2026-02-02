@@ -130,11 +130,11 @@ export function CommandMenu() {
                 queryBookmarks.data.map((bookmark) => (
                   <CommandItem
                     key={bookmark.id}
-                    value={`${bookmark.title} ${bookmark.url}`}
+                    value={`${bookmark.title} ${bookmark.url} ${bookmark.id}`}
                     onSelect={() => runCommand(() => window.open(bookmark.url, '_blank', 'noopener, noreferrer'))}
                   >
                     {bookmark.favicon ? (
-                      <Image src={bookmark.favicon} alt={bookmark.title} width={24} height={24} />
+                      <Image src={bookmark.favicon} alt={bookmark.title} width={24} height={24} className="size-6" />
                     ) : (
                       <GlobeIcon strokeWidth={1.25} className="size-6 text-muted-foreground" />
                     )}
@@ -199,6 +199,13 @@ export function CommandMenu() {
               <CommandItem onSelect={() => runCommand(() => router.push('/sync'))}>
                 <RefreshCwIcon className="size-4" />
                 <span>Synchronize bookmarks</span>
+              </CommandItem>
+            </CommandGroup>
+
+            <CommandGroup>
+              <CommandItem onSelect={() => runCommand(() => router.push('/'))}>
+                <Image src="/bkmark.png" alt="" width={24} height={24} />
+                <span>Home - bkmark</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>
