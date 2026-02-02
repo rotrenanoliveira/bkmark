@@ -1,8 +1,8 @@
-import { useContext } from 'react'
+import { use } from 'react'
 import { FolderContext } from '@/contexts/folders-context'
 
 export function useFolders() {
-  const context = useContext(FolderContext)
+  const context = use(FolderContext)
 
   if (!context) {
     throw new Error('FoldersProvider must be used within FoldersContext')
