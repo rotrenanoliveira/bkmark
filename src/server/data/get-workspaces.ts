@@ -7,7 +7,9 @@ import { workspacesRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
 import type { Workspace } from '@/utils/types'
 
-export async function getWorkspaces(userId: string) {
+type GetWorkspacesParams = { userId: string }
+
+export async function getWorkspaces({ userId }: GetWorkspacesParams) {
   const [cachedWorkspaces, _getCacheError] = await handle(cacheRepository.get<Workspace[]>(`${userId}:workspaces`))
 
   if (cachedWorkspaces) {
@@ -34,4 +36,4 @@ export async function getWorkspaces(userId: string) {
   return workspaces
 }
 
-export const getUserWorkspaces = async (userId: string) => getWorkspaces(userId)
+export const getUserWorkspaces = async (params: GetWorkspacesParams) => getWorkspaces(params)
