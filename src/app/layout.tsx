@@ -29,9 +29,10 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const userId = await getUserId()
+
+  const workspaces = getUserWorkspaces({ userId })
   const bookmarks = getUserBookmarks({ userId })
-  const folders = getUserFolders(userId)
-  const workspaces = getUserWorkspaces(userId)
+  const folders = getUserFolders({ userId })
 
   return (
     <html lang="en" suppressHydrationWarning className="light">

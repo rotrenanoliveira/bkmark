@@ -1,37 +1,16 @@
 'use server'
 
-import { eq } from 'drizzle-orm'
-import { cacheRepository } from '@/infra/cache/cache-repository'
-import { db } from '@/infra/db/drizzle'
-import { foldersRepository } from '@/infra/db/repositories'
-import { handle } from '@/utils/functions'
-import type { Folder } from '@/utils/types'
+import { getFoldersUncategorised } from './get-folders-uncategorised'
+import { getWorkspaceFolders } from './get-workspace-folders'
 
-export async function getFolders(userId: string) {
-  const [cachedFolders, _getCacheError] = await handle(cacheRepository.get<Folder[]>(`${userId}:folders`))
+type GetFoldersParams = { userId: string } | { userId: string; workspaceId: string }
 
-  if (cachedFolders) {
-    return cachedFolders
+export async function getFolders(params: GetFoldersParams) {
+  if ('workspaceId' in params) {
+    return getWorkspaceFolders(params.userId, params.workspaceId)
   }
 
-  const [folders, queryError] = await handle(
-    db
-      .select({
-        folderId: foldersRepository.folderId,
-        userId: foldersRepository.userId,
-        name: foldersRepository.name,
-      })
-      .from(foldersRepository)
-      .where(eq(foldersRepository.userId, userId)),
-  )
-
-  if (queryError) {
-    throw queryError.message
-  }
-
-  await handle(cacheRepository.set(`${userId}:folders`, JSON.stringify(folders)))
-
-  return folders
+  return getFoldersUncategorised(params.userId)
 }
 
-export const getUserFolders = async (userId: string) => getFolders(userId)
+export const getUserFolders = async (params: GetFoldersParams) => getFolders(params)
