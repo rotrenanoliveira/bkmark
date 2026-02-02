@@ -1,0 +1,2 @@
+ALTER TABLE "folders" ADD COLUMN "workspace_id" text;--> statement-breakpoint
+ALTER TABLE "folders" ADD CONSTRAINT "folders_workspace_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."workspaces"("workspace_id") ON DELETE cascade ON UPDATE cascade;

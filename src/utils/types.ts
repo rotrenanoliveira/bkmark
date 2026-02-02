@@ -76,6 +76,18 @@ export const bookmarkUpdateInputSchema = z.object({
 export const folderCreateInputSchema = z.object({
   userId: z.string().min(12, { message: 'Invalid user Id.' }).max(12, { message: 'Invalid user Id.' }),
   name: z.string().min(1, { message: 'Invalid folder name.' }),
+  workspaceId: z
+    .string()
+    .min(12, { message: 'Invalid workspace Id.' })
+    .max(12, { message: 'Invalid workspace Id.' })
+    .nullish(),
+})
+
+/** folder update input */
+export const folderUpdateInputSchema = z.object({
+  folderId: z.string(),
+  workspaceId: z.string().nullish(),
+  // name: z.string().nullish(),
 })
 
 /** folder */
@@ -103,10 +115,12 @@ export type BookmarkPresenter = z.infer<typeof bookmarkPresenterSchema>
 export type BookmarkCreateInput = z.infer<typeof bookmarkCreateInputSchema>
 /** bookmark update input */
 export type BookmarkUpdateInput = z.infer<typeof bookmarkUpdateInputSchema>
-/** folder create input */
-export type FolderCreateInput = z.infer<typeof folderCreateInputSchema>
 /** folder */
 export type Folder = z.infer<typeof folderSchema>
+/** folder create input */
+export type FolderCreateInput = z.infer<typeof folderCreateInputSchema>
+/** folder update input */
+export type FolderUpdateInput = z.infer<typeof folderUpdateInputSchema>
 /** workspace */
 export type Workspace = z.infer<typeof workspaceSchema>
 /** workspace create input */
