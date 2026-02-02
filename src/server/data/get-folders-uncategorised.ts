@@ -1,18 +1,16 @@
 'use server'
 
 import { and, asc, eq, isNull } from 'drizzle-orm'
-import { cacheRepository } from '@/infra/cache/cache-repository'
 import { db } from '@/infra/db/drizzle'
 import { foldersRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
-import type { Folder } from '@/utils/types'
 
 export async function getFoldersUncategorised(userId: string) {
-  const [cachedFolders, _getCacheError] = await handle(cacheRepository.get<Folder[]>(`${userId}:folders`))
+  // const [cachedFolders, _getCacheError] = await handle(cacheRepository.get<Folder[]>(`${userId}:folders`))
 
-  if (cachedFolders) {
-    return cachedFolders
-  }
+  // if (cachedFolders) {
+  //   return cachedFolders
+  // }
 
   const [folders, queryError] = await handle(
     db
@@ -31,7 +29,7 @@ export async function getFoldersUncategorised(userId: string) {
     throw queryError.message
   }
 
-  await handle(cacheRepository.set(`${userId}:folders`, JSON.stringify(folders)))
+  // await handle(cacheRepository.set(`${userId}:folders`, JSON.stringify(folders)))
 
   return folders
 }

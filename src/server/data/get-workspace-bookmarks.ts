@@ -1,18 +1,16 @@
 import { and, desc, eq } from 'drizzle-orm'
-import { cacheRepository } from '@/infra/cache/cache-repository'
 import { db } from '@/infra/db/drizzle'
 import { bookmarksRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
-import type { BookmarkPresenter } from '@/utils/types'
 
 export async function getWorkspaceBookmarks(userId: string, workspaceId: string) {
-  const [bookmarksOnCache, _getCacheError] = await handle(
-    cacheRepository.get<BookmarkPresenter[]>(`${userId}:workspace:${workspaceId}`),
-  )
+  // const [bookmarksOnCache, _getCacheError] = await handle(
+  //   cacheRepository.get<BookmarkPresenter[]>(`${userId}:workspace:${workspaceId}`),
+  // )
 
-  if (bookmarksOnCache) {
-    return bookmarksOnCache
-  }
+  // if (bookmarksOnCache) {
+  //   return bookmarksOnCache
+  // }
 
   const [bookmarks, queryError] = await handle(
     db
@@ -35,7 +33,7 @@ export async function getWorkspaceBookmarks(userId: string, workspaceId: string)
     throw queryError.message
   }
 
-  await handle(cacheRepository.set(`${userId}:workspace:${workspaceId}`, JSON.stringify(bookmarks)))
+  // await handle(cacheRepository.set(`${userId}:workspace:${workspaceId}`, JSON.stringify(bookmarks)))
 
   return bookmarks
 }
