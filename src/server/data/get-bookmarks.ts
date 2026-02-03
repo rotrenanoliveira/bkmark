@@ -9,14 +9,15 @@ type GetBookmarksParams =
   | { userId: string }
   | { userId: string; folderId: string }
   | { userId: string; workspaceId: string }
+  | { userId: string; workspaceId: string; folderId: string | null }
 
 export async function getBookmarks(params: GetBookmarksParams): Promise<BookmarkPresenter[]> {
-  if ('folderId' in params) {
+  if ('folderId' in params && params.folderId) {
     return getFolderBookmarks(params.userId, params.folderId)
   }
 
-  if ('workspaceId' in params) {
-    return getWorkspaceBookmarks(params.userId, params.workspaceId)
+  if ('workspaceId' in params && 'folderId' in params) {
+    return getWorkspaceBookmarks(params.userId, params.workspaceId, params.folderId)
   }
 
   return getUncategorisedBookmarks(params.userId)
