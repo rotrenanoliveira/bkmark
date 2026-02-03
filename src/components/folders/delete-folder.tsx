@@ -8,7 +8,7 @@ import { queryClient } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
 import { actionRemoveFolder } from '@/server/actions/remove-folder'
 import { Button } from '../ui/button'
-import { DropdownMenuItem, DropdownMenuShortcut } from '../ui/dropdown-menu'
+import { DropdownMenuItem } from '../ui/dropdown-menu'
 
 interface DeleteFolderProps {
   folderId: string
@@ -40,7 +40,7 @@ export function DeleteFolder({ folderId }: DeleteFolderProps) {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       // TODO: incluir validação para o windows
-      if (e.metaKey && e.key === 'Backspace') {
+      if (e.metaKey && e.key.toLowerCase() === 'd') {
         e.preventDefault()
         setShortcutPressed(true)
         handleDeleteFolder()
@@ -81,9 +81,14 @@ export function DeleteFolder({ folderId }: DeleteFolderProps) {
           )}
         />
         <span className="relative left-6">Delete</span>
-        <DropdownMenuShortcut>
-          {'\u2318'}+{'\u232B'} {/* Command + Backspace */}
-        </DropdownMenuShortcut>
+        <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist-mono)">
+          <kbd className="flex items-center justify-center tracking-widest border rounded size-5">
+            <span className="text-lg text-foreground/75">{'\u2318'}</span>
+          </kbd>
+          <kbd className="flex items-center justify-center tracking-widest border rounded size-5">
+            <span className="text-xs text-foreground/75">D</span>
+          </kbd>
+        </div>
       </Button>
     </DropdownMenuItem>
   )
