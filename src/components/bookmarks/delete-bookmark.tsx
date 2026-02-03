@@ -2,7 +2,7 @@ import { CircleMinusIcon, CircleXIcon } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu'
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useBookmarks } from '@/hooks/use-bookmarks'
 import { queryClient } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
@@ -37,8 +37,15 @@ export function DeleteBookmark({ bookmarkId, currentFolder }: RemoveBookmarkProp
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        e.target instanceof HTMLInputElement
+      ) {
+        return
+      }
       // TODO: incluir validação para o windows
-      if (e.metaKey && e.key === 'Backspace') {
+      if (e.metaKey && e.key.toLowerCase() === 'd') {
         e.preventDefault()
         setShortcutPressed(true)
         handleDeleteBookmark()
@@ -79,9 +86,15 @@ export function DeleteBookmark({ bookmarkId, currentFolder }: RemoveBookmarkProp
           )}
         />
         <span className="relative left-6">Delete</span>
-        <DropdownMenuShortcut>
-          {'\u2318'}+{'\u232B'} {/* Command + Backspace */}
-        </DropdownMenuShortcut>
+
+        <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist-mono)">
+          <kbd className="flex items-center justify-center tracking-widest border rounded size-5">
+            <span className="text-lg text-foreground/75">{'\u2318'}</span>
+          </kbd>
+          <kbd className="flex items-center justify-center tracking-widest border rounded size-5">
+            <span className="text-xs text-foreground/75">D</span>
+          </kbd>
+        </div>
       </Button>
     </DropdownMenuItem>
   )

@@ -2,7 +2,7 @@ import { PencilIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { Button } from '../ui/button'
-import { DropdownMenuItem, DropdownMenuShortcut } from '../ui/dropdown-menu'
+import { DropdownMenuItem } from '../ui/dropdown-menu'
 
 interface RenameBookmarkProps {
   bookmarkId: string
@@ -15,7 +15,15 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.metaKey && e.shiftKey && e.key.toLowerCase() === 'x') {
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        e.target instanceof HTMLInputElement
+      ) {
+        return
+      }
+
+      if (e.metaKey && e.key.toLowerCase() === 'x') {
         e.preventDefault()
         handleRename()
       }
@@ -30,7 +38,14 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
       <Button variant="ghost" className="w-full relative cursor-pointer" onClick={handleRename}>
         <PencilIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
         <span className="relative left-6">Rename</span>
-        <DropdownMenuShortcut>⌘+⇧+X</DropdownMenuShortcut>
+        <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist)">
+          <kbd className="tracking-widest rounded border size-5 flex items-center justify-center">
+            <span className="text-lg text-foreground/75">⌘</span>
+          </kbd>
+          <kbd className="tracking-widest rounded border size-5 flex items-center justify-center">
+            <span className="text-xs text-foreground/75">X</span>
+          </kbd>
+        </div>
       </Button>
     </DropdownMenuItem>
   )

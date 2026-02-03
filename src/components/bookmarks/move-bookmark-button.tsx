@@ -61,12 +61,12 @@ export function MoveBookmarkButton({ bookmarkId, groupId, groupName, currentGrou
     <DropdownMenuItem asChild>
       <Button
         variant="ghost"
-        className="w-full max-w-32 md:max-w-full relative justify-start cursor-pointer truncate"
+        className="w-full max-w-32 md:max-w-64 relative justify-start cursor-pointer truncate"
         onClick={handleUpdateBookmark}
         disabled={currentGroup === groupId}
       >
         <ArrowBigRightDashIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
-        <p className="relative left-4">{groupName}</p>
+        <p className="relative left-4 truncate">{groupName}</p>
       </Button>
     </DropdownMenuItem>
   )

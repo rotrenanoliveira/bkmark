@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import { useBookmarks } from '@/hooks/use-bookmarks'
 import { useFormState } from '@/hooks/use-form-state'
@@ -20,6 +21,8 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
   const router = useRouter()
 
   const { rename } = useBookmarks()
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const { data, refetch, isLoading } = useQuery({
     queryKey: [`bookmark-${props.bookmarkId}`],
@@ -62,8 +65,13 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
     router.refresh()
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => inputRef.current?.focus(), 0)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
-    <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
+    <form className="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
       <div className="flex gap-2">
         <input type="text" name="bookmark-id" className="hidden" defaultValue={props.bookmarkId} />
         <Input
@@ -73,6 +81,8 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
           className={cn(isLoading && 'animate-pulse')}
           defaultValue={data?.bookmark.title}
           disabled={isLoading}
+          ref={inputRef}
+          autoFocus
         />
 
         <Button type="submit" disabled={isPending}>
