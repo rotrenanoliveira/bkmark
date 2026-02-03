@@ -64,9 +64,11 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => inputRef.current?.focus(), 0)
-    return () => clearTimeout(timer)
-  }, [])
+    if (!isLoading) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 0)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoading])
 
   return (
     <form className="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
