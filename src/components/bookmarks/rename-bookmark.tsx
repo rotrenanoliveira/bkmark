@@ -1,5 +1,6 @@
 import { PencilIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useBounce } from '@/hooks/use-bounce'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
@@ -11,6 +12,9 @@ interface RenameBookmarkProps {
 
 export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
   const [open, setOpen] = useState(false)
+  const { bounce } = useBounce()
+
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   function handleClose() {
     setOpen(false)
@@ -18,6 +22,7 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
 
   function handleSelect(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
+    bounce(buttonRef)
     setOpen(true)
   }
 
@@ -33,13 +38,14 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
 
       if (e.metaKey && e.key.toLowerCase() === 'x') {
         e.preventDefault()
+        bounce(buttonRef)
         setOpen(true)
       }
     }
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [bounce])
 
   return (
     <>
@@ -49,6 +55,7 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
           className="relative w-full cursor-pointer"
           onSelect={handleSelect}
           onClick={handleSelect}
+          ref={buttonRef}
         >
           <PencilIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
           <span className="relative left-6">Rename</span>
