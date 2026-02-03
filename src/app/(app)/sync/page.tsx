@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
+import { SynchronizePageContent } from '@/components/synchronize/synchronize-page-content'
 import { getUserId } from '@/server/data/get-user-id'
-import { SynchronizePageContent } from './_components/synchronize-page-content'
 
 export default async function SynchronizePage() {
   const userId = await getUserId()

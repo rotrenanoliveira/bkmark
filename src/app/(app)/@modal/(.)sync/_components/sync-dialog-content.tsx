@@ -1,6 +1,6 @@
 'use client'
 
-import { SynchronizePageContent } from '@/app/(app)/(forms)/sync/_components/synchronize-page-content'
+import { SynchronizePageContent } from '@/components/synchronize/synchronize-page-content'
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { InterceptDialog } from '@/components/ui/intercept-dialog'
 import { useInterceptModal } from '@/hooks/use-intercept-modal'

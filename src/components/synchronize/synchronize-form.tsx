@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef } from 'react'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useFormState } from '@/hooks/use-form-state'
@@ -11,7 +10,7 @@ interface SyncFormProps {
   onSuccess?: () => void
 }
 
-export function SyncForm(props: SyncFormProps) {
+export function SynchronizeForm(props: SyncFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
 
   const [formState, handleSubmit, isPending] = useFormState(actionSyncUser, {
