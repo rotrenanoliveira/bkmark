@@ -24,10 +24,10 @@ export async function actionMoveFolderToWorkspace({ folderId, workspaceId }: Act
   }
 
   revalidatePath('/', 'layout')
-  revalidatePath(`/folders/${folderId}`, 'page')
+  revalidatePath(`/folders/${folderId}`, 'layout')
 
   if (workspaceId) {
-    revalidatePath(`/workspaces/${workspaceId}`, 'page')
+    revalidatePath(`/workspaces/${workspaceId}`, 'layout')
   }
 
   return { success: true, message: 'Bookmark added to folder.' }

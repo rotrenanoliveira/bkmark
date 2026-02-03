@@ -23,7 +23,7 @@ export async function actionRemoveFolderFromWorkspace({ folderId }: ActionProps)
   }
 
   revalidatePath('/', 'layout')
-  revalidatePath(`/workspaces/${currentFolder?.workspaceId}`, 'page')
+  revalidatePath(`/workspaces/${currentFolder?.workspaceId}`, 'layout')
 
   return { success: true, message: 'Bookmark added to folder.' }
 }
