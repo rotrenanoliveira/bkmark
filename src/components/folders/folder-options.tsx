@@ -3,8 +3,10 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { Folder } from '@/utils/types'
 import { DeleteFolder } from './delete-folder'
+import { GoToFolderButton } from './go-to-folder'
 import { MoveFolder } from './move-folder'
 import { RemoveFolderFromWorkspace } from './remove-folder-from-workspace'
+import { RenameFolderButton } from './rename-folder'
 
 interface FolderOptionsProps {
   folder: Folder
@@ -24,7 +26,9 @@ export function FolderOptions({ folder }: FolderOptionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 space-y-1" align="end">
-        {/* <RenameFolder folderId={folder.folderId} /> */}
+        <GoToFolderButton folderId={folder.folderId} />
+
+        <RenameFolderButton folderId={folder.folderId} />
 
         <DeleteFolder folderId={folder.folderId} currentWorkspace={folder.workspaceId} />
 

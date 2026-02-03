@@ -86,8 +86,8 @@ export const folderCreateInputSchema = z.object({
 /** folder update input */
 export const folderUpdateInputSchema = z.object({
   folderId: z.string(),
+  name: z.string().nullish(),
   workspaceId: z.string().nullish(),
-  // name: z.string().nullish(),
 })
 
 /** folder */

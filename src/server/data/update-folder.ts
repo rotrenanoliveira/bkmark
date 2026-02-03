@@ -10,6 +10,11 @@ export async function updateFolder(data: FolderUpdateInput): Promise<[null, null
     return [null, { success: false, message: 'Invalid parameters.' }]
   }
 
+  const queryData = {
+    ...(data.workspaceId !== undefined && { workspaceId: data.workspaceId }),
+    ...(data.name && { name: data.name }),
+  }
+
   const [folderResult, mutationResult] = await db.transaction(async (tx) => {
     const folderResult = await handle(
       tx
@@ -23,10 +28,7 @@ export async function updateFolder(data: FolderUpdateInput): Promise<[null, null
     )
 
     const mutationResult = await handle(
-      tx
-        .update(foldersRepository)
-        .set({ workspaceId: data.workspaceId })
-        .where(eq(foldersRepository.folderId, data.folderId)),
+      tx.update(foldersRepository).set(queryData).where(eq(foldersRepository.folderId, data.folderId)),
     )
 
     return [folderResult, mutationResult]
