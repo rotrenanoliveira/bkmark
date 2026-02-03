@@ -29,7 +29,7 @@ export function Providers({
             <FoldersProvider foldersPromise={foldersPromise}>{children}</FoldersProvider>
           </WorkspacesProvider>
         </BookmarkProvider>
-        <Toaster richColors />
+        <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
   )
