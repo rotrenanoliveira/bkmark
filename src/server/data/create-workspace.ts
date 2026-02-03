@@ -1,11 +1,10 @@
-import type { QueryResult } from '@neondatabase/serverless'
 import { cacheRepository } from '@/infra/cache/cache-repository'
 import { db } from '@/infra/db/drizzle'
 import { workspacesRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
 import type { ResponseError, WorkspaceCreateInput } from '@/utils/types'
 
-type WorkspaceInsertResponse = QueryResult<never>
+type WorkspaceInsertResponse = { workspaceId: string }[]
 
 /**
  * Insert a new workspace into the database
@@ -15,12 +14,17 @@ type WorkspaceInsertResponse = QueryResult<never>
 export async function createWorkspace(
   data: WorkspaceCreateInput,
 ): Promise<[WorkspaceInsertResponse, null] | [null, ResponseError]> {
-  const [result] = await Promise.all([
+  const [result, _] = await Promise.all([
     handle(
-      db.insert(workspacesRepository).values({
-        userId: data.userId,
-        name: data.name,
-      }),
+      db
+        .insert(workspacesRepository)
+        .values({
+          userId: data.userId,
+          name: data.name,
+        })
+        .returning({
+          workspaceId: workspacesRepository.workspaceId,
+        }),
     ),
     cacheRepository.delete(`${data.userId}:workspaces`),
   ])

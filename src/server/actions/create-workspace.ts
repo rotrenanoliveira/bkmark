@@ -34,5 +34,5 @@ export async function actionCreateWorkspace(data: FormData) {
 
   revalidatePath('/', 'layout')
 
-  return { success: true, message: 'Workspace created successfully.' }
+  return { success: true, message: `Workspace ${formResult.data.workspace} created successfully.` }
 }

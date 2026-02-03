@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { formatZodError } from '@/utils/functions'
 import { createBookmark } from '../data/create-bookmark'
@@ -62,12 +61,12 @@ export async function actionCreateBookmark(data: FormData) {
 
   if (folderId) {
     revalidatePath(`/folders/${folderId}`, 'layout')
-    redirect(`/folders/${folderId}`)
+    // redirect(`/folders/${folderId}`)
   }
 
   if (workspaceId) {
     revalidatePath(`/workspaces/${workspaceId}`, 'layout')
-    redirect(`/workspaces/${workspaceId}`)
+    // redirect(`/workspaces/${workspaceId}`)
   }
 
   return { success: true, message: 'Bookmark added successfully.' }
