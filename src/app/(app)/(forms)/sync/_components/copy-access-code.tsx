@@ -1,7 +1,7 @@
 'use client'
 
 import { CheckIcon, CopyIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -19,11 +19,19 @@ export function CopyAccessCode({ userId }: CopyAccessCodeProps) {
     setTimeout(() => setIsCopied(false), 1000)
   }
 
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const timer = setTimeout(() => buttonRef.current?.focus(), 0)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <Button
       variant="ghost"
       onClick={handleCopy}
       className="relative p-2 size-8 cursor-pointer hover:bg-muted-foreground/25"
+      ref={buttonRef}
     >
       <CopyIcon
         className={cn(
