@@ -20,6 +20,10 @@ export async function getBookmarks(params: GetBookmarksParams): Promise<Bookmark
     return getWorkspaceBookmarks(params.userId, params.workspaceId, params.folderId)
   }
 
+  if ('workspaceId' in params && !('folderId' in params)) {
+    return getWorkspaceBookmarks(params.userId, params.workspaceId, null)
+  }
+
   return getUncategorisedBookmarks(params.userId)
 }
 
