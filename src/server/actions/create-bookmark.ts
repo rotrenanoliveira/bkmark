@@ -2,7 +2,6 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { formatZodError } from '@/utils/functions'
 import { createBookmark } from '../data/create-bookmark'
 import { getUrlData } from '../data/get-url-data'
 import { getUserId } from '../data/get-user-id'
@@ -11,20 +10,18 @@ const addBookmarkSchema = z.object({
   url: z
     .string()
     .transform((value) => (value.includes('://') ? value : `https://${value}`))
-    .refine((value) => value.match(/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/)),
-  folder: z.string().nullish(),
-  workspace: z.string().nullish(),
+    .refine((value) => value.match(/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/), {
+      message: 'Invalid URL',
+    }),
+  folder: z.string().min(1, { message: 'Invalid folder id' }).max(12, { message: 'Invalid folder id' }).nullish(),
+  workspace: z.string().min(1, { message: 'Invalid folder id' }).max(12, { message: 'Invalid folder id' }).nullish(),
 })
 
 export async function actionCreateBookmark(data: FormData) {
   const formResult = addBookmarkSchema.safeParse(Object.fromEntries(data))
 
   if (formResult.success === false) {
-    const zodErrors = formatZodError(formResult.error)
-    const validationErrors = { error: [`Validation Error at ${zodErrors[0].field} - ${zodErrors[0].message}`] }
-    const message = validationErrors.error.join('. ')
-
-    return { success: false, message }
+    return { success: false, message: z.prettifyError(formResult.error).replace('✖ ', '') }
   }
 
   const isYouTubeVideo =

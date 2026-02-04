@@ -2,8 +2,6 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-
-import { formatZodError } from '@/utils/functions'
 import { updateBookmark } from '../data/update-bookmark'
 
 const renameBookmarkSchema = z.object({
@@ -15,11 +13,7 @@ export async function actionRenameBookmark(data: FormData) {
   const formResult = renameBookmarkSchema.safeParse(Object.fromEntries(data))
 
   if (formResult.success === false) {
-    const zodErrors = formatZodError(formResult.error)
-    const validationErrors = { error: [`Validation Error at ${zodErrors[0].field} - ${zodErrors[0].message}`] }
-    const message = validationErrors.error.join('. ')
-
-    return { success: false, message }
+    return { success: false, message: z.prettifyError(formResult.error).replace('✖ ', '') }
   }
 
   const [_, updateError] = await updateBookmark({
