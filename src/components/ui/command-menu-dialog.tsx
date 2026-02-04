@@ -3,7 +3,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import type { Content } from '../command-menu-slash'
+import type { Content } from '../command-menu'
 import { DialogOverlay, DialogPortal } from './dialog'
 
 function DialogContent({
