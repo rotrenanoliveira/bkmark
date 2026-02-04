@@ -1,7 +1,7 @@
 'use server'
 
 import type { BookmarkPresenter } from '@/utils/types'
-import { getUncategorisedBookmarks } from './get-bookmarks-uncategorised'
+import { getBookmarksUncategorised } from './get-bookmarks-uncategorised'
 import { getFolderBookmarks } from './get-folder-bookmarks'
 import { getWorkspaceBookmarks } from './get-workspace-bookmarks'
 
@@ -24,7 +24,7 @@ export async function getBookmarks(params: GetBookmarksParams): Promise<Bookmark
     return getWorkspaceBookmarks(params.userId, params.workspaceId, null)
   }
 
-  return getUncategorisedBookmarks(params.userId)
+  return getBookmarksUncategorised(params.userId)
 }
 
 export const getUserBookmarks = async (params: GetBookmarksParams) => getBookmarks(params)

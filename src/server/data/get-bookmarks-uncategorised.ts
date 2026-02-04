@@ -3,7 +3,7 @@ import { db } from '@/infra/db/drizzle'
 import { bookmarksRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
 
-export async function getUncategorisedBookmarks(userId: string) {
+export async function getBookmarksUncategorised(userId: string) {
   // const [cachedBookmarks, _getCacheError] = await handle(
   //   cacheRepository.get<BookmarkPresenter[]>(`${userId}:bookmarks`),
   // )
