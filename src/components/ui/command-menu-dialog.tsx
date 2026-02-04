@@ -2,7 +2,6 @@
 
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as React from 'react'
-
 import { cn } from '@/lib/utils'
 import type { Content } from '../command-menu-slash'
 import { DialogOverlay, DialogPortal } from './dialog'
@@ -17,7 +16,9 @@ function DialogContent({
   showCloseButton?: boolean
   setContent?: React.Dispatch<React.SetStateAction<Content>>
 }) {
-  const handleClose = React.useCallback(() => setContent?.('command-menu'), [setContent])
+  const handleClose = React.useCallback(() => {
+    setTimeout(() => setContent?.('command-menu'), 100)
+  }, [setContent])
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
