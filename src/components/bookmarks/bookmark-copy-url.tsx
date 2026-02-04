@@ -1,5 +1,6 @@
 import { CheckIcon, CopyIcon } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
@@ -13,39 +14,18 @@ export function BookmarkCopyUrl({ bookmarkUrl }: BookmarkCopyProps) {
 
   const commandTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
-  const handleCopyBookmark = useCallback(() => navigator.clipboard.writeText(bookmarkUrl), [bookmarkUrl])
+  const handleCopyBookmark = useCallback(() => {
+    setHasCopied(true)
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        e.target instanceof HTMLInputElement
-      ) {
-        return
-      }
-      // TODO: incluir validação para o windows
-      // TODO: mudar comando para command + c / ctrl + c
-      if (e.metaKey && e.key.toLowerCase() === 'c') {
-        e.preventDefault()
-
-        setHasCopied(true)
-        handleCopyBookmark()
-
-        commandTimeoutRef.current = setTimeout(() => setHasCopied(false), 1000)
-      }
+    if (commandTimeoutRef.current) {
+      clearTimeout(commandTimeoutRef.current)
     }
 
-    document.addEventListener('keydown', down)
+    commandTimeoutRef.current = setTimeout(() => setHasCopied(false), 1000)
+    navigator.clipboard.writeText(bookmarkUrl)
+  }, [bookmarkUrl])
 
-    return () => {
-      document.removeEventListener('keydown', down)
-
-      if (commandTimeoutRef.current) {
-        clearTimeout(commandTimeoutRef.current)
-      }
-    }
-  }, [handleCopyBookmark])
+  useKeyboardShortcut('c', handleCopyBookmark, ['Mod'])
 
   return (
     <DropdownMenuItem asChild>

@@ -1,6 +1,7 @@
 import { PencilIcon } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useBounce } from '@/hooks/use-bounce'
+import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
@@ -20,31 +21,12 @@ export function RenameFolderButton({ folderId }: RenameFolderProps) {
     setOpen(false)
   }
 
-  function handleSelect(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
+  const handleSelect = useCallback(() => {
+    bounce(buttonRef)
     setOpen(true)
-  }
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        e.target instanceof HTMLInputElement
-      ) {
-        return
-      }
-
-      if (e.metaKey && e.key.toLowerCase() === 'x') {
-        e.preventDefault()
-        bounce(buttonRef)
-        setOpen(true)
-      }
-    }
-
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
   }, [bounce])
+
+  useKeyboardShortcut('x', handleSelect, ['Mod'])
 
   return (
     <>

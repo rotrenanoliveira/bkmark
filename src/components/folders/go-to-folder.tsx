@@ -1,7 +1,8 @@
 import { ArrowRightIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { useBounce } from '@/hooks/use-bounce'
+import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { Button } from '../ui/button'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 
@@ -15,28 +16,12 @@ export function GoToFolderButton({ folderId }: GoToFolderButtonProps) {
 
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const handleSelect = useCallback(() => router.push(`/folders/${folderId}`), [folderId, router.push])
+  const handleSelect = useCallback(() => {
+    bounce(buttonRef)
+    router.push(`/folders/${folderId}`)
+  }, [bounce, folderId, router.push])
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        e.target instanceof HTMLInputElement
-      ) {
-        return
-      }
-
-      if (e.metaKey && e.key === 'ArrowRight') {
-        e.preventDefault()
-        bounce(buttonRef)
-        handleSelect()
-      }
-    }
-
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [bounce, handleSelect])
+  useKeyboardShortcut('ArrowRight', handleSelect, ['Mod'])
 
   return (
     <DropdownMenuItem asChild>

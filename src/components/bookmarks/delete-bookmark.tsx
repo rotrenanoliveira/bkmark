@@ -1,11 +1,11 @@
-import { CircleMinusIcon, CircleXIcon } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
+import { CircleXIcon } from 'lucide-react'
+import { useCallback, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useBookmarks } from '@/hooks/use-bookmarks'
+import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { queryClient } from '@/lib/react-query'
-import { cn } from '@/lib/utils'
 import { actionRemoveBookmark } from '@/server/actions/remove-bookmark'
 
 interface RemoveBookmarkProps {
@@ -14,10 +14,8 @@ interface RemoveBookmarkProps {
 }
 
 export function DeleteBookmark({ bookmarkId, currentFolder }: RemoveBookmarkProps) {
-  const [shortcutPressed, setShortcutPressed] = useState(false)
   const [isPending, startTransition] = useTransition()
 
-  const commandTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const { remove } = useBookmarks()
 
   const handleDeleteBookmark = useCallback(async () => {
@@ -35,56 +33,17 @@ export function DeleteBookmark({ bookmarkId, currentFolder }: RemoveBookmarkProp
     })
   }, [remove, bookmarkId, currentFolder])
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        e.target instanceof HTMLInputElement
-      ) {
-        return
-      }
-      // TODO: incluir validação para o windows
-      if (e.metaKey && e.key.toLowerCase() === 'd') {
-        e.preventDefault()
-        setShortcutPressed(true)
-        handleDeleteBookmark()
-
-        commandTimeoutRef.current = setTimeout(() => setShortcutPressed(false), 1000)
-      }
-    }
-
-    document.addEventListener('keydown', down)
-
-    return () => {
-      document.removeEventListener('keydown', down)
-
-      if (commandTimeoutRef.current) {
-        clearTimeout(commandTimeoutRef.current)
-      }
-    }
-  }, [handleDeleteBookmark])
+  useKeyboardShortcut('d', handleDeleteBookmark, ['Mod'])
 
   return (
     <DropdownMenuItem asChild>
       <Button
         variant="ghost"
-        className={cn('w-full relative cursor-pointer', shortcutPressed && 'bg-accent')}
+        className="w-full relative cursor-pointer"
         onClick={handleDeleteBookmark}
         disabled={isPending}
       >
-        <CircleXIcon
-          className={cn(
-            'absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out',
-            shortcutPressed ? 'scale-75 opacity-0' : 'scale-100 opacity-100',
-          )}
-        />
-        <CircleMinusIcon
-          className={cn(
-            'absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out',
-            shortcutPressed ? 'scale-100 opacity-100' : 'scale-75 opacity-0',
-          )}
-        />
+        <CircleXIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
         <span className="relative left-6">Delete</span>
 
         <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist-mono)">

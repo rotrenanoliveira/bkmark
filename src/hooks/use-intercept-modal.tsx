@@ -1,7 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useCallback, useState } from 'react'
+import { useKeyboardShortcut } from './use-keyboard-shortcuts'
 
 type UseInterceptModalReturn = {
   open: boolean
@@ -13,36 +14,12 @@ export function useInterceptModal(): UseInterceptModalReturn {
   const [open, setOpen] = useState(true)
   const router = useRouter()
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     setOpen(false)
     router.back()
-  }
+  }, [router.back])
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        e.target instanceof HTMLInputElement
-      ) {
-        return
-      }
+  useKeyboardShortcut('Escape', handleClose, [])
 
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        console.log('pressed')
-        router.back()
-        setOpen(false)
-      }
-    }
-
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [router])
-
-  return {
-    open,
-    setOpen,
-    handleClose,
-  }
+  return { open, setOpen, handleClose }
 }
