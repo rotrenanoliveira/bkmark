@@ -1,6 +1,6 @@
 'use server'
 
-import { formatZodError } from '@/utils/functions'
+import z from 'zod'
 import { type ResponseError, type UrlData, type UrlDataFetcher, urlDataSchema } from '@/utils/types'
 import { axiosFetcher, kyFetcher, mqlFetcher, mqlYouTubeFetcher } from '@/utils/url-data-fetcher'
 import { youtubeMetadataFetcher } from '@/utils/youtube-api'
@@ -93,11 +93,7 @@ export async function getUrlData({
   })
 
   if (urlData.success === false) {
-    const zodErrors = formatZodError(urlData.error)
-    const validationErrors = { error: [`Validation Error at ${zodErrors[0].field} - ${zodErrors[0].message}`] }
-    const message = validationErrors.error.join('. ')
-
-    return [null, { success: false, message }]
+    return [null, { success: false, message: z.prettifyError(urlData.error).replace('✖ ', '') }]
   }
 
   return [urlData.data, null]

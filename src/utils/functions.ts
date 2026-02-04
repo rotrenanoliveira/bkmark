@@ -1,4 +1,4 @@
-import type { ZodError } from 'zod'
+import { type ZodError, z } from 'zod'
 import type { ResponseError } from './types'
 
 /** waits for a given amount of time */
@@ -34,10 +34,10 @@ export async function handle<T>(query: Promise<T>): Promise<[T, null] | [null, R
 }
 
 /** formats ZodError to an array of objects */
-export const formatZodError = (error: ZodError) => {
-  const errors = Object.entries(error.flatten().fieldErrors as Record<string, string[]>)
-    .map(([key, value]) => ({ field: key, message: value[0] }))
-    .filter(({ message }) => message)
+export const formatZodError = <T>(error: ZodError<T>) => {
+  const pretty = z.prettifyError(error).replaceAll('\n', '').replaceAll('✖', '')
+  const fields = z.flattenError(error).fieldErrors
+  const message = Object.values(fields).flat()[0]
 
-  return errors
+  return { pretty, fields, message }
 }
