@@ -5,6 +5,7 @@ import { ArrowRightIcon, GlobeIcon, PlusIcon, RefreshCwIcon, SearchIcon } from '
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { searchBookmarks } from '@/server/data/search-bookmarks'
 import { searchFolders } from '@/server/data/search-folders'
 import { searchWorkspaces } from '@/server/data/search-workspaces'
@@ -36,30 +37,8 @@ export function CommandMenu() {
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        e.target instanceof HTMLInputElement
-      ) {
-        return
-      }
-
-      if (e.key === '/') {
-        e.preventDefault()
-        setOpen((open) => !open)
-      }
-
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        handleClose()
-      }
-    }
-
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [handleClose])
+  useKeyboardShortcut('/', () => setOpen((open) => !open), [])
+  useKeyboardShortcut('Escape', handleClose, [], { preventDefault: false })
 
   useEffect(() => console.log(content), [content])
 
