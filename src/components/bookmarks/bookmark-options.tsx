@@ -2,8 +2,8 @@ import { Ellipsis } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { BookmarkPresenter } from '@/utils/types'
-import { BookmarkCopyUrl } from './bookmark-copy-url'
 import { BookmarkRemoveFromFolderButton } from './bookmark-remove-from-folder'
+import { CopyBookmarkUrl } from './copy-bookmark-url'
 import { DeleteBookmark } from './delete-bookmark'
 import { MoveBookmarks } from './move-bookmarks'
 import { RenameBookmark } from './rename-bookmark'
@@ -26,7 +26,7 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 space-y-1" align="end">
-        <BookmarkCopyUrl bookmarkUrl={bookmark.bookmarkUrl} />
+        <CopyBookmarkUrl bookmarkUrl={bookmark.bookmarkUrl} />
 
         <RenameBookmark bookmarkId={bookmark.bookmarkId} />
 

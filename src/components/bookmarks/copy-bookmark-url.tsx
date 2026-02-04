@@ -5,11 +5,11 @@ import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 
-interface BookmarkCopyProps {
+interface CopyBookmarkUrlProps {
   bookmarkUrl: string
 }
 
-export function BookmarkCopyUrl({ bookmarkUrl }: BookmarkCopyProps) {
+export function CopyBookmarkUrl({ bookmarkUrl }: CopyBookmarkUrlProps) {
   const [hasCopied, setHasCopied] = useState(false)
 
   const commandTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
