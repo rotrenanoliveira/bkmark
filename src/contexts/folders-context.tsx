@@ -2,12 +2,16 @@ import { createContext, use, useCallback, useMemo, useOptimistic } from 'react'
 import { generateNanoId } from '@/lib/nanoid'
 import type { Folder } from '@/utils/types'
 
-type FolderAction = { type: 'ADD'; payload: { name: string } } | { type: 'REMOVE'; payload: { folderId: string } }
+type FolderAction =
+  | { type: 'ADD'; payload: { name: string } }
+  | { type: 'REMOVE'; payload: { folderId: string } }
+  | { type: 'RENAME'; payload: { folderId: string; name: string } }
 
 type FolderContextType = {
   folders: Folder[]
   create: (name: string) => void
   remove: (id: string) => void
+  rename: ({ folderId, name }: { folderId: string; name: string }) => void
 }
 
 export const FolderContext = createContext<FolderContextType | undefined>(undefined)
@@ -23,6 +27,10 @@ function folderReducer(state: Folder[], action: FolderAction): Folder[] {
           name: action.payload.name,
         },
       ]
+    case 'RENAME':
+      return state.map((folder) =>
+        folder.folderId === action.payload.folderId ? { ...folder, name: action.payload.name } : folder,
+      )
     case 'REMOVE':
       return state.filter((folder) => folder.folderId !== action.payload.folderId)
     default:
@@ -45,12 +53,21 @@ export function FoldersProvider({
     [setOptimisticFolders],
   )
 
+  const rename = useCallback(
+    ({ folderId, name }: { folderId: string; name: string }) =>
+      setOptimisticFolders({ type: 'RENAME', payload: { folderId, name } }),
+    [setOptimisticFolders],
+  )
+
   const remove = useCallback(
     (folderId: string) => setOptimisticFolders({ type: 'REMOVE', payload: { folderId } }),
     [setOptimisticFolders],
   )
 
-  const value = useMemo(() => ({ folders: optimisticFolders, create, remove }), [optimisticFolders, create, remove])
+  const value = useMemo(
+    () => ({ folders: optimisticFolders, create, rename, remove }),
+    [optimisticFolders, create, rename, remove],
+  )
 
   return <FolderContext.Provider value={value}>{children}</FolderContext.Provider>
 }

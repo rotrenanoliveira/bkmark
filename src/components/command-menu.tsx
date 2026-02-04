@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { searchBookmarks } from '@/server/data/search-bookmarks'
 import { searchFolders } from '@/server/data/search-folders'
+import { searchWorkspaces } from '@/server/data/search-workspaces'
 import { Button } from './ui/button'
 import {
   Command,
@@ -41,6 +42,11 @@ export function CommandMenu() {
     queryFn: () => searchFolders(searchValue),
   })
 
+  const queryWorkspaces = useQuery({
+    queryKey: ['search-workspaces', searchValue],
+    queryFn: () => searchWorkspaces(searchValue),
+  })
+
   const searchTimeoutRef = React.useRef<NodeJS.Timeout | undefined>(undefined)
 
   const handleSearchChange = React.useCallback((value: string) => {
@@ -73,9 +79,10 @@ export function CommandMenu() {
     return () => document.removeEventListener('keydown', down)
   }, [])
 
-  const isLoading = queryBookmarks.isLoading || queryFolders.isLoading
-  const isError = queryBookmarks.isError || queryFolders.isError
-  const isEmpty = queryBookmarks.data?.length === 0 && queryFolders.data?.length === 0
+  const isLoading = queryBookmarks.isLoading || queryFolders.isLoading || queryWorkspaces.isLoading
+  const isError = queryBookmarks.isError || queryFolders.isError || queryWorkspaces.isError
+  const isEmpty =
+    queryBookmarks.data?.length === 0 && queryFolders.data?.length === 0 && queryWorkspaces.data?.length === 0
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -123,11 +130,11 @@ export function CommandMenu() {
                 queryBookmarks.data.map((bookmark) => (
                   <CommandItem
                     key={bookmark.id}
-                    value={`${bookmark.title} ${bookmark.url}`}
+                    value={`${bookmark.title} ${bookmark.url} ${bookmark.id}`}
                     onSelect={() => runCommand(() => window.open(bookmark.url, '_blank', 'noopener, noreferrer'))}
                   >
                     {bookmark.favicon ? (
-                      <Image src={bookmark.favicon} alt={bookmark.title} width={24} height={24} />
+                      <Image src={bookmark.favicon} alt={bookmark.title} width={24} height={24} className="size-6" />
                     ) : (
                       <GlobeIcon strokeWidth={1.25} className="size-6 text-muted-foreground" />
                     )}
@@ -165,8 +172,22 @@ export function CommandMenu() {
               </CommandItem>
             </CommandGroup>
 
-            <CommandGroup heading="Workspace">
-              <CommandItem onSelect={() => runCommand(() => router.push('/workspaces/new'))} disabled>
+            <CommandGroup heading="Workspaces">
+              {queryWorkspaces.data &&
+                queryWorkspaces.data.length > 0 &&
+                queryWorkspaces.data.map((workspace) => (
+                  <CommandItem
+                    key={workspace.id}
+                    value={workspace.name}
+                    onSelect={() => runCommand(() => router.push(`/workspaces/${workspace.id}`))}
+                  >
+                    <ArrowRightIcon className="size-6 text-foreground" />
+                    <span>Go to</span>
+                    <p className="font-semibold truncate flex-1">{workspace.name}</p>
+                  </CommandItem>
+                ))}
+
+              <CommandItem onSelect={() => runCommand(() => router.push('/workspaces/new'))}>
                 <PlusIcon className="size-4" />
                 <span>Create new workspace...</span>
               </CommandItem>
@@ -178,6 +199,13 @@ export function CommandMenu() {
               <CommandItem onSelect={() => runCommand(() => router.push('/sync'))}>
                 <RefreshCwIcon className="size-4" />
                 <span>Synchronize bookmarks</span>
+              </CommandItem>
+            </CommandGroup>
+
+            <CommandGroup>
+              <CommandItem onSelect={() => runCommand(() => router.push('/'))}>
+                <Image src="/bkmark.png" alt="" width={24} height={24} />
+                <span>Home - bkmark</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>

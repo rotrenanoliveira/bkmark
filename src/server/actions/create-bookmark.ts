@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { formatZodError } from '@/utils/functions'
 import { createBookmark } from '../data/create-bookmark'
@@ -14,6 +13,7 @@ const addBookmarkSchema = z.object({
     .transform((value) => (value.includes('://') ? value : `https://${value}`))
     .refine((value) => value.match(/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/)),
   folder: z.string().nullish(),
+  workspace: z.string().nullish(),
 })
 
 export async function actionCreateBookmark(data: FormData) {
@@ -40,10 +40,12 @@ export async function actionCreateBookmark(data: FormData) {
   const bookmark = bookmarkData ? { ...bookmarkData, userId } : { title: 'No title', bookmarkUrl: formResult.data.url }
 
   const folderId = formResult.data.folder
+  const workspaceId = formResult.data.workspace
 
   const [_, actionError] = await createBookmark({
     ...bookmark,
-    folderId,
+    ...(folderId && { folderId }),
+    ...(workspaceId && { workspaceId }),
     userId,
   })
 
@@ -59,7 +61,12 @@ export async function actionCreateBookmark(data: FormData) {
 
   if (folderId) {
     revalidatePath(`/folders/${folderId}`, 'layout')
-    redirect(`/folders/${folderId}`)
+    // redirect(`/folders/${folderId}`)
+  }
+
+  if (workspaceId) {
+    revalidatePath(`/workspaces/${workspaceId}`, 'layout')
+    // redirect(`/workspaces/${workspaceId}`)
   }
 
   return { success: true, message: 'Bookmark added successfully.' }

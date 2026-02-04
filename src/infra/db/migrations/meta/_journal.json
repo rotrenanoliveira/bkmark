@@ -15,6 +15,27 @@
       "when": 1765457337510,
       "tag": "0001_melodic_grim_reaper",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769715012266,
+      "tag": "0002_skinny_smasher",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769773197069,
+      "tag": "0003_sturdy_goliath",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770039452550,
+      "tag": "0004_tense_gravity",
+      "breakpoints": true
     }
   ]
 }

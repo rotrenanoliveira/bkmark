@@ -6,6 +6,10 @@ export async function wait(ms = 1000) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+export function random(max = 100) {
+  return Math.floor(Math.random() * max)
+}
+
 /**
  * Handles errors from callback function
  *

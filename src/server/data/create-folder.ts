@@ -19,6 +19,7 @@ export async function createFolder(
       db.insert(foldersRepository).values({
         userId: data.userId,
         name: data.name,
+        workspaceId: data.workspaceId,
       }),
     ),
     cacheRepository.delete(`${data.userId}:folders`),

@@ -4,7 +4,7 @@ import { Bookmark } from '@/components/bookmarks/bookmark'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
 import type { Bookmark as BookmarksType, Folder as FolderType } from '@/utils/types'
-import { RemoveFolder } from './remove-folder'
+import { FolderOptions } from './folder-options'
 
 interface FolderProps {
   folder: FolderType
@@ -23,7 +23,7 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
           <span className="w-56 sm:w-[calc(100%-80px)] truncate">{folder.name}</span>
         </CollapsibleTrigger>
 
-        <RemoveFolder folderId={folder.folderId} />
+        <FolderOptions folder={folder} />
       </div>
 
       <CollapsibleContent className="mt-2 pl-8 space-y-2">

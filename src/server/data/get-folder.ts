@@ -12,6 +12,7 @@ export async function getFolder(folderId: string) {
         folderId: foldersRepository.folderId,
         userId: foldersRepository.userId,
         name: foldersRepository.name,
+        workspaceId: foldersRepository.workspaceId,
       })
       .from(foldersRepository)
       .where(eq(foldersRepository.folderId, folderId)),

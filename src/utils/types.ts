@@ -49,6 +49,7 @@ export const bookmarkSchema = z.object({
   ogImage: z.string().nullish(),
   createdAt: z.coerce.date(),
   folderId: z.string().nullish(),
+  workspaceId: z.string().nullish(),
 })
 
 /** bookmark presenter */
@@ -66,19 +67,44 @@ export const bookmarkCreateInputSchema = bookmarkSchema.omit({
 /** bookmark update input */
 export const bookmarkUpdateInputSchema = z.object({
   bookmarkId: z.string(),
-  folderId: z.string().nullish(),
   title: z.string().nullish(),
+  folderId: z.string().nullish(),
+  workspaceId: z.string().nullish(),
 })
 
 /** folder create input */
 export const folderCreateInputSchema = z.object({
   userId: z.string().min(12, { message: 'Invalid user Id.' }).max(12, { message: 'Invalid user Id.' }),
   name: z.string().min(1, { message: 'Invalid folder name.' }),
+  workspaceId: z
+    .string()
+    .min(12, { message: 'Invalid workspace Id.' })
+    .max(12, { message: 'Invalid workspace Id.' })
+    .nullish(),
+})
+
+/** folder update input */
+export const folderUpdateInputSchema = z.object({
+  folderId: z.string(),
+  name: z.string().nullish(),
+  workspaceId: z.string().nullish(),
 })
 
 /** folder */
 export const folderSchema = folderCreateInputSchema.extend({
-  folderId: z.string().min(12, { message: 'Invalid user Id.' }).max(12, { message: 'Invalid user Id.' }),
+  folderId: z.string().min(12, { message: 'Invalid folder Id.' }).max(12, { message: 'Invalid folder Id.' }),
+})
+
+/** workspace */
+export const workspaceSchema = z.object({
+  workspaceId: z.string().min(12, { message: 'Invalid workspace Id.' }).max(12, { message: 'Invalid workspace Id.' }),
+  userId: z.string().min(12, { message: 'Invalid user Id.' }).max(12, { message: 'Invalid user Id.' }),
+  name: z.string().min(1, { message: 'Invalid folder name.' }),
+})
+
+/** workspace create input */
+export const workspaceCreateInputSchema = workspaceSchema.omit({
+  workspaceId: true,
 })
 
 /** bookmark */
@@ -89,10 +115,16 @@ export type BookmarkPresenter = z.infer<typeof bookmarkPresenterSchema>
 export type BookmarkCreateInput = z.infer<typeof bookmarkCreateInputSchema>
 /** bookmark update input */
 export type BookmarkUpdateInput = z.infer<typeof bookmarkUpdateInputSchema>
-/** folder create input */
-export type FolderCreateInput = z.infer<typeof folderCreateInputSchema>
 /** folder */
 export type Folder = z.infer<typeof folderSchema>
+/** folder create input */
+export type FolderCreateInput = z.infer<typeof folderCreateInputSchema>
+/** folder update input */
+export type FolderUpdateInput = z.infer<typeof folderUpdateInputSchema>
+/** workspace */
+export type Workspace = z.infer<typeof workspaceSchema>
+/** workspace create input */
+export type WorkspaceCreateInput = z.infer<typeof workspaceCreateInputSchema>
 /** standard response error */
 export type ResponseError = z.infer<typeof responseError>
 /** bookmark data fetcher */

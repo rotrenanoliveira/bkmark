@@ -30,10 +30,12 @@ export async function createBookmark(
         description: data.description,
         ogImage: data.ogImage,
         folderId: data.folderId,
+        workspaceId: data.workspaceId,
       }),
     ),
     cacheRepository.delete(`${data.userId}:bookmarks`),
     cacheRepository.delete(`${data.userId}:folder:${data.folderId}`),
+    cacheRepository.delete(`${data.userId}:workspace:${data.workspaceId}`),
   ])
 
   return result

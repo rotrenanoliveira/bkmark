@@ -2,7 +2,7 @@ import { CheckIcon, CopyIcon } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
-import { DropdownMenuItem, DropdownMenuShortcut } from '../ui/dropdown-menu'
+import { DropdownMenuItem } from '../ui/dropdown-menu'
 
 interface BookmarkCopyProps {
   bookmarkUrl: string
@@ -17,9 +17,16 @@ export function BookmarkCopyUrl({ bookmarkUrl }: BookmarkCopyProps) {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        e.target instanceof HTMLInputElement
+      ) {
+        return
+      }
       // TODO: incluir validação para o windows
       // TODO: mudar comando para command + c / ctrl + c
-      if (e.metaKey && e.shiftKey && e.key.toLowerCase() === 'c') {
+      if (e.metaKey && e.key.toLowerCase() === 'c') {
         e.preventDefault()
 
         setHasCopied(true)
@@ -60,7 +67,14 @@ export function BookmarkCopyUrl({ bookmarkUrl }: BookmarkCopyProps) {
           )}
         />
         <span className="relative left-6">Copy URL</span>
-        <DropdownMenuShortcut>⌘+⇧+C</DropdownMenuShortcut>
+        <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist)">
+          <kbd className="tracking-widest rounded border size-5 flex items-center justify-center">
+            <span className="text-lg text-foreground/75">⌘</span>
+          </kbd>
+          <kbd className="tracking-widest rounded border size-5 flex items-center justify-center">
+            <span className="text-xs text-foreground/75">C</span>
+          </kbd>
+        </div>
       </Button>
     </DropdownMenuItem>
   )

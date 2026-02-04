@@ -2,7 +2,7 @@ import { JetBrains_Mono } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { CommandMenu } from './command-menu'
+import { CommandMenu } from './command-menu-slash'
 import { UserSettingsDropdown } from './user-settings-dropdown'
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ['latin'] })

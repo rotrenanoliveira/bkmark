@@ -10,7 +10,7 @@ interface FolderProps {
 export function Folders({ folder }: FolderProps) {
   const { data: bookmarks } = useQuery({
     queryKey: [`folder:${folder.folderId}`, folder.folderId],
-    queryFn: () => getBookmarks(folder.userId, folder.folderId),
+    queryFn: () => getBookmarks({ userId: folder.userId, folderId: folder.folderId }),
   })
 
   return <CollapsibleFolder bookmarks={bookmarks ?? []} folder={folder} />

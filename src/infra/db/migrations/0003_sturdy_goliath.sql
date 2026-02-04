@@ -1,0 +1,2 @@
+ALTER TABLE "bookmarks" ADD COLUMN "workspace_id" text;--> statement-breakpoint
+ALTER TABLE "bookmarks" ADD CONSTRAINT "bookmarks_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "public"."workspaces"("workspace_id") ON DELETE cascade ON UPDATE cascade;

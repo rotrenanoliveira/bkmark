@@ -1,22 +1,30 @@
 'use server'
 
-import type { Bookmark, BookmarkPresenter } from '@/utils/types'
+import type { BookmarkPresenter } from '@/utils/types'
 import { getUncategorisedBookmarks } from './get-bookmarks-uncategorised'
 import { getFolderBookmarks } from './get-folder-bookmarks'
+import { getWorkspaceBookmarks } from './get-workspace-bookmarks'
 
-/** Get all bookmarks for a user */
-export async function getBookmarks(userId: string): Promise<BookmarkPresenter[]>
-/** Get all unfolded bookmarks for a user */
-export async function getBookmarks(userId: string, folderId: null): Promise<Bookmark[]>
-/** Get all bookmarks for a user in a folder */
-export async function getBookmarks(userId: string, folderId: string): Promise<Bookmark[]>
+type GetBookmarksParams =
+  | { userId: string }
+  | { userId: string; folderId: string }
+  | { userId: string; workspaceId: string }
+  | { userId: string; workspaceId: string; folderId: string | null }
 
-export async function getBookmarks(userId: string, folderId: string | null = null) {
-  if (folderId === null) {
-    return getUncategorisedBookmarks(userId)
+export async function getBookmarks(params: GetBookmarksParams): Promise<BookmarkPresenter[]> {
+  if ('folderId' in params && params.folderId) {
+    return getFolderBookmarks(params.userId, params.folderId)
   }
 
-  return getFolderBookmarks(userId, folderId)
+  if ('workspaceId' in params && 'folderId' in params) {
+    return getWorkspaceBookmarks(params.userId, params.workspaceId, params.folderId)
+  }
+
+  if ('workspaceId' in params && !('folderId' in params)) {
+    return getWorkspaceBookmarks(params.userId, params.workspaceId, null)
+  }
+
+  return getUncategorisedBookmarks(params.userId)
 }
 
-export const getUserBookmarks = async (userId: string) => getBookmarks(userId)
+export const getUserBookmarks = async (params: GetBookmarksParams) => getBookmarks(params)

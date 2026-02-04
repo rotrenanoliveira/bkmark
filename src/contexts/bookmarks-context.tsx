@@ -3,7 +3,7 @@
 import { createContext, use, useCallback, useMemo, useOptimistic } from 'react'
 
 import { generateNanoId } from '@/lib/nanoid'
-import type { Bookmark, BookmarkPresenter } from '@/utils/types'
+import type { BookmarkPresenter } from '@/utils/types'
 
 type BookmarkAction =
   | { type: 'ADD'; payload: { bookmarkUrl: string; title: string } }
@@ -11,7 +11,7 @@ type BookmarkAction =
   | { type: 'REMOVE'; payload: { id: string } }
 
 type BookmarkContextType = {
-  bookmarks: Bookmark[]
+  bookmarks: BookmarkPresenter[]
   create: ({ title, bookmarkUrl }: { title: string; bookmarkUrl: string }) => void
   rename: ({ title, bookmarkId }: { title: string; bookmarkId: string }) => void
   remove: (id: string) => void
@@ -19,7 +19,7 @@ type BookmarkContextType = {
 
 export const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined)
 
-function bookmarkReducer(state: Bookmark[], action: BookmarkAction): Bookmark[] {
+function bookmarkReducer(state: BookmarkPresenter[], action: BookmarkAction): BookmarkPresenter[] {
   switch (action.type) {
     case 'ADD':
       return [

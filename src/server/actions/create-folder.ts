@@ -9,6 +9,7 @@ import { getUserId } from '../data/get-user-id'
 
 const createFolderSchema = z.object({
   folder: z.string().min(1, { message: 'Invalid folder name.' }),
+  workspace: z.string().nullish(),
 })
 
 export async function actionCreateFolder(data: FormData) {
@@ -24,9 +25,12 @@ export async function actionCreateFolder(data: FormData) {
 
   const userId = await getUserId()
 
+  const workspaceId = formResult.data.workspace
+
   const [_, error] = await createFolder({
     name: formResult.data.folder,
     userId,
+    ...(workspaceId && { workspaceId }),
   })
 
   if (error) {
@@ -35,5 +39,5 @@ export async function actionCreateFolder(data: FormData) {
 
   revalidatePath('/', 'layout')
 
-  return { success: true, message: 'Folder created successfully.' }
+  return { success: true, message: `Folder ${formResult.data.folder} created successfully.` }
 }
