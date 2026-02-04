@@ -2,6 +2,7 @@
 
 import { useWorkspaces } from '@/hooks/use-workspaces'
 import { RemoveWorkspace } from './remove-workspace'
+import { RenameWorkspace } from './rename-workspace'
 
 export function WorkspaceList() {
   const { workspaces } = useWorkspaces()
@@ -13,6 +14,7 @@ export function WorkspaceList() {
           {workspace.name}
 
           <RemoveWorkspace workspaceId={workspace.workspaceId} />
+          <RenameWorkspace workspaceId={workspace.workspaceId} />
         </div>
       ))}
     </div>
