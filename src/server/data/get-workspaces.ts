@@ -1,6 +1,6 @@
 'use server'
 
-import { eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { db } from '@/infra/db/drizzle'
 import { workspacesRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
@@ -22,7 +22,8 @@ export async function getWorkspaces({ userId }: GetWorkspacesParams) {
         name: workspacesRepository.name,
       })
       .from(workspacesRepository)
-      .where(eq(workspacesRepository.userId, userId)),
+      .where(eq(workspacesRepository.userId, userId))
+      .orderBy(asc(workspacesRepository.createdAt)),
   )
 
   if (queryError) {
