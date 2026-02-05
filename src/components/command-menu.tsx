@@ -6,9 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
-import { searchBookmarks } from '@/server/data/search-bookmarks'
-import { searchFolders } from '@/server/data/search-folders'
-import { searchWorkspaces } from '@/server/data/search-workspaces'
+import { searchItems } from '@/server/data/search-items'
 import { CreateBookmarkContent } from './bookmarks/create-bookmark-content'
 import { CreateFolderContent } from './folders/create-folder-content'
 import { Button } from './ui/button'
@@ -86,19 +84,9 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
 
   const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
-  const queryBookmarks = useQuery({
-    queryKey: ['search-bookmarks', searchValue],
-    queryFn: () => searchBookmarks(searchValue),
-  })
-
-  const queryFolders = useQuery({
-    queryKey: ['search-folders', searchValue],
-    queryFn: () => searchFolders(searchValue),
-  })
-
-  const queryWorkspaces = useQuery({
-    queryKey: ['search-workspaces', searchValue],
-    queryFn: () => searchWorkspaces(searchValue),
+  const queryItems = useQuery({
+    queryKey: ['search-items', searchValue],
+    queryFn: () => searchItems(searchValue),
   })
 
   const handleSearchChange = useCallback((value: string) => {
@@ -111,10 +99,12 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
     }, 200)
   }, [])
 
-  const isLoading = queryBookmarks.isLoading || queryFolders.isLoading || queryWorkspaces.isLoading
-  const isError = queryBookmarks.isError || queryFolders.isError || queryWorkspaces.isError
+  const isLoading = queryItems.isLoading
+  const isError = queryItems.isError
   const isEmpty =
-    queryBookmarks.data?.length === 0 && queryFolders.data?.length === 0 && queryWorkspaces.data?.length === 0
+    queryItems.data?.bookmarks.length === 0 &&
+    queryItems.data?.folders.length === 0 &&
+    queryItems.data?.workspaces.length === 0
 
   return (
     <>
@@ -136,7 +126,12 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
           return 0
         }}
       >
-        <CommandInput placeholder="Find..." value={searchValue ?? ''} onValueChange={setSearchValue} />
+        <CommandInput
+          isLoading={isLoading}
+          placeholder="Find..."
+          value={searchValue ?? ''}
+          onValueChange={setSearchValue}
+        />
 
         <CommandList>
           {isLoading && <CommandEmpty>Searching...</CommandEmpty>}
@@ -144,9 +139,9 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
           {!isLoading && !isError && isEmpty && <CommandEmpty>No results found.</CommandEmpty>}
 
           <CommandGroup heading="Bookmarks">
-            {queryBookmarks.data &&
-              queryBookmarks.data.length > 0 &&
-              queryBookmarks.data.map((bookmark) => (
+            {queryItems.data?.bookmarks &&
+              queryItems.data.bookmarks.length > 0 &&
+              queryItems.data.bookmarks.map((bookmark) => (
                 <CommandItem
                   key={bookmark.id}
                   value={`${bookmark.title} ${bookmark.url} ${bookmark.id}`}
@@ -171,9 +166,9 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
           </CommandGroup>
 
           <CommandGroup heading="Folders">
-            {queryFolders.data &&
-              queryFolders.data.length > 0 &&
-              queryFolders.data.map((folder) => (
+            {queryItems.data?.folders &&
+              queryItems.data.folders.length > 0 &&
+              queryItems.data.folders.map((folder) => (
                 <CommandItem
                   key={folder.id}
                   value={folder.name}
@@ -192,9 +187,9 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
           </CommandGroup>
 
           <CommandGroup heading="Workspaces">
-            {queryWorkspaces.data &&
-              queryWorkspaces.data.length > 0 &&
-              queryWorkspaces.data.map((workspace) => (
+            {queryItems.data?.workspaces &&
+              queryItems.data.workspaces.length > 0 &&
+              queryItems.data.workspaces.map((workspace) => (
                 <CommandItem
                   key={workspace.id}
                   value={workspace.name}

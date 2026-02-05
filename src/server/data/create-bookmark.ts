@@ -34,8 +34,8 @@ export async function createBookmark(
       }),
     ),
     cacheRepository.delete(`${data.userId}:bookmarks`),
-    cacheRepository.delete(`${data.userId}:folder:${data.folderId}`),
-    cacheRepository.delete(`${data.userId}:workspace:${data.workspaceId}`),
+    cacheRepository.delete(`${data.userId}:folder:${data.folderId}:bookmarks`),
+    cacheRepository.delete(`${data.userId}:workspace:${data.workspaceId}:bookmarks`),
   ])
 
   return result

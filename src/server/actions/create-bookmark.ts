@@ -58,12 +58,10 @@ export async function actionCreateBookmark(data: FormData) {
 
   if (folderId) {
     revalidatePath(`/folders/${folderId}`, 'layout')
-    // redirect(`/folders/${folderId}`)
   }
 
   if (workspaceId) {
     revalidatePath(`/workspaces/${workspaceId}`, 'layout')
-    // redirect(`/workspaces/${workspaceId}`)
   }
 
   return { success: true, message: 'Bookmark added successfully.' }

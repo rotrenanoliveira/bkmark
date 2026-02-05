@@ -12,6 +12,7 @@ export async function removeBookmark(bookmarkId: string): Promise<[null, null] |
     db.delete(bookmarksRepository).where(eq(bookmarksRepository.bookmarkId, bookmarkId)).returning({
       user: bookmarksRepository.userId,
       folder: bookmarksRepository.folderId,
+      workspace: bookmarksRepository.workspaceId,
     }),
   )
 
@@ -20,8 +21,9 @@ export async function removeBookmark(bookmarkId: string): Promise<[null, null] |
   }
 
   await cacheRepository.mdel([
-    `${bookmark[0].user}:bookmarks`, // remove bookmarks from cache
-    `${bookmark[0].user}:folder:${bookmark[0].folder}`, // remove this folder from cache
+    `${bookmark[0].user}:bookmarks`,
+    `${bookmark[0].user}:folder:${bookmark[0].folder}:bookmarks`,
+    `${bookmark[0].user}:workspace:${bookmark[0].workspace}:bookmarks`,
   ])
 
   return [null, null]
