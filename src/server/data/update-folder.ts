@@ -42,10 +42,9 @@ export async function updateFolder(data: FolderUpdateInput): Promise<[null, null
   }
 
   await cacheRepository.mdel([
-    `${folder[0].user}:folders`, // remove user folders from cache
-    `${folder[0].user}:folder:${data.folderId}`, // remove folder from cache
-    `${folder[0].user}:workspace:${folder[0].workspace}`, // remove previous workspace from cache
-    `${folder[0].user}:workspace:${data.workspaceId}`, // remove "new" workspace from cache
+    `${folder[0].user}:folders`,
+    `${folder[0].user}:workspace:${folder[0].workspace}:folders`,
+    `${folder[0].user}:workspace:${data.workspaceId}:folders`,
   ])
 
   return [null, null]

@@ -19,10 +19,7 @@ export async function removeFolder(folderId: string): Promise<[null, null] | [nu
     return [null, queryError]
   }
 
-  await cacheRepository.mdel([
-    `${bookmark[0].user}:folders`, // remove folders from cache
-    `${bookmark[0].user}:folder:${bookmark[0].folder}`, // remove this folder from cache
-  ])
+  await cacheRepository.mdel([`${bookmark[0].user}:folders`, `${bookmark[0].user}:folder:${bookmark[0].folder}:*`])
 
   return [null, null]
 }

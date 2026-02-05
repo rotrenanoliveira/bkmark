@@ -40,10 +40,7 @@ export async function updateWorkspace(data: WorkspaceUpdateInput): Promise<[null
     return [null, mutationError || queryError]
   }
 
-  await cacheRepository.mdel([
-    `${workspace[0].user}:workspaces`, // remove user workspaces from cache
-    `${workspace[0].user}:workspace:${data.workspaceId}`, // remove workspace from cache
-  ])
+  await cacheRepository.delete(`${workspace[0].user}:workspaces`)
 
   return [null, null]
 }
