@@ -1,7 +1,7 @@
 import { BookmarksList } from '@/components/bookmarks/bookmarks-list'
 import { CreateBookmarkForm } from '@/components/bookmarks/create-bookmark-form'
 import { FoldersList } from '@/components/folders/folders-list'
-import { Header } from '@/components/header'
+import { Header } from '@/components/layout/header/header'
 
 export default function WorkspacePage() {
   return (

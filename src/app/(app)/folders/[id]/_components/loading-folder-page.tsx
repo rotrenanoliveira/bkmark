@@ -1,5 +1,5 @@
 import { CreateBookmarkForm } from '@/components/bookmarks/create-bookmark-form'
-import { Header } from '@/components/header'
+import { Header } from '@/components/layout/header/header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { random } from '@/utils/functions'
 
