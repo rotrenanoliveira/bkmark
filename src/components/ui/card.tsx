@@ -35,4 +35,8 @@ function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return <div data-component="card-content" className={cn('flex flex-row', className)} {...props} />
 }
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent }
+function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div data-component="card-footer" className={cn('flex flex-row', className)} {...props} />
+}
+
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
