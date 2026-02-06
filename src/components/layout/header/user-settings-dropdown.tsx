@@ -36,7 +36,7 @@ export async function UserSettingsDropdown() {
 
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/sync" className="cursor-pointer rounded-none">
+          <Link href="/sync" className="cursor-pointer">
             Synchronize
           </Link>
         </DropdownMenuItem>
