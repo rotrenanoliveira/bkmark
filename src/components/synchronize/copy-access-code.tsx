@@ -30,7 +30,7 @@ export function CopyAccessCode({ userId }: CopyAccessCodeProps) {
     <Button
       variant="ghost"
       onClick={handleCopy}
-      className="relative p-2 size-8 cursor-pointer hover:bg-muted-foreground/25"
+      className="size-12 relative p-2 cursor-pointer hover:bg-muted-foreground/25 justify-self-end"
       ref={buttonRef}
     >
       <CopyIcon
