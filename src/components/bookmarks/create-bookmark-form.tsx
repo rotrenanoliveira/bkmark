@@ -1,10 +1,9 @@
 'use client'
 
-import { Loader2Icon, PlusIcon } from 'lucide-react'
+import { Link2Icon, Loader2Icon } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useTransition } from 'react'
 import { toast } from 'sonner'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useBookmarks } from '@/hooks/use-bookmarks'
@@ -89,15 +88,19 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
   }, [props.focus])
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="w-full flex flex-col gap-2">
-      <div className="flex gap-2">
-        <Input type="text" name="url" placeholder="Insert a link" ref={inputRef} />
-
-        <Button type="submit" disabled={isPending}>
-          <PlusIcon strokeWidth={1.25} className={cn('size-5', isPending && 'hidden')} />
-          {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
-        </Button>
+    <form ref={formRef} onSubmit={handleSubmit} className="flex-1 flex flex-row">
+      <div className="flex items-center justify-center w-16 border-t border-b border-l">
+        <Link2Icon className="size-5 text-(--app-primary)/80" />
       </div>
+
+      <Input type="text" name="url" placeholder="Insert a link" className="h-12" ref={inputRef} />
+
+      <Button type="submit" className="h-full w-20" disabled={isPending}>
+        {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
+        <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
+          create
+        </span>
+      </Button>
     </form>
   )
 }

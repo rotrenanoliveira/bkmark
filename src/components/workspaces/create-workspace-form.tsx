@@ -1,6 +1,6 @@
 'use client'
 
-import { Loader2Icon, PlusIcon } from 'lucide-react'
+import { Layers2Icon, Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -62,15 +62,18 @@ export function CreateWorkspaceForm(props: CreateWorkspaceFormProps) {
   }, [props.focus])
 
   return (
-    <form onSubmit={handleSubmit} ref={formRef} className="w-full">
-      <div className="flex flex-row gap-2">
-        <Input type="text" name="workspace" placeholder="enter workspace name" ref={inputRef} />
-
-        <Button type="submit" disabled={isPending}>
-          <PlusIcon strokeWidth={1.25} className={cn('size-5', isPending && 'hidden')} />
-          {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
-        </Button>
+    <form onSubmit={handleSubmit} ref={formRef} className="flex-1 flex flex-row">
+      <div className="flex items-center justify-center w-16 border-t border-b border-l">
+        <Layers2Icon className="size-5 text-(--app-primary)/80" />
       </div>
+      <Input type="text" name="workspace" placeholder="enter workspace name" className="h-12" ref={inputRef} />
+
+      <Button type="submit" className="h-full w-20" disabled={isPending}>
+        {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
+        <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
+          create
+        </span>
+      </Button>
     </form>
   )
 }

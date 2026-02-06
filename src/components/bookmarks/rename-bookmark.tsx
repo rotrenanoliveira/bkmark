@@ -65,7 +65,7 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
               <div className="text-sm text-muted-foreground">Update the title of the bookmark you want to rename.</div>
             </div>
 
-            <div className="flex flex-row px-4 ">
+            <div className="flex flex-row px-4">
               <RenameBookmarkForm bookmarkId={bookmarkId} beforeSubmit={handleClose} />
             </div>
           </div>
