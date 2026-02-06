@@ -11,8 +11,9 @@ export function InterceptDialog({ open, setOpen, children }: InterceptDialogProp
   return (
     <Dialog defaultOpen open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="w-full md:w-96 font-(family-name:--font-geist-sans) p-0 rounded-xl"
+        className="w-full md:w-96 font-(family-name:--font-geist-sans) p-0"
         showCloseButton={false}
+        blur={true}
       >
         {children}
       </DialogContent>
