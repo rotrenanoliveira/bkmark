@@ -2,7 +2,6 @@ import { BookmarksList } from '@/components/bookmarks/bookmarks-list'
 import { CreateBookmarkForm } from '@/components/bookmarks/create-bookmark-form'
 import { FoldersList } from '@/components/folders/folders-list'
 import { Header } from '@/components/layout/header/header'
-import { WorkspaceList } from '@/components/workspaces/workspace-list'
 
 export default async function HomePage() {
   return (
@@ -12,7 +11,6 @@ export default async function HomePage() {
         <section className="w-full max-w-4xl grid grid-cols-1 gap-4">
           <CreateBookmarkForm />
 
-          <WorkspaceList />
           <BookmarksList />
           <FoldersList />
         </section>
