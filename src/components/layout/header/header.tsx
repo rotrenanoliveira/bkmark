@@ -11,7 +11,7 @@ export function Header() {
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center gap-2">
             <Image src="/bkmark.png" alt="" width={32} height={32} />
-            <h1 className="font-(family-name:--font-geist-mono)">bkmark</h1>
+            <h1 className="font-semibold font-(family-name:--font-geist-mono)">bkmark</h1>
           </Link>
 
           <div className="w-px h-9 bg-muted-foreground/50" />
