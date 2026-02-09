@@ -39,7 +39,7 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
-  blur = false,
+  blur = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
