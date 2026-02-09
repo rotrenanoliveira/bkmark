@@ -27,7 +27,7 @@ export function Bookmark({ bookmark }: BookmarkProps) {
       <Link
         href={bookmark.bookmarkUrl}
         target="_blank"
-        className="w-full h-12 flex items-center justify-between group border-b hover:bg-foreground/5 hover:border-foreground/15 font-(family-name:--font-geist-sans) last:border-none"
+        className="w-full h-12 flex-1 flex items-center justify-between group border-b first:border-t hover:bg-foreground/5 hover:border-foreground/15 font-(family-name:--font-geist-sans)"
       >
         <div className="w-full flex items-center gap-2">
           <div className="flex items-center justify-center size-12 border-r">
@@ -37,7 +37,7 @@ export function Bookmark({ bookmark }: BookmarkProps) {
               <GlobeIcon strokeWidth={1.25} className="size-6 text-muted-foreground" />
             )}
           </div>
-          <p className="w-48 flex-1 md:max-w-lg font-semibold truncate">{bookmark.title}</p>
+          <p className="w-44 flex-1 md:max-w-lg font-semibold truncate">{bookmark.title}</p>
           <span className="hidden md:inline w-60 font-light text-muted-foreground/75">{bookmarkUrl}</span>
         </div>
 
