@@ -1,16 +1,16 @@
 import { and, desc, eq } from 'drizzle-orm'
+import { cacheRepository } from '@/infra/cache/cache-repository'
 import { db } from '@/infra/db/drizzle'
 import { bookmarksRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
+import type { BookmarkPresenter } from '@/utils/types'
 
 export async function getFolderBookmarks(userId: string, folderId: string) {
-  // const [bookmarksOnCache, _getCacheError] = await handle(
-  //   cacheRepository.get<BookmarkPresenter[]>(`${userId}:folder:${folderId}`),
-  // )
+  const [cached, _] = await handle(cacheRepository.get<BookmarkPresenter[]>(`${userId}:folder:${folderId}:bookmarks`))
 
-  // if (bookmarksOnCache) {
-  //   return bookmarksOnCache
-  // }
+  if (cached) {
+    return cached
+  }
 
   const [bookmarks, queryError] = await handle(
     db
@@ -33,13 +33,9 @@ export async function getFolderBookmarks(userId: string, folderId: string) {
     throw queryError.message
   }
 
-  // const [_, setCacheError] = await handle(
-  //   cacheRepository.set(`${userId}:folder:${folderId}`, JSON.stringify(bookmarks)),
-  // )
-
-  // if (setCacheError) {
-  //   throw setCacheError.message
-  // }
+  if (bookmarks.length > 0) {
+    await cacheRepository.set(`${userId}:folder:${folderId}:bookmarks`, JSON.stringify(bookmarks))
+  }
 
   return bookmarks
 }

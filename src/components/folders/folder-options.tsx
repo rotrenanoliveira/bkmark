@@ -18,18 +18,13 @@ export function FolderOptions({ folder }: FolderOptionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          className="flex items-center justify-center shadow-none bg-transparent rounded-lg size-10 hover:bg-foreground/5"
-        >
+        <Button variant="ghost" className="size-12 flex items-center justify-center border-l">
           <Ellipsis className="size-5 text-foreground/50 group-hover:text-foreground/75" strokeWidth={1.25} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 space-y-1" align="end">
         <GoToFolderButton folderId={folder.folderId} />
-
         <RenameFolderButton folderId={folder.folderId} />
-
         <DeleteFolder folderId={folder.folderId} currentWorkspace={folder.workspaceId} />
 
         {hasParentWorkspace && (

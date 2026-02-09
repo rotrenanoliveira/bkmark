@@ -1,9 +1,12 @@
 'use client'
 
+import { Loader2Icon, RefreshCcwIcon } from 'lucide-react'
 import { useRef } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useFormState } from '@/hooks/use-form-state'
+import { cn } from '@/lib/utils'
 import { actionSyncUser } from '@/server/actions/sync-user'
 
 interface SyncFormProps {
@@ -15,28 +18,31 @@ export function SynchronizeForm(props: SyncFormProps) {
 
   const [formState, handleSubmit, isPending] = useFormState(actionSyncUser, {
     onSuccess,
+    onError,
   })
 
   function onSuccess() {
     props.onSuccess?.()
   }
 
+  function onError() {
+    toast.error(formState.message)
+  }
+
   return (
-    <div>
-      <form onSubmit={handleSubmit} ref={formRef}>
-        {formState.success === false && <p className="text-red-500">{formState.message}</p>}
-        <div className="flex flex-col gap-3">
-          <Input
-            type="text"
-            name="code"
-            placeholder="Enter acess code"
-            className="py-6 rounded-lg bg-muted-foreground/5 font-(family-name:--font-geist-mono)"
-          />
-          <Button type="submit" className="cursor-pointer" disabled={isPending}>
-            Sync
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="flex-1 flex flex-row border-t" ref={formRef}>
+      <div className="flex items-center justify-center w-20 border-r">
+        <RefreshCcwIcon className="size-5 text-(--app-primary)/80" />
+      </div>
+
+      <Input type="text" name="code" placeholder="Enter access code" className="h-12 border-none" />
+
+      <Button type="submit" className="h-full w-20" disabled={isPending}>
+        {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
+        <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
+          sync
+        </span>
+      </Button>
+    </form>
   )
 }

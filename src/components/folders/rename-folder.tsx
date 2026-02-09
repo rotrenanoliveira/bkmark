@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useBounce } from '@/hooks/use-bounce'
 import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { Button } from '../ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 import { RenameFolderForm } from './rename-folder-form'
@@ -17,27 +18,23 @@ export function RenameFolderButton({ folderId }: RenameFolderProps) {
 
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  function handleClose() {
-    setOpen(false)
-  }
+  const handleClose = () => setOpen(false)
 
-  const handleSelect = useCallback(() => {
-    bounce(buttonRef)
-    setOpen(true)
-  }, [bounce])
+  const handleSelect = useCallback(
+    (e: Event) => {
+      e.preventDefault()
+      bounce(buttonRef)
+      setOpen(true)
+    },
+    [bounce],
+  )
 
   useKeyboardShortcut('x', handleSelect, ['Mod'])
 
   return (
     <>
-      <DropdownMenuItem asChild>
-        <Button
-          variant="ghost"
-          className="relative w-full cursor-pointer"
-          onSelect={handleSelect}
-          onClick={handleSelect}
-          ref={buttonRef}
-        >
+      <DropdownMenuItem onSelect={handleSelect} asChild>
+        <Button variant="ghost" className="relative w-full cursor-pointer" ref={buttonRef}>
           <PencilIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
           <span className="relative left-6">Rename</span>
           <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist)">
@@ -52,22 +49,22 @@ export function RenameFolderButton({ folderId }: RenameFolderProps) {
       </DropdownMenuItem>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 overflow-hidden" showCloseButton={false}>
+        <DialogContent className="p-0 overflow-hidden">
           <DialogHeader className="sr-only">
             <DialogTitle className="text-center">Rename a new folder</DialogTitle>
             <DialogDescription>Update the title of the folder you want to rename.</DialogDescription>
           </DialogHeader>
 
-          <div className="relative flex flex-col w-full gap-4 py-4 overflow-hidden text-sm ring-foreground/10 bg-card text-card-foreground ring-1 group/card">
-            <div className="grid auto-rows-min items-start gap-1 border-b rounded-t-xl px-4 [.border-b]:pb-4">
-              <div className="text-base font-medium leading-snug">Rename a new folder</div>
-              <div className="text-sm text-muted-foreground">Update the title of the folder you want to rename.</div>
-            </div>
+          <Card>
+            <CardHeader className="border-none">
+              <CardTitle>Rename folder</CardTitle>
+              <CardDescription>Insert the new title of the folder.</CardDescription>
+            </CardHeader>
 
-            <div className="flex flex-row px-4 ">
-              <RenameFolderForm folderId={folderId} beforeSubmit={() => handleClose()} />
-            </div>
-          </div>
+            <CardContent>
+              <RenameFolderForm folderId={folderId} beforeSubmit={handleClose} />
+            </CardContent>
+          </Card>
         </DialogContent>
       </Dialog>
     </>

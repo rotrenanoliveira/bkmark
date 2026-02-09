@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { Header } from '@/components/layout/header/header'
 import { SynchronizePageContent } from '@/components/synchronize/synchronize-page-content'
 import { getUserId } from '@/server/data/get-user-id'
 
@@ -13,5 +14,12 @@ export default async function SynchronizePage() {
   const syncUrl = new URL('api/sync', appUrl)
   syncUrl.searchParams.append('code', userId)
 
-  return <SynchronizePageContent userId={userId} syncUrl={syncUrl.toString()} />
+  return (
+    <div className="flex flex-col w-screen min-h-screen">
+      <Header />
+      <main className="flex flex-col items-center justify-center h-[calc(100svh-75px)] py-6 space-y-4">
+        <SynchronizePageContent userId={userId} syncUrl={syncUrl.toString()} />
+      </main>
+    </div>
+  )
 }

@@ -43,11 +43,11 @@ export async function updateBookmark(data: BookmarkUpdateInput): Promise<[null, 
   }
 
   await cacheRepository.mdel([
-    `${bookmark[0].user}:bookmarks`, // remove bookmarks from cache
-    `${bookmark[0].user}:folder:${bookmark[0].folder}`, // remove previous folder from cache
-    `${bookmark[0].user}:folder:${query.folderId}`, // remove "new" folder from cache
-    `${bookmark[0].user}:workspace:${bookmark[0].workspace}`, // remove previous workspace from cache
-    `${bookmark[0].user}:workspace:${query.workspaceId}`, // remove "new" workspace from cache
+    `${bookmark[0].user}:bookmarks`,
+    `${bookmark[0].user}:folder:${bookmark[0].folder}:bookmarks`,
+    `${bookmark[0].user}:folder:${query.folderId}:bookmarks`,
+    `${bookmark[0].user}:workspace:${bookmark[0].workspace}:bookmarks`,
+    `${bookmark[0].user}:workspace:${query.workspaceId}:bookmarks`,
   ])
 
   return [null, null]

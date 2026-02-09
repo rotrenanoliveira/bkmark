@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { getUserId } from '@/server/data/get-user-id'
-import { ThemeSwitcher } from './theme-switcher'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +11,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+} from '../../ui/dropdown-menu'
+import { ThemeSwitcher } from './theme-switcher'
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ['latin'] })
 
@@ -26,9 +26,9 @@ export async function UserSettingsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer">
-        <Avatar variant="beam" size={32} name={userId} />
+        <Avatar variant="beam" size={32} name={userId} square />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" sideOffset={8} alignOffset={8}>
+      <DropdownMenuContent align="center" sideOffset={8}>
         <DropdownMenuLabel className="flex flex-col">
           <span className={cn(jetBrainsMono.className)}>{userId}</span>
           <span className="text-xs text-muted-foreground">Access code</span>
