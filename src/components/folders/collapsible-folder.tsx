@@ -15,7 +15,7 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="transition-all duration-200 ease-out">
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="transition-all duration-200 ease-out only:border-t">
       <div className="w-full flex border-b last-border-none hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50">
         <CollapsibleTrigger className="flex-1 flex items-center justify-start gap-2 text-start cursor-pointer truncate">
           <div className="flex items-center justify-center size-12 border-r">

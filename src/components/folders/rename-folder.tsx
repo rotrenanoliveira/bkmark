@@ -49,7 +49,7 @@ export function RenameFolderButton({ folderId }: RenameFolderProps) {
       </DropdownMenuItem>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 overflow-hidden" showCloseButton={false}>
+        <DialogContent className="p-0 overflow-hidden">
           <DialogHeader className="sr-only">
             <DialogTitle className="text-center">Rename a new folder</DialogTitle>
             <DialogDescription>Update the title of the folder you want to rename.</DialogDescription>

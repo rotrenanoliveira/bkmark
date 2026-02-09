@@ -28,7 +28,7 @@ export async function UserSettingsDropdown() {
       <DropdownMenuTrigger className="cursor-pointer">
         <Avatar variant="beam" size={32} name={userId} square />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" sideOffset={8} alignOffset={8}>
+      <DropdownMenuContent align="center" sideOffset={8}>
         <DropdownMenuLabel className="flex flex-col">
           <span className={cn(jetBrainsMono.className)}>{userId}</span>
           <span className="text-xs text-muted-foreground">Access code</span>

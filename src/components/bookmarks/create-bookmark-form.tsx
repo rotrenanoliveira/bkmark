@@ -1,6 +1,7 @@
 'use client'
 
-import { Link2Icon, Loader2Icon } from 'lucide-react'
+import { floppyDisk } from '@lucide/lab'
+import { Icon, Link2Icon, Loader2Icon } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -95,11 +96,17 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
 
       <Input type="text" name="url" placeholder="Insert a link" className="flex-1 h-12" ref={inputRef} />
 
-      <Button type="submit" className="h-12 w-20" disabled={isPending}>
+      <Button type="submit" className="h-full w-12 md:w-20" disabled={isPending}>
         {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
-        <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
+        <span
+          className={cn(
+            'hidden md:inline uppercase font-semibold font-(family-name:--font-geist-mono)',
+            isPending && 'hidden',
+          )}
+        >
           create
         </span>
+        <Icon iconNode={floppyDisk} className="size-5 md:hidden" strokeWidth={1.5} />
       </Button>
     </form>
   )

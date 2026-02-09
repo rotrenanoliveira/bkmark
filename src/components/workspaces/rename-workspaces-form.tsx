@@ -1,7 +1,8 @@
 'use client'
 
+import { floppyDisk } from '@lucide/lab'
 import { useQuery } from '@tanstack/react-query'
-import { Layers2Icon, Loader2Icon } from 'lucide-react'
+import { Icon, Layers2Icon, Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -86,11 +87,17 @@ export function RenameWorkspaceForm(props: RenameWorkspaceFormProps) {
         ref={inputRef}
       />
 
-      <Button type="submit" className="h-full w-20" disabled={isPending}>
+      <Button type="submit" className="h-full w-12 md:w-20" disabled={isPending}>
         {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
-        <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
+        <span
+          className={cn(
+            'hidden md:inline uppercase font-semibold font-(family-name:--font-geist-mono)',
+            isPending && 'hidden',
+          )}
+        >
           rename
         </span>
+        <Icon iconNode={floppyDisk} className="size-5 md:hidden" strokeWidth={1.5} />
       </Button>
     </form>
   )
