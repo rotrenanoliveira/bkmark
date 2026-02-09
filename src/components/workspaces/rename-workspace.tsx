@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { useBounce } from '@/hooks/use-bounce'
 import { Button } from '../ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 import { RenameWorkspaceForm } from './rename-workspaces-form'
@@ -48,16 +49,16 @@ export function RenameWorkspace() {
               <DialogDescription>Update the name of the workspace.</DialogDescription>
             </DialogHeader>
 
-            <div className="relative flex flex-col w-full gap-4 py-4 overflow-hidden text-sm ring-foreground/10 bg-card text-card-foreground ring-1 group/card">
-              <div className="grid auto-rows-min items-start gap-1 border-b rounded-t-xl px-4 [.border-b]:pb-4">
-                <div className="text-base font-medium leading-snug">Rename a workspace</div>
-                <div className="text-sm text-muted-foreground">Insert the new name of the workspace.</div>
-              </div>
+            <Card>
+              <CardHeader className="border-none">
+                <CardTitle>Rename workspace</CardTitle>
+                <CardDescription>Insert the new name of the workspace.</CardDescription>
+              </CardHeader>
 
-              <div className="flex flex-row px-4 ">
+              <CardContent>
                 <RenameWorkspaceForm workspaceId={workspaceId} beforeSubmit={() => handleClose()} />
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </DialogContent>
         </Dialog>
       </>
