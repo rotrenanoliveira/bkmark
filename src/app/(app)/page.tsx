@@ -8,7 +8,7 @@ export default async function HomePage() {
     <div className="flex flex-col min-h-screen w-screen">
       <Header />
       <main className="flex flex-col items-center p-4">
-        <section className="max-w-4xl grid grid-cols-1">
+        <section className="w-full max-w-4xl grid grid-cols-1">
           <CreateBookmarkForm />
           <BookmarksList />
           <FoldersList />

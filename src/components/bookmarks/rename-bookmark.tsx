@@ -52,7 +52,7 @@ export function RenameBookmark({ bookmarkId }: RenameBookmarkProps) {
       </DropdownMenuItem>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 overflow-hidden" showCloseButton={false}>
+        <DialogContent className="p-0 overflow-hidden">
           <DialogHeader className="sr-only">
             <DialogTitle className="text-center">Rename a new bookmark</DialogTitle>
             <DialogDescription>Update the title of the bookmark you want to rename.</DialogDescription>

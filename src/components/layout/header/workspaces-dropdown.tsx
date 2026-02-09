@@ -24,13 +24,13 @@ export function WorkspacesDropdown() {
   return (
     <DropdownMenu>
       <WorkspaceDropdownMenuTrigger />
-      <DropdownMenuContent className="space-y-1" alignOffset={0}>
+      <DropdownMenuContent className="flex-1 space-y-1" alignOffset={0}>
         {workspaces.map((workspace) => (
           <DropdownMenuItem key={workspace.workspaceId} asChild>
-            <Button variant="ghost" className="w-full cursor-pointer justify-start rounded-none" asChild>
+            <Button variant="ghost" className="w-full max-w-56 cursor-pointer justify-start rounded-none" asChild>
               <Link href={`/workspaces/${workspace.workspaceId}`} className="flex items-center gap-2">
                 <ArrowRightIcon className="size-4" />
-                <span>{workspace.name}</span>
+                <span className="truncate">{workspace.name}</span>
               </Link>
             </Button>
           </DropdownMenuItem>
@@ -57,11 +57,13 @@ function WorkspaceDropdownMenuTrigger() {
   }, [pathname, workspaces])
 
   return (
-    <DropdownMenuTrigger className="inline-flex items-center gap-2 p-2 cursor-pointer border border-dashed border-transparent rounded-xs hover:border-ring">
+    <DropdownMenuTrigger className="flex-1 inline-flex items-center gap-2 p-2 cursor-pointer border border-dashed border-transparent rounded-xs hover:border-ring">
       <Layers2Icon strokeWidth={1.25} className={cn('size-5', currentWorkspace && 'text-(--app-primary)')} />
 
       {!currentWorkspace && <span className="uppercase">workspaces</span>}
-      {currentWorkspace && <span className="uppercase text-(--app-primary)">{currentWorkspace.name}</span>}
+      {currentWorkspace && (
+        <span className="w-36 max-w-60 md:w-full uppercase text-(--app-primary) truncate">{currentWorkspace.name}</span>
+      )}
 
       <ChevronsUpDownIcon className="size-4 text-muted-foreground" />
     </DropdownMenuTrigger>

@@ -35,7 +35,7 @@ export function CreateWorkspace() {
       </DropdownMenuItem>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 overflow-hidden" showCloseButton={false}>
+        <DialogContent className="p-0 overflow-hidden">
           <CreateWorkspaceContent onClose={handleClose} />
         </DialogContent>
       </Dialog>

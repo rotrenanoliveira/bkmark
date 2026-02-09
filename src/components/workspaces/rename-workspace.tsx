@@ -43,7 +43,7 @@ export function RenameWorkspace() {
         </DropdownMenuItem>
 
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="p-0 overflow-hidden" showCloseButton={false}>
+          <DialogContent className="p-0 overflow-hidden">
             <DialogHeader className="sr-only">
               <DialogTitle className="text-center">Rename a workspace</DialogTitle>
               <DialogDescription>Update the name of the workspace.</DialogDescription>

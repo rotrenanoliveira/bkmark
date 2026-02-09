@@ -11,6 +11,9 @@ importers:
       '@base-ui/react':
         specifier: 1.1.0
         version: 1.1.0(@types/react@19.0.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@lucide/lab':
+        specifier: 0.1.2
+        version: 0.1.2
       '@microlink/mql':
         specifier: 0.13.12
         version: 0.13.12
@@ -729,6 +732,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@lucide/lab@0.1.2':
+    resolution: {integrity: sha512-VprF2BJa7ZuTGOhUd5cf8tHJXyL63wdxcGieAiVVoR9hO0YmPsnZO0AGqDiX2/br+/MC6n8BoJcmPilltOXIJA==}
 
   '@microlink/mql@0.13.12':
     resolution: {integrity: sha512-wPfxWngWE4Zvu6AiKjgkwToXR8xovVUmAKceAKZ8/9vFd2/pIm0Eq9BhZfKrWbLWcBFbe2rr9BoUS1SplkrPUg==}
@@ -2994,6 +3000,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@lucide/lab@0.1.2': {}
 
   '@microlink/mql@0.13.12':
     dependencies:
