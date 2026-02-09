@@ -89,11 +89,11 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex-1 flex flex-row">
-      <div className="flex items-center justify-center w-16 border-t border-b border-l">
+      <div className="flex items-center justify-center w-12 border-t border-b border-l">
         <Link2Icon className="size-5 text-(--app-primary)/80" />
       </div>
 
-      <Input type="text" name="url" placeholder="Insert a link" className="h-12" ref={inputRef} />
+      <Input type="text" name="url" placeholder="Insert a link" className="flex-1 h-12" ref={inputRef} />
 
       <Button type="submit" className="h-full w-20" disabled={isPending}>
         {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}

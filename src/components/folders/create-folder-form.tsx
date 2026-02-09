@@ -80,11 +80,11 @@ export function CreateFolderForm(props: CreateFolderFormProps) {
 
   return (
     <form onSubmit={handleSubmit} ref={formRef} className="flex-1 flex flex-row">
-      <div className="flex items-center justify-center w-16 border-t border-b border-l">
+      <div className="flex items-center justify-center w-12 border-t border-b border-l">
         <FolderPlusIcon className="size-5 text-(--app-primary)/80" />
       </div>
 
-      <Input type="text" name="folder" placeholder="enter folder name" className="h-12" ref={inputRef} />
+      <Input type="text" name="folder" placeholder="enter folder name" className="flex-1 h-12" ref={inputRef} />
 
       <Button type="submit" className="h-full w-20" disabled={isPending}>
         {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
