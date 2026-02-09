@@ -95,7 +95,7 @@ export function CreateBookmarkForm(props: CreateBookmarkFormProps) {
 
       <Input type="text" name="url" placeholder="Insert a link" className="flex-1 h-12" ref={inputRef} />
 
-      <Button type="submit" className="h-full w-20" disabled={isPending}>
+      <Button type="submit" className="h-12 w-20" disabled={isPending}>
         {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
         <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
           create

@@ -43,12 +43,12 @@ export function MoveFolderButton({ folderId, currentWorkspace, workspaceName, wo
     <DropdownMenuItem asChild>
       <Button
         variant="ghost"
-        className="w-full max-w-32 md:max-w-full relative justify-start cursor-pointer truncate"
+        className="w-full max-w-56 md:max-w-64 relative justify-start cursor-pointer truncate"
         onClick={handleUpdateFolder}
         disabled={currentWorkspace === workspaceId || isLoading}
       >
         <ArrowBigRightDashIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
-        <p className="relative left-4">{workspaceName}</p>
+        <p className="relative left-4 truncate">{workspaceName}</p>
       </Button>
     </DropdownMenuItem>
   )

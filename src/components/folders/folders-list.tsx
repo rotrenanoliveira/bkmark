@@ -7,7 +7,7 @@ export function FoldersList() {
   const { folders } = useFolders()
 
   return (
-    <div className="space-y-2">
+    <div className="border-x">
       {folders.map((folder) => (
         <Folders key={folder.folderId} folder={folder} />
       ))}

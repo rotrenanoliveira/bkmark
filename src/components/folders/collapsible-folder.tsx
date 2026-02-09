@@ -15,20 +15,25 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <div className="w-full p-1 pl-3 flex border rounded-xl bg-foreground/5 hover:border-foreground/15 font-(family-name:--font-geist-mono)">
-        <CollapsibleTrigger className="flex-1 text-start flex items-center justify-start gap-2 truncate">
-          <FolderClosedIcon className={cn('size-6 text-muted-foreground/75', isOpen && 'hidden')} />
-          <FolderOpenIcon className={cn('size-6 text-muted-foreground/75', !isOpen && 'hidden')} />
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="transition-all duration-200 ease-out">
+      <div className="w-full flex border-b last-border-none hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50">
+        <CollapsibleTrigger className="flex-1 flex items-center justify-start gap-2 text-start cursor-pointer truncate">
+          <div className="flex items-center justify-center size-12 border-r">
+            <FolderClosedIcon className={cn('size-6 text-muted-foreground', isOpen && 'hidden')} strokeWidth={1.5} />
+            <FolderOpenIcon className={cn('size-6 text-(--app-primary)/75', !isOpen && 'hidden')} strokeWidth={1.5} />
+          </div>
           <span className="w-56 sm:w-[calc(100%-80px)] truncate">{folder.name}</span>
         </CollapsibleTrigger>
 
         <FolderOptions folder={folder} />
       </div>
 
-      <CollapsibleContent className="mt-2 pl-8 space-y-2">
+      <CollapsibleContent className="flex flex-col">
         {bookmarks.map((bookmark) => (
-          <Bookmark key={bookmark.bookmarkId} bookmark={bookmark} />
+          <div className="flex" key={bookmark.bookmarkId}>
+            <div className="size-12 border-r border-b" />
+            <Bookmark key={bookmark.bookmarkId} bookmark={bookmark} />
+          </div>
         ))}
       </CollapsibleContent>
     </Collapsible>
