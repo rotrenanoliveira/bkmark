@@ -7,7 +7,7 @@ export function BookmarksList() {
   const { bookmarks } = useBookmarks()
 
   return (
-    <div className="space-y-2">
+    <div className="border">
       {bookmarks.map((bookmark) => (
         <Bookmark key={bookmark.bookmarkId} bookmark={bookmark} />
       ))}

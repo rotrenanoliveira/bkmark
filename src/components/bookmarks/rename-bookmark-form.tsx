@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { Link2Icon, Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -71,22 +72,27 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
   }, [isLoading])
 
   return (
-    <form className="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
-      <div className="flex gap-2">
-        <Input
-          type="text"
-          name="bookmark-title"
-          placeholder={isLoading ? 'Loading...' : 'Bookmark Title'}
-          className={cn(isLoading && 'animate-pulse')}
-          defaultValue={data?.bookmark.title}
-          disabled={isLoading}
-          ref={inputRef}
-        />
-
-        <Button type="submit" disabled={isPending}>
-          Rename
-        </Button>
+    <form onSubmit={handleSubmit} className="flex-1 flex flex-row">
+      <div className="flex items-center justify-center w-12 border-t border-b border-l">
+        <Link2Icon className="size-5 text-(--app-primary)/80" />
       </div>
+
+      <Input
+        type="text"
+        name="bookmark-title"
+        placeholder={isLoading ? 'Loading...' : 'Bookmark Title'}
+        className={cn('flex-1 h-12', isLoading && 'animate-pulse')}
+        defaultValue={data?.bookmark.title}
+        disabled={isLoading}
+        ref={inputRef}
+      />
+
+      <Button type="submit" className="h-full w-20" disabled={isPending}>
+        {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
+        <span className={cn('uppercase font-semibold font-(family-name:--font-geist-mono)', isPending && 'hidden')}>
+          rename
+        </span>
+      </Button>
     </form>
   )
 }
