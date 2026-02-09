@@ -39,7 +39,6 @@ export function RenameWorkspace() {
             <PencilIcon className="size-4" />
             <span className="font-light">Rename</span>
           </Button>
-          ˝˝
         </DropdownMenuItem>
 
         <Dialog open={open} onOpenChange={setOpen}>
