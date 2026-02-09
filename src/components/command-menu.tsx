@@ -38,6 +38,12 @@ export function CommandMenu() {
   useKeyboardShortcut('/', () => setOpen((open) => !open), [])
   useKeyboardShortcut('Escape', handleClose, [], { preventDefault: false })
 
+  useEffect(() => {
+    if (open === false) {
+      setContent('command-menu')
+    }
+  }, [open])
+
   useEffect(() => console.log(content), [content])
 
   return (
