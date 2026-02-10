@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   }
 
   const cookieStore = await cookies()
-  cookieStore.set('runnote:userId', code)
+  cookieStore.set('bkmark:userId', code)
 
   revalidatePath('/', 'layout')
   redirect('/')

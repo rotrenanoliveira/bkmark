@@ -1,17 +1,40 @@
-import { Geist, Geist_Mono } from 'next/font/google'
-import { cookies } from 'next/headers'
+import { Analytics } from '@vercel/analytics/react'
 import type { Metadata, Viewport } from 'next'
-
+import { Geist, Geist_Mono } from 'next/font/google'
 import { getUserBookmarks } from '@/server/data/get-bookmarks'
 import { Providers } from './providers'
 import './globals.css'
+import { getUserFolders } from '@/server/data/get-folders'
+import { getUserId } from '@/server/data/get-user-id'
+import { getUserWorkspaces } from '@/server/data/get-workspaces'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'bkmark',
+  manifest: '/manifest',
+  applicationName: 'bkmark',
+  title: { default: 'bkmark', template: '%s - bkmark' },
   description: 'A simple way to manage bookmarks across devices and browsers.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'bkmark',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'bkmark',
+    title: { default: 'bkmark', template: '%s - bkmark' },
+    description: 'A simple way to manage bookmarks across devices and browsers.',
+  },
+  twitter: {
+    card: 'summary',
+    title: { default: 'bkmark', template: '%s - bkmark' },
+    description: 'A simple way to manage bookmarks across devices and browsers.',
+  },
   icons: {
     icon: '/icon.png',
     apple: '/apple-icon.png',
@@ -26,8 +49,11 @@ export const viewport: Viewport = {
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const userId = (await cookies()).get('runnote:userId')?.value
-  const bookmarks = getUserBookmarks(userId)
+  const userId = await getUserId()
+
+  const workspaces = getUserWorkspaces({ userId })
+  const bookmarks = getUserBookmarks({ userId })
+  const folders = getUserFolders({ userId })
 
   return (
     <html lang="en" suppressHydrationWarning className="light">
@@ -36,7 +62,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <link rel="apple-touch-icon" href="/apple-icon?<generated>" type="image/<generated>" sizes="<generated>" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers bookmarksPromise={bookmarks}>{children}</Providers>
+        <Providers bookmarksPromise={bookmarks} foldersPromise={folders} workspacesPromise={workspaces}>
+          {children}
+          <Analytics />
+        </Providers>
       </body>
     </html>
   )

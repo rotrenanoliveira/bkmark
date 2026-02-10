@@ -1,41 +1,22 @@
-import { redirect } from 'next/navigation'
-
-import { getUserId } from '@/server/data/get-user-id'
-import { BookmarkForm } from '@/components/bookmarks/bookmark-form'
-import { UnfoldedBookmarks } from '@/components/bookmarks/unfolded-bookmarks'
-import { Folders } from '@/components/folders/folders'
-import { FolderDialog } from '@/components/folders/folder-dialog'
-import { SyncDialog } from '@/components/sync/sync-dialog'
-import { Header } from '@/components/header'
+import { BookmarksList } from '@/components/bookmarks/bookmarks-list'
+import { CreateBookmarkForm } from '@/components/bookmarks/create-bookmark-form'
+import { FoldersList } from '@/components/folders/folders-list'
+import { Header } from '@/components/layout/header/header'
 
 export default async function HomePage() {
-  const userId = await getUserId()
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
-
-  if (!userId) {
-    redirect('/api/sync/generate')
-  }
-
   return (
-    <div className="flex flex-col min-h-screen w-screen p-6">
-      {/* <Header /> */}
-      <main className="w-full flex flex-col items-center py-6 space-y-4">
-        <div className="w-full max-w-4xl flex flex-col md:flex-row justify-between gap-2">
-          <BookmarkForm />
+    <div className="flex flex-col min-h-screen w-screen">
+      <Header />
+      <main className="flex flex-col items-center p-4">
+        <section className="w-full max-w-4xl grid grid-cols-1">
+          <CreateBookmarkForm />
 
-          <div className="space-x-2 self-end">
-            <FolderDialog />
-            <SyncDialog userId={userId} appUrl={appUrl} />
+          <div className="mt-4 border-x border-t">
+            <BookmarksList />
+            <FoldersList />
           </div>
-        </div>
-
-        <section className="w-full max-w-4xl grid grid-cols-1 gap-4">
-          <UnfoldedBookmarks />
-          <Folders />
         </section>
       </main>
-
-      <Header />
     </div>
   )
 }

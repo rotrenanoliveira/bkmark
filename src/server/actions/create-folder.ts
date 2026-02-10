@@ -1,44 +1,37 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-
-import { formatZodError } from '@/utils/functions'
 import { createFolder } from '../data/create-folder'
 import { getUserId } from '../data/get-user-id'
 
 const createFolderSchema = z.object({
   folder: z.string().min(1, { message: 'Invalid folder name.' }),
+  workspace: z.string().nullish(),
 })
 
 export async function actionCreateFolder(data: FormData) {
   const formResult = createFolderSchema.safeParse(Object.fromEntries(data))
 
   if (formResult.success === false) {
-    const zodErrors = formatZodError(formResult.error)
-    const validationErrors = { error: [`Validation Error at ${zodErrors[0].field} - ${zodErrors[0].message}`] }
-    const message = validationErrors.error.join('. ')
-
-    return { success: false, message }
+    return { success: false, message: z.prettifyError(formResult.error).replace('✖ ', '') }
   }
 
   const userId = await getUserId()
 
-  if (!userId) {
-    return { success: false, message: 'User not found.' }
-  }
+  const workspaceId = formResult.data.workspace
 
-  const [_, createFolderError] = await createFolder({
+  const [_, error] = await createFolder({
     name: formResult.data.folder,
     userId,
+    ...(workspaceId && { workspaceId }),
   })
 
-  if (createFolderError) {
-    return createFolderError
+  if (error) {
+    return error
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('folders', 'max')
 
-  return { success: true, message: 'Folder created successfully.' }
+  return { success: true, message: `Folder ${formResult.data.folder} created successfully.` }
 }

@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { removeFolder } from '../data/remove-folder'
 
 export async function actionRemoveFolder(folderId: string) {
@@ -11,8 +11,6 @@ export async function actionRemoveFolder(folderId: string) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks', 'max')
-  revalidateTag(`bookmarks-${folderId}`, 'max')
 
   return { success: true, message: 'Folder removed successfully.' }
 }

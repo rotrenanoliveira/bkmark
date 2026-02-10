@@ -1,12 +1,13 @@
 'use server'
 
-import { formatZodError } from '@/utils/functions'
+import z from 'zod'
 import { type ResponseError, type UrlData, type UrlDataFetcher, urlDataSchema } from '@/utils/types'
-import { axiosFetcher, kyFetcher, mqlFetcher } from '@/utils/url-data-fetcher'
+import { axiosFetcher, kyFetcher, mqlFetcher, mqlYouTubeFetcher } from '@/utils/url-data-fetcher'
+import { youtubeMetadataFetcher } from '@/utils/youtube-api'
 
 type GetUrlDataArgs = {
   url: string
-  fetcher?: 'axios' | 'ky' | 'microlink'
+  fetcher?: 'axios' | 'ky' | 'microlink' | 'youtube-api'
 }
 
 /**
@@ -40,7 +41,19 @@ export async function getUrlData({
   }
 
   if (fetcher === 'microlink') {
-    const [metadataResponse, metadataError] = await mqlFetcher(url)
+    const isYouTubeVideo = url.includes('youtube.com/watch?v=') || url.includes('youtu.be/')
+
+    const [metadataResponse, metadataError] = isYouTubeVideo ? await mqlYouTubeFetcher(url) : await mqlFetcher(url)
+
+    if (metadataError) {
+      return [null, metadataError]
+    }
+
+    response = metadataResponse
+  }
+
+  if (fetcher === 'youtube-api') {
+    const [metadataResponse, metadataError] = await youtubeMetadataFetcher(url)
 
     if (metadataError) {
       return [null, metadataError]
@@ -61,20 +74,26 @@ export async function getUrlData({
     response.bookmarkUrl = url
   }
 
+  let faviconUrl = response.favicon
+
+  if (faviconUrl) {
+    const [_, faviconResponseError] = await axiosFetcher(faviconUrl)
+
+    if (faviconResponseError) {
+      faviconUrl = null
+    }
+  }
+
   const urlData = urlDataSchema.safeParse({
     title: response.title,
-    favicon: response.favicon,
+    favicon: faviconUrl,
     ogImage: response.ogImage,
     description: response.description,
     bookmarkUrl: response.bookmarkUrl,
   })
 
   if (urlData.success === false) {
-    const zodErrors = formatZodError(urlData.error)
-    const validationErrors = { error: [`Validation Error at ${zodErrors[0].field} - ${zodErrors[0].message}`] }
-    const message = validationErrors.error.join('. ')
-
-    return [null, { success: false, message }]
+    return [null, { success: false, message: z.prettifyError(urlData.error).replace('✖ ', '') }]
   }
 
   return [urlData.data, null]

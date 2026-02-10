@@ -1,40 +1,54 @@
+import { CornerDownLeftIcon } from 'lucide-react'
+import { useRef, useTransition } from 'react'
 import { toast } from 'sonner'
-import { FolderMinus } from 'lucide-react'
-import { useTransition } from 'react'
 
-import { useBookmarks } from '@/components/bookmarks/bookmarks-context'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { useBookmarks } from '@/hooks/use-bookmarks'
+import { useBounce } from '@/hooks/use-bounce'
+import { queryClient } from '@/lib/react-query'
 import { actionRemoveBookmarkFromFolder } from '@/server/actions/remove-bookmark-from-folder'
 
-interface RemoveBookmarkProps {
+interface BookmarkRemoveFromFolderButtonProps {
   bookmarkId: string
+  currentFolder?: string | null
 }
 
-export function BookmarkRemoveFromFolderButton({ bookmarkId }: RemoveBookmarkProps) {
-  const [isPending, startTransition] = useTransition()
+export function BookmarkRemoveFromFolderButton({ bookmarkId, currentFolder }: BookmarkRemoveFromFolderButtonProps) {
+  const [_, startTransition] = useTransition()
+
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
   const { remove } = useBookmarks()
+  const { bounce } = useBounce()
 
-  async function handleRemoveBookmark() {
-    const result = await actionRemoveBookmarkFromFolder({ bookmarkId })
-    remove(bookmarkId)
+  async function handleRemoveFromFolder() {
+    bounce(buttonRef)
 
-    if (result.success === false) {
-      toast.error(result.message)
-      return
-    }
+    startTransition(async () => {
+      remove(bookmarkId)
+
+      const result = await actionRemoveBookmarkFromFolder({ bookmarkId })
+
+      if (result.success === false) {
+        toast.error(result.message)
+        return
+      }
+
+      await queryClient.invalidateQueries({ queryKey: [`folder:${currentFolder}`] })
+    })
   }
 
   return (
-    <DropdownMenuItem>
+    <DropdownMenuItem asChild>
       <Button
         variant="ghost"
-        className="w-full h-fit m-0 p-0 justify-start border-none hover:bg-none font-medium"
-        onClick={() => startTransition(handleRemoveBookmark)}
-        disabled={isPending}
+        className="w-full relative justify-start cursor-pointer"
+        onClick={handleRemoveFromFolder}
+        ref={buttonRef}
       >
-        <FolderMinus strokeWidth={1.25} className="size-4" />
-        Remove from folder
+        <CornerDownLeftIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
+        <span className="relative left-6">Remove from folder</span>
       </Button>
     </DropdownMenuItem>
   )

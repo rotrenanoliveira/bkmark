@@ -1,23 +1,35 @@
 'use client'
 
-import { ThemeProvider } from 'next-themes'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from 'next-themes'
 import type { ReactNode } from 'react'
-
-import { BookmarkProvider } from '@/components/bookmarks/bookmarks-context'
 import { Toaster } from '@/components/ui/sonner'
+import { BookmarkProvider } from '@/contexts/bookmarks-context'
+import { FoldersProvider } from '@/contexts/folders-context'
+import { WorkspacesProvider } from '@/contexts/workspaces-context'
 import { queryClient } from '@/lib/react-query'
-import type { Bookmark } from '@/utils/types'
+import type { Bookmark, Folder, Workspace } from '@/utils/types'
 
 export function Providers({
   children,
   bookmarksPromise,
-}: { children: ReactNode; bookmarksPromise: Promise<Bookmark[]> }) {
+  foldersPromise,
+  workspacesPromise,
+}: {
+  children: ReactNode
+  bookmarksPromise: Promise<Bookmark[]>
+  foldersPromise: Promise<Folder[]>
+  workspacesPromise: Promise<Workspace[]>
+}) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
-        <BookmarkProvider bookmarksPromise={bookmarksPromise}>{children}</BookmarkProvider>
-        <Toaster richColors />
+        <BookmarkProvider bookmarksPromise={bookmarksPromise}>
+          <WorkspacesProvider workspacesPromise={workspacesPromise}>
+            <FoldersProvider foldersPromise={foldersPromise}>{children}</FoldersProvider>
+          </WorkspacesProvider>
+        </BookmarkProvider>
+        <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
   )

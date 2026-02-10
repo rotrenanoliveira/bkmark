@@ -1,30 +1,24 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-
-import { formatZodError } from '@/utils/functions'
 import { updateBookmark } from '../data/update-bookmark'
 
 const renameBookmarkSchema = z.object({
-  bookmarkId: z.string(),
-  title: z.string(),
+  'bookmark-id': z.string(),
+  'bookmark-title': z.string(),
 })
 
 export async function actionRenameBookmark(data: FormData) {
   const formResult = renameBookmarkSchema.safeParse(Object.fromEntries(data))
 
   if (formResult.success === false) {
-    const zodErrors = formatZodError(formResult.error)
-    const validationErrors = { error: [`Validation Error at ${zodErrors[0].field} - ${zodErrors[0].message}`] }
-    const message = validationErrors.error.join('. ')
-
-    return { success: false, message }
+    return { success: false, message: z.prettifyError(formResult.error).replace('✖ ', '') }
   }
 
   const [_, updateError] = await updateBookmark({
-    bookmarkId: formResult.data.bookmarkId,
-    title: formResult.data.title,
+    bookmarkId: formResult.data['bookmark-id'],
+    title: formResult.data['bookmark-title'],
   })
 
   if (updateError) {
@@ -32,7 +26,6 @@ export async function actionRenameBookmark(data: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks', 'max')
 
   return { success: true, message: 'Bookmark rename successfully.' }
 }

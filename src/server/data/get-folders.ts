@@ -1,28 +1,16 @@
 'use server'
 
-import { prisma } from '@/lib/prisma'
-import { handle } from '@/utils/functions'
-import { unstable_cache } from 'next/cache'
+import { getFoldersUncategorised } from './get-folders-uncategorised'
+import { getWorkspaceFolders } from './get-workspace-folders'
 
-export async function getFolders(userId: string) {
-  const [folders, queryError] = await handle(
-    prisma.folder.findMany({
-      where: { userId },
-    }),
-  )
+type GetFoldersParams = { userId: string } | { userId: string; workspaceId: string }
 
-  if (queryError) {
-    return { folders: [] }
+export async function getFolders(params: GetFoldersParams) {
+  if ('workspaceId' in params) {
+    return getWorkspaceFolders(params.userId, params.workspaceId)
   }
 
-  return { folders }
+  return getFoldersUncategorised(params.userId)
 }
 
-/** Get all folders for a user and cache them at nextjs level */
-export const getUserFolders = unstable_cache(
-  async (userId) => {
-    return await getFolders(userId)
-  },
-  ['folders'],
-  { revalidate: 3600, tags: ['folders'] },
-)
+export const getUserFolders = async (params: GetFoldersParams) => getFolders(params)

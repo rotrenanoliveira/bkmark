@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { removeBookmark } from '../data/remove-bookmark'
 
 export async function actionRemoveBookmark(bookmarkId: string) {
@@ -11,7 +11,6 @@ export async function actionRemoveBookmark(bookmarkId: string) {
   }
 
   revalidatePath('/', 'layout')
-  revalidateTag('bookmarks', 'max')
 
   return { success: true, message: 'Bookmark removed successfully.' }
 }

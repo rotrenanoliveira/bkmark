@@ -1,19 +1,29 @@
-import { generateNanoId } from '@/lib/nanoid'
-import { prisma } from '@/lib/prisma'
+import type { QueryResult } from '@neondatabase/serverless'
+import { cacheRepository } from '@/infra/cache/cache-repository'
+import { db } from '@/infra/db/drizzle'
+import { foldersRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
-import type { Folder, FolderCreateInput, ResponseError } from '@/utils/types'
+import type { FolderCreateInput, ResponseError } from '@/utils/types'
 
-/** save folder to database */
-export async function createFolder(data: FolderCreateInput): Promise<[Folder, null] | [null, ResponseError]> {
-  const result = await handle(
-    prisma.folder.create({
-      data: {
-        folderId: generateNanoId(),
+type FolderInsertResponse = QueryResult<never>
+
+/** Insert a new folder into the database
+ * @param {String} data.userId - The user ID of the user who is creating the folder
+ * @param {String} data.name - The name of the folder
+ */
+export async function createFolder(
+  data: FolderCreateInput,
+): Promise<[FolderInsertResponse, null] | [null, ResponseError]> {
+  const [result] = await Promise.all([
+    handle(
+      db.insert(foldersRepository).values({
         userId: data.userId,
         name: data.name,
-      },
-    }),
-  )
+        workspaceId: data.workspaceId,
+      }),
+    ),
+    cacheRepository.delete(`${data.userId}:folders`),
+  ])
 
   return result
 }
