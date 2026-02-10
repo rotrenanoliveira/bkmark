@@ -57,12 +57,14 @@ function WorkspaceDropdownMenuTrigger() {
   }, [pathname, workspaces])
 
   return (
-    <DropdownMenuTrigger className="flex-1 inline-flex items-center gap-2 p-2 cursor-pointer border border-dashed border-transparent rounded-xs hover:border-ring">
+    <DropdownMenuTrigger className="flex-1 p-2 inline-flex items-center gap-2 cursor-pointer border border-dashed border-transparent rounded-xs hover:border-ring">
       <Layers2Icon strokeWidth={1.25} className={cn('size-5', currentWorkspace && 'text-(--app-primary)')} />
 
       {!currentWorkspace && <span className="uppercase">workspaces</span>}
       {currentWorkspace && (
-        <span className="w-36 max-w-60 md:w-full uppercase text-(--app-primary) truncate">{currentWorkspace.name}</span>
+        <span className="flex-1 w-36 max-w-60 md:w-full uppercase text-(--app-primary) truncate text-left">
+          {currentWorkspace.name}
+        </span>
       )}
 
       <ChevronsUpDownIcon className="size-4 text-muted-foreground" />
