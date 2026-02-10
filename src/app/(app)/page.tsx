@@ -10,8 +10,11 @@ export default async function HomePage() {
       <main className="flex flex-col items-center p-4">
         <section className="w-full max-w-4xl grid grid-cols-1">
           <CreateBookmarkForm />
-          <BookmarksList />
-          <FoldersList />
+
+          <div className="mt-4 border-x">
+            <BookmarksList />
+            <FoldersList />
+          </div>
         </section>
       </main>
     </div>

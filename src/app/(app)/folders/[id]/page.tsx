@@ -9,7 +9,10 @@ export default async function FolderPage() {
       <main className="flex flex-col items-center p-4">
         <section className="w-full max-w-4xl grid grid-cols-1">
           <CreateBookmarkForm />
-          <BookmarksList />
+
+          <div className="mt-4 border-x">
+            <BookmarksList />
+          </div>
         </section>
       </main>
     </div>
