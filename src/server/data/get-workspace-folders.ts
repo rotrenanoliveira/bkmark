@@ -1,17 +1,9 @@
 import { and, asc, eq } from 'drizzle-orm'
-import { cacheRepository } from '@/infra/cache/cache-repository'
 import { db } from '@/infra/db/drizzle'
 import { foldersRepository } from '@/infra/db/repositories'
 import { handle } from '@/utils/functions'
-import type { Folder } from '@/utils/types'
 
 export async function getWorkspaceFolders(userId: string, workspaceId: string) {
-  const [cached, _] = await handle(cacheRepository.get<Folder[]>(`${userId}:workspace:${workspaceId}:folders`))
-
-  if (cached) {
-    return cached
-  }
-
   const [folders, queryError] = await handle(
     db
       .select({
@@ -27,10 +19,6 @@ export async function getWorkspaceFolders(userId: string, workspaceId: string) {
 
   if (queryError) {
     throw queryError.message
-  }
-
-  if (folders.length > 0) {
-    await cacheRepository.set(`${userId}:workspace:${workspaceId}:folders`, JSON.stringify(folders))
   }
 
   return folders

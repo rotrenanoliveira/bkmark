@@ -41,11 +41,7 @@ export async function updateFolder(data: FolderUpdateInput): Promise<[null, null
     return [null, mutationError || queryError]
   }
 
-  await cacheRepository.mdel([
-    `${folder[0].user}:folders`,
-    `${folder[0].user}:workspace:${folder[0].workspace}:folders`,
-    `${folder[0].user}:workspace:${data.workspaceId}:folders`,
-  ])
+  await cacheRepository.delete(`${folder[0].user}:folders`)
 
   return [null, null]
 }
