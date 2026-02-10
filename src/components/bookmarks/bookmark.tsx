@@ -27,7 +27,7 @@ export function Bookmark({ bookmark }: BookmarkProps) {
       <Link
         href={bookmark.bookmarkUrl}
         target="_blank"
-        className="w-full h-12 flex-1 flex items-center justify-between group border-b first:border-t hover:bg-foreground/5 hover:border-foreground/15 font-(family-name:--font-geist-sans)"
+        className="w-full h-12 flex-1 flex items-center justify-between group border-b hover:bg-foreground/5 hover:border-foreground/15 font-(family-name:--font-geist-sans)"
       >
         <div className="w-full flex items-center gap-2">
           <div className="flex items-center justify-center size-12 border-r">

@@ -11,7 +11,7 @@ export default async function HomePage() {
         <section className="w-full max-w-4xl grid grid-cols-1">
           <CreateBookmarkForm />
 
-          <div className="mt-4 border-x">
+          <div className="mt-4 border-x border-t">
             <BookmarksList />
             <FoldersList />
           </div>
