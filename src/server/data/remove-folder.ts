@@ -12,6 +12,7 @@ export async function removeFolder(folderId: string): Promise<[null, null] | [nu
     db.delete(foldersRepository).where(eq(foldersRepository.folderId, folderId)).returning({
       user: foldersRepository.userId,
       folder: foldersRepository.folderId,
+      workspace: foldersRepository.workspaceId,
     }),
   )
 
@@ -19,7 +20,11 @@ export async function removeFolder(folderId: string): Promise<[null, null] | [nu
     return [null, queryError]
   }
 
-  await cacheRepository.mdel([`${bookmark[0].user}:folders`, `${bookmark[0].user}:folder:${bookmark[0].folder}:*`])
+  await cacheRepository.mdel([
+    `${bookmark[0].user}:folders`,
+    `${bookmark[0].user}:folder:${bookmark[0].folder}:*`,
+    `${bookmark[0].user}:workspace:${bookmark[0].workspace}:folders`,
+  ])
 
   return [null, null]
 }
