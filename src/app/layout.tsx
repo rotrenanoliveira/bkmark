@@ -12,8 +12,29 @@ const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'bkmark',
+  manifest: '/manifest',
+  applicationName: 'bkmark',
+  title: { default: 'bkmark', template: '%s - bkmark' },
   description: 'A simple way to manage bookmarks across devices and browsers.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'bkmark',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'bkmark',
+    title: { default: 'bkmark', template: '%s - bkmark' },
+    description: 'A simple way to manage bookmarks across devices and browsers.',
+  },
+  twitter: {
+    card: 'summary',
+    title: { default: 'bkmark', template: '%s - bkmark' },
+    description: 'A simple way to manage bookmarks across devices and browsers.',
+  },
   icons: {
     icon: '/icon.png',
     apple: '/apple-icon.png',
