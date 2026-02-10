@@ -29,6 +29,7 @@
     "@tailwindcss/postcss": "4.1.18",
     "@tanstack/react-query": "5.64.1",
     "@upstash/redis": "1.36.1",
+    "@vercel/analytics": "1.6.1",
     "axios": "1.7.9",
     "boring-avatars": "2.0.4",
     "class-variance-authority": "0.7.1",

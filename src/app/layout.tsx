@@ -1,6 +1,6 @@
+import { Analytics } from '@vercel/analytics/react'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-
 import { getUserBookmarks } from '@/server/data/get-bookmarks'
 import { Providers } from './providers'
 import './globals.css'
@@ -43,6 +43,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers bookmarksPromise={bookmarks} foldersPromise={folders} workspacesPromise={workspaces}>
           {children}
+          <Analytics />
         </Providers>
       </body>
     </html>
