@@ -19,10 +19,7 @@ export async function removeWorkspace(workspaceId: string): Promise<[null, null]
     return [null, queryError]
   }
 
-  await cacheRepository.mdel([
-    `${workspace[0].user}:workspaces`,
-    `${workspace[0].user}:workspaces:${workspace[0].workspace}:*`,
-  ])
+  await cacheRepository.delete(`${workspace[0].user}:workspaces`)
 
   return [null, null]
 }

@@ -20,11 +20,7 @@ export async function removeBookmark(bookmarkId: string): Promise<[null, null] |
     return [null, queryError]
   }
 
-  await cacheRepository.mdel([
-    `${bookmark[0].user}:bookmarks`,
-    `${bookmark[0].user}:folder:${bookmark[0].folder}:bookmarks`,
-    `${bookmark[0].user}:workspace:${bookmark[0].workspace}:bookmarks`,
-  ])
+  await cacheRepository.delete(`${bookmark[0].user}:bookmarks`)
 
   return [null, null]
 }

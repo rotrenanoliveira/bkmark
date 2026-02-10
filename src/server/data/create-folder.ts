@@ -22,7 +22,7 @@ export async function createFolder(
         workspaceId: data.workspaceId,
       }),
     ),
-    cacheRepository.mdel([`${data.userId}:folders`, `${data.userId}:workspace:${data.workspaceId}:folders`]),
+    cacheRepository.delete(`${data.userId}:folders`),
   ])
 
   return result
