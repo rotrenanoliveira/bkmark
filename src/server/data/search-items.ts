@@ -36,9 +36,11 @@ export async function searchItems(search: string | null) {
         .select({
           id: foldersRepository.folderId,
           name: foldersRepository.name,
+          parent: workspacesRepository.name,
         })
         .from(foldersRepository)
         .where(and(eq(foldersRepository.userId, userId), ilike(foldersRepository.name, `%${search}%`)))
+        .leftJoin(workspacesRepository, eq(foldersRepository.workspaceId, workspacesRepository.workspaceId))
         .orderBy(asc(foldersRepository.name)),
     ),
     handle(

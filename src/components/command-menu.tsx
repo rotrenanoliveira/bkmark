@@ -44,8 +44,6 @@ export function CommandMenu() {
     }
   }, [open])
 
-  useEffect(() => console.log(content), [content])
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -183,6 +181,7 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
                   <ArrowRightIcon className="size-6 text-foreground" />
                   <span>Go to</span>
                   <p className="font-semibold truncate flex-1">{folder.name}</p>
+                  <p className="font-light truncate">{folder.parent}</p>
                 </CommandItem>
               ))}
 

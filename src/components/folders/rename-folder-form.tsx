@@ -39,8 +39,6 @@ export function RenameFolderForm(props: RenameFolderFormProps) {
     queryFn: () => getFolder(props.folderId),
   })
 
-  console.log(folder)
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     props.beforeSubmit?.()
