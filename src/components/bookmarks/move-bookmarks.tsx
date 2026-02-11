@@ -43,7 +43,7 @@ export function MoveBookmarks({ bookmarkId, currentFolder, currentWorkspace }: M
                     No folders registered.
                   </DropdownMenuItem>
                 )}
-                <ScrollArea className="w-full rounded-md h-fit max-h-72">
+                <ScrollArea className={cn('w-full rounded-md', folders.length > 7 ? 'h-72' : 'h-fit')}>
                   <div className={cn('space-y-0.5', folders && folders.length > 0 && 'p-1')}>
                     {folders?.length === 0 && (
                       <DropdownMenuItem
@@ -86,7 +86,7 @@ export function MoveBookmarks({ bookmarkId, currentFolder, currentWorkspace }: M
                   </DropdownMenuItem>
                 )}
 
-                <ScrollArea className="w-full rounded-md h-fit max-h-72">
+                <ScrollArea className={cn('w-full rounded-md', workspaces.length > 7 ? 'h-72' : 'h-fit')}>
                   <div className={cn('space-y-0.5', workspaces && workspaces.length > 0 && 'p-1')}>
                     {workspaces.length === 0 && (
                       <DropdownMenuItem
