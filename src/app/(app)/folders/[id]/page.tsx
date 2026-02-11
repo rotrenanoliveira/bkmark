@@ -14,7 +14,7 @@ export default async function FolderPage({ params }: { params: Promise<{ id: str
   const workspace = folder.workspaceId ? await getWorkspace(folder.workspaceId) : null
 
   return (
-    <div className="flex flex-col min-h-screen w-screen">
+    <div className="flex flex-col min-h-screen w-full">
       <Header />
       <main className="flex flex-col items-center p-4">
         <section className="w-full max-w-4xl grid grid-cols-1">
