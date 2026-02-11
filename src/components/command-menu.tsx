@@ -177,7 +177,7 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
               queryItems.data.folders.map((folder) => (
                 <CommandItem
                   key={folder.id}
-                  value={folder.name}
+                  value={`${folder.name} ${folder.id}`}
                   onSelect={() => runCommand(() => router.push(`/folders/${folder.id}`))}
                 >
                   <ArrowRightIcon className="size-6 text-foreground" />
@@ -198,7 +198,7 @@ export function CommandMenuContent({ setOpen, setContent }: CommandMenuContentPr
               queryItems.data.workspaces.map((workspace) => (
                 <CommandItem
                   key={workspace.id}
-                  value={workspace.name}
+                  value={`${workspace.name} ${workspace.id}`}
                   onSelect={() => runCommand(() => router.push(`/workspaces/${workspace.id}`))}
                 >
                   <ArrowRightIcon className="size-6 text-foreground" />
