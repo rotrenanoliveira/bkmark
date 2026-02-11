@@ -1,8 +1,10 @@
 'use client'
 
+import { Edit01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { floppyDisk } from '@lucide/lab'
 import { useQuery } from '@tanstack/react-query'
-import { Icon, Link2Icon, Loader2Icon } from 'lucide-react'
+import { Icon, Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -73,9 +75,9 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
   }, [isLoading])
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 flex flex-row">
+    <form onSubmit={handleSubmit} className="flex flex-row flex-1">
       <div className="flex items-center justify-center w-12 border-t border-b border-l">
-        <Link2Icon className="size-5 text-(--app-primary)/80" />
+        <HugeiconsIcon icon={Edit01Icon} className="size-6 text-(--app-primary)/80" />
       </div>
 
       <Input
@@ -88,7 +90,7 @@ export function RenameBookmarkForm(props: RenameBookmarkFormProps) {
         ref={inputRef}
       />
 
-      <Button type="submit" className="h-full w-12 md:w-20" disabled={isPending}>
+      <Button type="submit" className="w-12 h-full md:w-20" disabled={isPending}>
         {isPending && <Loader2Icon strokeWidth={1.25} className="size-5 animate-spin" />}
         <span
           className={cn(

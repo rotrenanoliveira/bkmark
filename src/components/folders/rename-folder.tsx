@@ -1,4 +1,5 @@
-import { PencilIcon } from 'lucide-react'
+import { PencilEdit02Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { useCallback, useRef, useState } from 'react'
 import { useBounce } from '@/hooks/use-bounce'
 import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
@@ -35,7 +36,10 @@ export function RenameFolderButton({ folderId }: RenameFolderProps) {
     <>
       <DropdownMenuItem onSelect={handleSelect} asChild>
         <Button variant="ghost" className="relative w-full cursor-pointer" ref={buttonRef}>
-          <PencilIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
+          <HugeiconsIcon
+            icon={PencilEdit02Icon}
+            className="absolute transition-all duration-200 ease-out scale-100 opacity-100 inset-x-2 inset-y-2 size-5"
+          />
           <span className="relative left-6">Rename</span>
           <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist)">
             <kbd className="flex items-center justify-center tracking-widest border rounded size-5">

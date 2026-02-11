@@ -18,7 +18,7 @@ export function BookmarkOptions({ bookmark }: BookmarkOptionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="size-12 flex items-center justify-center border-l">
+        <Button variant="ghost" className="flex items-center justify-center border-l size-12">
           <Ellipsis className="size-5 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
