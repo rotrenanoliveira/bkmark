@@ -1,15 +1,61 @@
-### What is this app?
+# bkmark - minimal, fast bookmark manager
 
-  - The app is a web application that allows you to save links to your bookmarks.
-  - You can add links by clicking on the "Add Link" button and entering the URL of the link you want to save.
+This is a minimal, fast bookmark manager.  
+It lets you quickly save links, organise them into folders and workspaces, and prepares the ground for easy multi‑device sync without requiring a traditional user account system. [Try it out](https://bkmark.app/).
 
-### How the app works?
+![app](.github/images/app.png)
 
-  - When you open the app, it will check if you have a user-id set in your cookies, and if you do, it will load the saved links from our database server. If you don't have an user-id, it will create a new user identifier and save it in your browser's cookies. This identifier will be used to make the ability to synchronize your saved links across devices easier without having to create a new user account.
+### What this app is
 
+- **Personal bookmark manager**: Save any URL with a single input field.
+- **Lightweight accounts**: Instead of a full auth system, the app uses an anonymous identifier to associate bookmarks with a user.
+- **Organised collections**: Group bookmarks into **folders** and **workspaces** to keep related links together.
+- **Modern UX**: Optimistic updates and a responsive UI so you can keep adding and editing bookmarks without waiting on the network.
 
-### Process
- - [ ] Verify if the user has a user-id in their cookies.
- - [ ] If the user has a user-id, load the saved links from our database server.
- - [ ] If the user does not have a user-id, create a new user identifier and save it in their cookies.
- - [ ] Save the user-id in the database server. (This will be done only if the user add a bookmark)
+### What this app does (how it works)
+
+- **Anonymous user identification**
+  - On first access, the app checks for a user identifier in your browser cookies.
+  - All bookmarks, folders, and workspaces in the database are keyed by this identifier.
+
+- **Bookmark**
+  - You paste a URL into the main input and submit.
+  - On the server, the bookmark is stored in a PostgreSQL database via **Drizzle ORM**.
+
+- **Organisation**
+  - **Folders**: Use folders to group related links (e.g., “Frontend”, “Articles to read”).
+  - **Workspaces**: Higher‑level collections that can hold folders and bookmarks, aimed at sharing and collaboration scenarios.
+
+- **Caching and performance**
+  - A Redis instance (Upstash) is used as a cache layer to speed up bookmark listing.
+  - The app is built with Next.js App Router, React Server Components, and client components where interactivity is needed.
+
+---
+
+### Tech stack
+
+- **Framework**: Next.js 16 (App Router, React 19)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **UI**: Radix UI primitives, Lucide/Hugeicons icon sets
+- **Data layer**:
+  - PostgreSQL with **Drizzle ORM** and drizzle-kit migrations
+  - Neon serverless Postgres (via `@neondatabase/serverless`)
+  - Upstash Redis (via `@upstash/redis`) for caching
+- **State & data fetching**: React context/hooks and TanStack Query where appropriate
+
+### Project structure (high level)
+
+- **`src/app/(app)`**: Main application routes (home, folders, workspaces, sync, modals).
+- **`src/components/bookmarks`**: Bookmark UI components (forms, lists, actions like move/rename/delete).
+- **`src/infra/db`**: Drizzle schema, migrations, and repositories for Postgres.
+- **`src/server/actions` & `src/server/data`**: Server actions and data access helpers for bookmarks and related entities.
+- **`src/contexts` & `src/hooks`**: React context and hooks (e.g. bookmarks context and `useBookmarks` hook).
+- **`src/lib`**: Shared utilities (e.g. Redis client, ID generation helpers).
+
+### Roadmap / TODO
+
+Some ideas that are already tracked:
+
+- **Shared folders and workspaces**: Allow sharing collections with other users.
+- **Add items into shared collections**: Let collaborators add folders and bookmarks to shared spaces.
