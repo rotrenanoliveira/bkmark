@@ -1,6 +1,7 @@
 'use client'
 
-import { CircleXIcon } from 'lucide-react'
+import { FolderRemoveIcon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { useCallback, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { useBounce } from '@/hooks/use-bounce'
@@ -66,8 +67,11 @@ export function DeleteFolder({ folderId }: DeleteFolderProps) {
   return (
     <>
       <DropdownMenuItem onSelect={handleSelect} asChild>
-        <Button variant="ghost" className="w-full relative cursor-pointer">
-          <CircleXIcon className="absolute inset-x-2 inset-y-2.5 size-4 transition-all duration-200 ease-out scale-100 opacity-100" />
+        <Button variant="ghost" className="relative w-full cursor-pointer">
+          <HugeiconsIcon
+            icon={FolderRemoveIcon}
+            className="absolute transition-all duration-200 ease-out scale-100 opacity-100 inset-x-2 inset-y-2 size-5"
+          />
           <span className="relative left-6">Delete</span>
 
           <div className="inline-flex gap-1 ml-auto font-(family-name:--font-geist-mono)">

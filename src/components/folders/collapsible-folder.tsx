@@ -1,4 +1,5 @@
-import { FolderClosedIcon, FolderOpenIcon } from 'lucide-react'
+import { Folder01Icon, Folder02Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import React from 'react'
 import { Bookmark } from '@/components/bookmarks/bookmark'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -16,11 +17,15 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="transition-all duration-200 ease-out">
-      <div className="w-full flex border-b last:border-none hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50">
-        <CollapsibleTrigger className="flex-1 flex items-center justify-start gap-2 text-start cursor-pointer truncate">
-          <div className="flex items-center justify-center size-12 border-r">
-            <FolderClosedIcon className={cn('size-6 text-muted-foreground', isOpen && 'hidden')} strokeWidth={1.5} />
-            <FolderOpenIcon className={cn('size-6 text-(--app-primary)/75', !isOpen && 'hidden')} strokeWidth={1.5} />
+      <div className="flex w-full border-b last:border-none hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50">
+        <CollapsibleTrigger className="flex items-center justify-start flex-1 gap-2 truncate cursor-pointer text-start">
+          <div className="flex items-center justify-center border-r size-12">
+            <HugeiconsIcon
+              icon={Folder01Icon}
+              altIcon={Folder02Icon}
+              showAlt={isOpen}
+              className={cn('size-6', !isOpen ? 'text-muted-foreground' : 'text-(--app-primary)/75')}
+            />
           </div>
           <span className="w-56 sm:w-[calc(100%-80px)] truncate">{folder.name}</span>
         </CollapsibleTrigger>
@@ -31,7 +36,7 @@ export function CollapsibleFolder({ folder, bookmarks }: FolderProps) {
       <CollapsibleContent className="flex flex-col">
         {bookmarks.map((bookmark) => (
           <div className="flex" key={bookmark.bookmarkId}>
-            <div className="size-12 border-r border-b" />
+            <div className="border-b border-r size-12" />
             <Bookmark key={bookmark.bookmarkId} bookmark={bookmark} />
           </div>
         ))}

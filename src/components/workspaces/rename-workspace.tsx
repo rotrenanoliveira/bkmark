@@ -1,4 +1,5 @@
-import { PencilIcon } from 'lucide-react'
+import { PencilEdit02Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { usePathname } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { useBounce } from '@/hooks/use-bounce'
@@ -36,8 +37,8 @@ export function RenameWorkspace() {
     isWorkspacePage && (
       <>
         <DropdownMenuItem onSelect={handleSelect} asChild>
-          <Button variant="ghost" className="w-full cursor-pointer justify-start rounded-none" ref={buttonRef}>
-            <PencilIcon className="size-4" />
+          <Button variant="ghost" className="justify-start w-full rounded-none cursor-pointer" ref={buttonRef}>
+            <HugeiconsIcon icon={PencilEdit02Icon} className="size-4" />
             <span className="font-light">Rename</span>
           </Button>
         </DropdownMenuItem>

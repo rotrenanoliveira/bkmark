@@ -1,4 +1,5 @@
-import { TrashIcon } from 'lucide-react'
+import { Delete01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -65,8 +66,8 @@ export function DeleteWorkspace() {
     isWorkspacePage && (
       <>
         <DropdownMenuItem onSelect={handleSelect} asChild>
-          <Button variant="ghost" className="w-full cursor-pointer justify-start rounded-none" ref={buttonRef}>
-            <TrashIcon className="size-4" />
+          <Button variant="ghost" className="justify-start w-full rounded-none cursor-pointer" ref={buttonRef}>
+            <HugeiconsIcon icon={Delete01Icon} className="size-4" />
             <span className="font-light">Delete</span>
           </Button>
         </DropdownMenuItem>
