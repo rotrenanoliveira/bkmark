@@ -104,7 +104,7 @@ export function RenameFolderForm(props: RenameFolderFormProps) {
         >
           rename
         </span>
-        <Icon iconNode={floppyDisk} className="size-5 md:hidden" strokeWidth={1.5} />
+        <Icon iconNode={floppyDisk} className={cn('size-5 md:hidden', isPending && 'hidden')} strokeWidth={1.5} />
       </Button>
     </form>
   )
