@@ -16,7 +16,7 @@ interface SyncFormProps {
 export function SynchronizeForm(props: SyncFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
 
-  const [formState, handleSubmit, isPending] = useFormState(actionSyncUser, {
+  const [_, handleSubmit, isPending] = useFormState(actionSyncUser, {
     onSuccess,
     onError,
   })
@@ -25,8 +25,8 @@ export function SynchronizeForm(props: SyncFormProps) {
     props.onSuccess?.()
   }
 
-  function onError() {
-    toast.error(formState.message)
+  function onError(message: string) {
+    toast.error(message)
   }
 
   return (

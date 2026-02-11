@@ -1,8 +1,6 @@
-import { QrCodeIcon, TicketIcon, ViewIcon, XIcon } from 'lucide-react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { TicketIcon, XIcon } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { CopyAccessCode } from './copy-access-code'
-import { AccessCodeQrCode } from './qrcode-access-code'
 import { SynchronizeForm } from './synchronize-form'
 
 interface SynchronizePageContentProps {
@@ -11,7 +9,7 @@ interface SynchronizePageContentProps {
   onClose?: () => void
 }
 
-export function SynchronizePageContent({ userId, syncUrl, onClose }: SynchronizePageContentProps) {
+export function SynchronizePageContent({ userId, onClose }: SynchronizePageContentProps) {
   return (
     <Card className="max-w-sm">
       <CardHeader className="border-none">
@@ -36,27 +34,6 @@ export function SynchronizePageContent({ userId, syncUrl, onClose }: Synchronize
             <p className="ml-4 flex-1 font-(family-name:--font-geist-mono)">{userId}</p>
             <CopyAccessCode userId={userId} />
           </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <p className="sr-only">QR Code</p>
-          <Popover>
-            <PopoverTrigger asChild>
-              <div className="h-12 w-full flex items-center border-b cursor-pointer bg-muted-foreground/5">
-                <div className="size-12 border-r flex items-center justify-center">
-                  <QrCodeIcon className="size-5 stroke-red-500" />
-                </div>
-                <p className="ml-4 flex-1 font-(family-name:--font-geist-mono)">Show</p>
-
-                <div className="size-12 flex items-center justify-center">
-                  <ViewIcon className="size-5" />
-                </div>
-              </div>
-            </PopoverTrigger>
-            <PopoverContent align="center" className="w-40">
-              <AccessCodeQrCode syncUrl={syncUrl.toString()} />
-            </PopoverContent>
-          </Popover>
         </div>
       </CardContent>
 
