@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { getUserBookmarks } from '@/server/data/get-bookmarks'
@@ -65,6 +66,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Providers bookmarksPromise={bookmarks} foldersPromise={folders} workspacesPromise={workspaces}>
           {children}
           <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
