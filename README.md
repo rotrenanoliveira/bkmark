@@ -57,5 +57,6 @@ It lets you quickly save links, organise them into folders and workspaces, and p
 
 Some ideas that are already tracked:
 
+- **Add sortable/draggable UI**: Allow users to sort bookmarks and folders.
 - **Shared folders and workspaces**: Allow sharing collections with other users.
 - **Add items into shared collections**: Let collaborators add folders and bookmarks to shared spaces.
